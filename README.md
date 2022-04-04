@@ -32,7 +32,7 @@ Viktor Platz
 Licensed under the [MIT](LICENSE) license.
 
 
-# p1-project
+# Git Help
 
 ## Setup
 
