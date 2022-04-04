@@ -1,86 +1,66 @@
 # P2 
 
+![Repository size](https://img.shields.io/github/repo-size/sabotack/P2)
+![License](https://img.shields.io/github/license/sabotack/P2)
+
 ## About
 
 
 ## Contributors
 
-Alexander Fredberg Manich  
-Ali Sajad Khorami  
-Anders Andresen Toft  
-Emil Monraad Laursen  
-Esben Baadsgaard Krogh  
-Simon Mikkelsen Bejer  
-Viktor Platz  
+[Alexander Fredberg Manich](https://github.com/AlexanderManich)  
+[Ali Sajad Khorami](https://github.com/sabotack)  
+[Anders Andresen Toft](https://github.com/AndersToft20)  
+[Emil Monraad Laursen](https://github.com/EmilML)  
+[Esben Baadsgaard Krogh](https://github.com/EMojoKrogh)  
+[Simon Mikkelsen Bejer](https://github.com/sBejer)  
+[Viktor Platz](https://github.com/redviktor)  
 
 ## Table of Contents
-1. [Prerequisites](#prerequisites)
-2. [Getting started](#getting-started)
+1. [Getting started](#getting-started)
+    - [Prerequisites](#prerequisites)
     - [Installation](#installation)
-3. [License](#license)
-
-## Prerequisites
-- [git](https://git-scm.com/)
-
+2. [License](#license)
+3. [Git help](#git-help)
 
 ## Getting started
-### Installation
 
+### Prerequisites
+- [git](https://git-scm.com/)
+- [npm](https://www.npmjs.com/)
+- [nodejs](https://nodejs.org/)
+
+### Installation
 
 ## License
 
 Licensed under the [MIT](LICENSE) license.
 
 
-# Git Help
-
-## Setup
-
-To run and build the project you will need CMake and Visual Studio 2019 installed on your computer. You can download CMake on the [CMake Website](https://cmake.org/download/). You can download Visual Studio 2019 on the [Visual Studio Website](https://visualstudio.microsoft.com/vs/).
-
-When downloading CMake make sure that you choose to let it set a system path.
-
-## Build setup
-
-To setup for building the code open a cmd window and find the folder with the project in it and write the following commands.
-
-```
-mkdir build
-cd build
-cmake ../
-```
-
-You only have to do this once.
-
-## Building
-
-To build the code you have to be in the path of the build folder we made in the last step. If you are in the build folder you can run the following command to build.
-
-```
-cmake --build .
-```
-
-## Running the program
-
-To run the program, run the exe file in the Debug folder.
-
-## Git
+## Git Help
 
 For all the following commands you need to be in the git repo's path. 
 
-### Checking the status of changes
+### Checking branch status
 
 ```
 git status
 ```
 
-### Add a change to the commit
+### Adding changes to a commit:
+
+Stage changes in individual files:
 
 ```
 git add <file_name>
 ```
 
-### Remove a change to the commit
+Stage all changes:
+```
+git add .
+```
+
+### Remove a change from the commit
 
 ```
 git rm <file_name>
@@ -88,8 +68,22 @@ git rm <file_name>
 
 ### Create and change branch
 
+Create a new branch and switch to it:
 ```
-git checkout -b <Branch_Name>
+git checkout -b <New_Branch_Name>
+```
+or
+```
+git switch -c <New_Branch_Name>
+```
+
+Switch to a different branch:
+```
+git checkout <Branch_Name>
+```
+or
+```
+git switch <Branch_Name>
 ```
 
 ### Commit added changes
