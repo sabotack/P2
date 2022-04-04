@@ -1,0 +1,20 @@
+{
+  "name": "p2",
+  "version": "1.0.0",
+  "description": "Alexander Fredberg Manich  \r Ali Sajad Khorami  \r Anders Andresen Toft  \r Emil Monraad Laursen  \r Esben Baadsgaard Krogh  \r Simon Mikkelsen Bejer  \r Viktor Platz",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sabotack/P2.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sabotack/P2/issues"
+  },
+  "homepage": "https://github.com/sabotack/P2#readme"
+}
