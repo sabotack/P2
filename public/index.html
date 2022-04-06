@@ -2,11 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="css/style.css">
     <title>P2 - A304</title>
 </head>
 <body>
+    <header>
+        <a href="/">
+            <img src="">
+        </a>    
+        <nav>
+            <ul class="nav_links">
+                <li><a href="/form.html">form</a></li>
+                <li><a href="#">test</a></li>
+            </ul>
+        </nav>
+    </header>  
+    <div class="bg">
+        <div class="bg-image"></div>
+        <div class="overlay"></div>
+        <div class="main-content">
+            <h1>RALENDER</h1>
+            <hr>
+            <h2 class="subtitle">P2 | SOFTWARE ENGINEERING | AAU</h2>
+
+            <!-- Start of Google sign in button -->
+            <div class="button">
+                <div id="g_id_onload"
+                    data-client_id="CLIENT_ID"
+                    data-context="signin"
+                    data-ux_mode="redirect"
+                    data-login_uri="LOGIN_URI"
+                    data-auto_prompt="false">
+                </div>
     
+                <div class="g_id_signin"
+                    data-type="standard"
+                    data-shape="pill"
+                    data-theme="outline"
+                    data-text="signin_with"
+                    data-size="large"
+                    data-logo_alignment="left">
+                </div>
+            </div>
+            <!-- End of Google sign in button -->
+        </div>
+        
+    </div>
+    
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </body>
 </html>

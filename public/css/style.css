@@ -1,0 +1,151 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 16px;
+    background-color: #f2f2f2;
+}
+
+.navbar {
+    width: 100vw;
+    height: 5rem;
+    background-color: #1565c0;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+}
+
+.title {
+    color: #fff;
+}
+
+.main-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    text-align: center;
+    overflow: hidden;
+    color: white;
+    /* background-color: white; */
+    width: 85%;
+    height: 65%;
+    margin: 0 auto;
+}
+
+.button {
+    width: 200px;
+    position: relative;
+    margin: 0 auto;
+    height: auto;
+}
+
+hr {
+    width: 30rem;
+    border: none;
+    height: 2px;
+    background: -webkit-gradient(linear, 0 0, 100% 0, from(transparent), to(transparent), color-stop(50%, rgb(255, 255, 255)));
+    transform: translate(0,-10px);
+}
+
+.subtitle {
+    font-size: calc(12px + 0.5vw);
+    font-weight: lighter;
+    letter-spacing: 0.3rem;
+}
+
+.bg {
+    width: 100%;
+    height: 100vh;
+    background: #939393;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: -2;
+}
+
+.bg-image {
+    display:block;
+    position: absolute;
+    top: -5%;
+    left: -5%;
+    width: 110%;
+    height: 110%;
+
+    background-image: url("/assets/bg_unsplash_m.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+	-ms-filter: blur(5px);
+    filter: blur(5px);
+    z-index: -1;
+}
+
+.overlay {
+    display: block;
+    position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+    
+    background-image: linear-gradient(180deg, #1565c0, black);
+    opacity: 0.5;
+
+    z-index: -1;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.nav_links {
+    list-style: none;
+}
+
+.nav_links, li {
+    display: inline-block;
+    padding: 0px 20px;
+}
+
+a, li, button {
+    font-size: 16px;
+    font-weight: 500;
+    font-family: sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+}
+
+.hbutton {
+    float: right;
+}
+
+
+
+
+
+
+
+@media only screen and (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+    hr {
+        width: 25rem;
+    }
+}
