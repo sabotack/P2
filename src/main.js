@@ -1,3 +1,4 @@
+
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
@@ -9,7 +10,7 @@ const port = 3000;
 const publicResources = "./public";
 
 const server = http.createServer(function(request, response){
-    
+
     try{
         processUserRequest(request, response);
     }catch(e){
@@ -40,35 +41,36 @@ function processUserRequest(request, response){
     console.log(requestMethod)
     
     let filePath = publicResources + request.url;
-    console.log(request.url);
 
     switch(requestMethod){
         case 'get':
             switch(request.url){
+                case `/favicon.ico`:
+                    filePath = publicResources + '/favicon.ico'
+                    readFile(filePath, request, response);
+                    break;
                 case `/`:
-                    console.log("/ case");
                     filePath = publicResources + '/index.html';
                     readFile(filePath, request, response);
                     break;
                 case `/index.html`:
-                    console.log("index case");
                     readFile(filePath, request, response);
                     break;
                 case '/login.css':
-                    console.log("css case");
                     readFile(filePath, request, response);
                     break;
             }
         case 'post':
             switch(request.url){
                 case `/message`:
-                    console.log("POST CASE MESSAGE");
                     
                     let requestBody = '';
                     request.on('data', data => {
-                        
-                        if (requestBody.length > 1e6) { 
-                            alert("Too much");
+
+                        console.log("Data length= "+data.length);
+
+                        if (data.length > 1e4) { 
+                            console.log("Connection Destroyed from user");
                             request.connection.destroy();
                         }
 
@@ -125,7 +127,6 @@ function errorResponseUser(request, response){
 function readFile(filePath, request, response){
 
     let contentType = getContentType(filePath);
-
     fs.readFile(filePath, function(error, content) {
         if (error) {
             if(error.code == 'ENOENT') {
@@ -144,7 +145,6 @@ function readFile(filePath, request, response){
             response.end(content, 'utf-8');
         }
     });
-
 }
 
 function getContentType(fPath) {
@@ -157,6 +157,7 @@ function getContentType(fPath) {
         '.png': 'image/png',
         '.jpg': 'image/jpg',
         '.gif': 'image/gif',
+        '.ico': 'image/x-icon',
         '.svg': 'image/svg+xml',
         '.wav': 'audio/wav',
         '.mp4': 'video/mp4',
