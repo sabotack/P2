@@ -33,7 +33,6 @@ server.listen(port, function(){
 function processUserRequest(request, response){
     
     let requestMethod = request.method.toLowerCase();
-    
     let filePath = publicResources + request.url;
 
     switch(requestMethod){
