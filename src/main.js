@@ -30,16 +30,6 @@ server.listen(port, function(){
     console.log(`Server running on http://${hostname}:${port}/`);
 });
 
-/*
-let filePath = publicResources + request.url;
-let method = request.method;
-console.log(`method = `+method);
-*/
-
-/*if (request.url === '/') {
-        filePath = publicResources + '/index.html';
-    }*/
-
 function processUserRequest(request, response){
     
     let requestMethod = request.method.toLowerCase();
@@ -59,6 +49,9 @@ function processUserRequest(request, response){
             }
         case 'post':
             switch(request.url){
+                case '/create_event':
+                    createEventAPICallGC(); // Function will presumably go in another folder
+                    // Here will be the case to handle posted event data, presumably a JSON file built and sent from the frontend
                 default:
                     validatePOST(request, response);
                     break;
@@ -90,9 +83,7 @@ function validatePOST(request, response){
 
             console.log(parsedData);
             response.writeHead(200, "OK", {'Content-Type':'text/plain'});
-            response.write('The POST output response: \n\n');
-            response.write(requestBody);
-            response.end("\n\nEnd of message to browser");
+            response.end("Sent form successfully");
 
             return requestBody;
         }
@@ -121,7 +112,7 @@ function readFile(filePath, request, response){
             }
             else {
                 response.writeHead(500);
-                response.end('Sorry, check with the site admin for error: '+error.code+' ..\n');
+                response.end('Internal server error: '+error.code+' ..\n');
             }
         }
         else {
@@ -132,7 +123,7 @@ function readFile(filePath, request, response){
 }
 
 function getContentType(fPath) {
-    let extname = String(path.extname(fPath)).toLowerCase();
+    let extensionName = String(path.extname(fPath)).toLowerCase();
     let mimeTypes = {
         '.html': 'text/html',
         '.js': 'text/javascript',
@@ -152,5 +143,9 @@ function getContentType(fPath) {
         '.wasm': 'application/wasm'
     };
 
-    return mimeTypes[extname] || 'application/octet-stream';
+    return mimeTypes[extensionName] || 'application/octet-stream';
+}
+
+function createEventAPICallGC(){
+
 }
