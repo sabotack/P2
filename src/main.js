@@ -1,13 +1,12 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
-const querystring = require('querystring');
+import http from 'http';
+import fs from 'fs';
+import path from 'path';
+import querystring from 'querystring';
 
 const hostname = '127.0.0.1';
 const port = 3000;
 
 const publicResources = "./public";
-
 
 const server = http.createServer(function(request, response){
     

@@ -8,13 +8,13 @@ label {
     margin-top: 1rem;
 }
 body{
-     color: green;
-     background-color: pink;
+     color: black;
+     background-color: yellowgreen;
      text-align: center;
 
 }
 h1{
-    color:blueviolet;
+    color:firebrick;
 }
 p{
 text-decoration: underline;
