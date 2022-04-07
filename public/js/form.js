@@ -2,13 +2,17 @@ let addTransportButtons = document.querySelectorAll('.transport-button');
 let addToBtn = addTransportButtons[0], addFromBtn = addTransportButtons[1];
 
 let eventLocation = document.getElementById('eventlocation');
-let eventTime = document.getElementById('starttime');
-let eventDate = document.getElementById('startdate');
+let eventStartTime = document.getElementById('starttime');
+let eventStartDate = document.getElementById('startdate');
+let eventEndTime = document.getElementById('endtime');
+let eventEndDate = document.getElementById('enddate');
 
 let transportToEventFieldInput = false;
 let transportFromEventFieldInput = false;
-let eventDateInput = false;
-let eventTimeInput = false;
+let eventStartDateInput = false;
+let eventStartTimeInput = false;
+let eventEndDateInput = false;
+let eventEndTimeInput = false;
 let eventLocationInput = false;
 
 addToBtn.addEventListener('click', () => {
@@ -20,8 +24,10 @@ addToBtn.addEventListener('click', () => {
     addToBtn.appendChild(location);  
     let transportToEventField = document.getElementById('startlocation');
 
-    transportToEventField.addEventListener('input', function (evt) {
+    transportToEventField.addEventListener('input', function () {
         transportToEventFieldInput = true;
+        toEventAPICall();
+        fromEventAPICall();
     }, { once: true });
     
 }, { once: true });
@@ -35,9 +41,12 @@ addFromBtn.addEventListener('click', () => {
     addFromBtn.appendChild(location);  
     let transportFromEventField = document.getElementById(`endlocation`);
 
-    transportFromEventField.addEventListener('input', function (evt) {
+    transportFromEventField.addEventListener('input', function () {
         transportFromEventFieldInput = true;
+        toEventAPICall();
+        fromEventAPICall();
     }, { once: true });
+
 }, { once: true });
 
 
@@ -47,25 +56,48 @@ function setAttributes(el, attrs) {
     }
 }
 
-eventDate.addEventListener('input', function (evt) {
-    eventDateInput = true;
-    checkIfFieldsAreFilled();
-}, { once: true });
+eventStartDate.addEventListener('input', function () {
+    eventStartDateInput = true;
+    toEventAPICall();
+    fromEventAPICall();
+});
 
-eventTime.addEventListener('input', function (evt) {
-    eventTimeInput = true;
-    checkIfFieldsAreFilled();
-}, { once: true });
+eventStartTime.addEventListener('input', function () {
+    eventStartTimeInput = true;
+    toEventAPICall();
+    fromEventAPICall();
+});
 
-eventLocation.addEventListener('input', function (evt) {
+eventEndDate.addEventListener('input', function () {
+    eventEndDateInput = true;
+    toEventAPICall();
+    fromEventAPICall();
+});
+
+eventEndTime.addEventListener('input', function () {
+    eventEndTimeInput = true;
+    toEventAPICall();
+    fromEventAPICall();
+});
+
+eventLocation.addEventListener('input', function () {
     eventLocationInput = true;
-    checkIfFieldsAreFilled();
-}, { once: true });
+    toEventAPICall();
+    fromEventAPICall();
+});
 
-function checkIfFieldsAreFilled(){
-    if (transportToEventFieldInput && eventDateInput && eventTimeInput && eventLocationInput){
+function toEventAPICall(){
+    if (transportToEventFieldInput && eventStartDateInput && eventStartTimeInput && eventLocationInput){
 
-        console.log("All required fields are filled for transportToEventAPIcall");
+        console.log("All required fields are filled for transport to event api call ----------------");
     
+    }
+}
+
+function fromEventAPICall(){
+    if(transportFromEventFieldInput && eventEndDateInput && eventEndTimeInput && eventLocationInput){
+
+        console.log("All required fields are filled for transport from event api call !!!!!!!!!!!!!");
+
     }
 }
