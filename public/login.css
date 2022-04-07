@@ -1,0 +1,21 @@
+label {
+    display: block;
+    font: .9rem 'Fira Sans', sans-serif;
+}
+
+input[type='submit'],
+label {
+    margin-top: 1rem;
+}
+body{
+     color: green;
+     background-color: pink;
+     text-align: center;
+
+}
+h1{
+    color:blueviolet;
+}
+p{
+text-decoration: underline;
+}

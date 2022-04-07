@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Test site</title>
+    <link rel="stylesheet" href="login.css">
+  </head>
+  <body>
+    <h1>This is header of the html page</h1>
+      <form action="/message" method="POST">
+          <p>Please select your desired language:</p>
+          <label>English</label>
+          <input type="radio" id="english_Id" name="Language" value="English">
+          <label>Spanish</label>
+          <input type="radio" id="spanish_Id" name="Language" value="Spanish">
+          <label>Danish</label>        
+          <input type="radio" id="danish_Id" name="Language" value="Danish">
+          <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username_Id" name="username"><br>
+            <label for="pass">Password:&nbsp;</label>
+            <input type="password" id="password" name="password" placeholder="8 characters minimum" minlength="2" required><br>
+          <input type="submit" value="Sign in">
+      </form>
+    <p>This is an example paragraph. Anything in the <strong>Ya mama</strong> tag will appear on the page, just like this <strong>Penis</strong> tag and its contents.</p>
+  </body>
+</html>
