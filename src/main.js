@@ -1,11 +1,9 @@
-
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
-import querystring from 'querystring';
 
 const hostname = '127.0.0.1';
-const port = 3000;
+const port = 3001;
 
 const publicResources = "./public";
 
@@ -15,7 +13,7 @@ const server = http.createServer(function(request, response){
         processUserRequest(request, response);
     }catch(e){
         console.log("Server error"+e);
-        errorResponseUser(request, response);
+        errorResponseUser(request, response, e, 500);
     }
     
 });
@@ -35,10 +33,8 @@ console.log(`method = `+method);
     }*/
 
 function processUserRequest(request, response){
-
-    console.log("GOT: " + request.method + " " + request.url);
+    
     let requestMethod = request.method.toLowerCase();
-    console.log(requestMethod)
     
     let filePath = publicResources + request.url;
 
@@ -54,72 +50,62 @@ function processUserRequest(request, response){
                     readFile(filePath, request, response);
                     break;
                 case `/index.html`:
-                    readFile(filePath, request, response);
+                    readFile(filefilePathPath, request, response);
                     break;
                 case '/login.css':
+                    readFile(filePath, request, response);
+                    break;
+                case '/test.js':
                     readFile(filePath, request, response);
                     break;
             }
         case 'post':
             switch(request.url){
                 case `/message`:
-                    
-                    let requestBody = '';
-                    request.on('data', data => {
-
-                        console.log("Data length= "+data.length);
-
-                        if (data.length > 1e4) { 
-                            console.log("Connection Destroyed from user");
-                            request.connection.destroy();
-                        }
-
-                        requestBody += data;
-
-                    })
-
-                    request.on('end', () => {
-                        let parsedData = querystring.decode(requestBody);
-                        console.log(parsedData);
-
-                        response.writeHead(200, "OK", {'Content-Type':'text/plain'});
-                        response.write('The POST output response: \n\n');
-                        response.write(requestBody);
-                        response.end("\n\nEnd of message to browser");
-                    })
-
+                    validatePOST(request, response);
                     break;
-
             }
     }
 
 }
 
-function validatePOST(request){
+function validatePOST(request, response){
 
-    console.log(smt)
-}
+    let requestBody = '';
 
-/*
-function dataIncoming(request, response){
-    const body = ""
-    request.on('data', (chunk) => {
-        console.log(chunk);
-        body = body + chunk;
-    })
-    request.on('end', () => {
-        res.statusCode = 302;
-        res.setHeader('Location', '/'); //Redirect user to homepage
-        return res.end();
+    request.on('data', data => {
+            
+        if (data.length < 1e4) { 
+            requestBody += data;
+
+        } else {
+            let error = 'Payload too large';
+            errorResponseUser(request, response, error, 413);
+        }
     });
+
+    request.on('end', () => {
+        if (requestBody != 0){
+
+            let parsedData = new URLSearchParams(requestBody);
+            parsedData = Object.fromEntries(parsedData);
+
+            console.log(parsedData);
+            response.writeHead(200, "OK", {'Content-Type':'text/plain'});
+            response.write('The POST output response: \n\n');
+            response.write(requestBody);
+            response.end("\n\nEnd of message to browser");
+
+            return requestBody;
+        }
+    });
+
 }
-*/
 
-function errorResponseUser(request, response){
+function errorResponseUser(request, response, error, errorCode){
 
-    response.statusCode = 500;
-    response.writeHead(500, "ERROR", {"Content-Type":"text/plain"});
-    response.write("Internal server error");
+    response.writeHead(errorCode, "Error", {"Content-Type":"text/plain"});
+    response.write("Error: "+error+"\n\nError code: "+errorCode);
     response.end();
 
 }

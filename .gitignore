@@ -106,3 +106,4 @@ dist
 # SSL CERTS
 .key
 .csr
+public/test.js
