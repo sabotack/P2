@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/sabotack/P2/issues"
   },
-  "homepage": "https://github.com/sabotack/P2#readme"
+  "homepage": "https://github.com/sabotack/P2#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "google-auth-library": "^7.14.1",
+    "node-fetch": "^3.2.3"
+  }
 }
