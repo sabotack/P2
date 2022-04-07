@@ -1,11 +1,19 @@
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
+//import https from 'https';
 
 const hostname = '127.0.0.1';
 const port = 3001;
 
 const publicResources = "./public";
+
+/*
+let options = {
+    key: fs.readFileSync('PRIVATE_KEY_FILE'),
+    cert: fs.readFileSync('PUBLIC_KEY_FILE')
+};
+*/
 
 const server = http.createServer(function(request, response){
 
