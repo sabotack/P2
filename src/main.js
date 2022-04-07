@@ -41,27 +41,17 @@ function processUserRequest(request, response){
     switch(requestMethod){
         case 'get':
             switch(request.url){
-                case `/favicon.ico`:
-                    filePath = publicResources + '/favicon.ico'
-                    readFile(filePath, request, response);
-                    break;
                 case `/`:
                     filePath = publicResources + '/index.html';
                     readFile(filePath, request, response);
                     break;
-                case `/index.html`:
-                    readFile(filefilePathPath, request, response);
-                    break;
-                case '/login.css':
-                    readFile(filePath, request, response);
-                    break;
-                case '/test.js':
+                default:
                     readFile(filePath, request, response);
                     break;
             }
         case 'post':
             switch(request.url){
-                case `/message`:
+                default:
                     validatePOST(request, response);
                     break;
             }
