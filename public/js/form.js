@@ -25,10 +25,10 @@ addToBtn.addEventListener('click', () => {
     let transportToEventField = document.getElementById('startlocation');
 
     transportToEventField.addEventListener('input', function () {
-        transportToEventFieldInput = true;
-        toEventAPICall();
-        fromEventAPICall();
-    }, { once: true });
+        console.log("function called for to transport");
+        let toTransportValue = transportToEventField.value;
+        console.log("Test Value to transport:"+toTransportValue);
+    });
     
 }, { once: true });
 
@@ -42,10 +42,10 @@ addFromBtn.addEventListener('click', () => {
     let transportFromEventField = document.getElementById(`endlocation`);
 
     transportFromEventField.addEventListener('input', function () {
-        transportFromEventFieldInput = true;
-        toEventAPICall();
-        fromEventAPICall();
-    }, { once: true });
+        console.log("function called for from transport");
+        let fromTransportValue = transportFromEventField.value;
+        console.log("Test Value from transport:"+fromTransportValue);
+    });
 
 }, { once: true });
 
