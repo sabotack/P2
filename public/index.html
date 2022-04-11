@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="google-signin-client_id" content="949751936924-lm4a4d4kqhv01671h3dihu6gcstjsmv4.apps.googleusercontent.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="css/main.css">
     <title>P2 - A304</title>
@@ -20,8 +21,21 @@
             </div>
             <div class="nav-links">
                 <div>
-                    <a href="form.html">Form</a>
-                    <a href="/">About</a>
+                    <div id="g_id_onload"
+                        data-client_id="949751936924-lm4a4d4kqhv01671h3dihu6gcstjsmv4.apps.googleusercontent.com"
+                        data-context="signin"
+                        data-ux_mode="popup"
+                        data-auto_prompt="false"
+                        data-callback="googleCallback">
+                    </div>
+                    <div class="g_id_signin"
+                        data-type="standard"
+                        data-shape="rectangular"
+                        data-theme="outline"
+                        data-text="signin_with"
+                        data-size="large"
+                        data-logo_alignment="left">
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,5 +58,7 @@
         </div>
     </div>
 </div>
+<script src="googleAuth.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 </body>
 </html>

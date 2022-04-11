@@ -3,8 +3,13 @@ import fs from 'fs';
 import path from 'path';
 //import https from 'https';
 
+//Google authentication stuff
+import { OAuth2Client } from 'google-auth-library'; //Contructor function from google
+const GOOGLE_CLIENT_ID = `949751936924-lm4a4d4kqhv01671h3dihu6gcstjsmv4.apps.googleusercontent.com`; //Google client
+const googleClient = new OAuth2Client(`${GOOGLE_CLIENT_ID}`);
+
 const hostname = '127.0.0.1';
-const port = 3001;
+const port = 3000;
 
 const publicResources = "./public";
 
@@ -48,9 +53,13 @@ function processUserRequest(request, response){
             }
         case 'post':
             switch(request.url){
+                case `/login`:
+                    handleGoogleToken(request, response);
+                    break;
                 case '/create_event':
                     createEventAPICallGC(); // Function will presumably go in another folder
                     // Here will be the case to handle posted event data, presumably a JSON file built and sent from the frontend
+                    break;
                 default:
                     validatePOST(request, response);
                     break;
@@ -147,4 +156,34 @@ function getContentType(fPath) {
 
 function createEventAPICallGC(){
 
+}
+
+function handleGoogleToken(request, response) {
+    let token = '';
+    request.on('data', data => {
+        if (token.length > 1e6) { 
+            alert("Too much");
+            request.connection.destroy();
+        }
+        token += data;
+        verifyGoogleAccount(token).catch(console.error);
+    })
+
+    request.on('end',() => {
+        console.log("Login accessed");
+        response.writeHead(200, "OK", {'Content-Type':'text/plain'});
+        response.write('The POST output response: \n\n');
+        response.write(token);
+        response.end("\n\nEnd");
+    })
+}
+
+async function verifyGoogleAccount(token) {
+    const ticket = await googleClient.verifyIdToken({
+        idToken: token,
+        audience: GOOGLE_CLIENT_ID
+    });
+    const payload = ticket.getPayload();
+    const userid = payload['sub'];
+    console.log(payload);
 }
