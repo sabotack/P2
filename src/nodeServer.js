@@ -1,6 +1,7 @@
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
+import fetch from 'node-fetch';
 //import https from 'https';
 
 //Google authentication stuff
@@ -8,7 +9,7 @@ import { OAuth2Client } from 'google-auth-library'; //Contructor function from g
 const GOOGLE_CLIENT_ID = `949751936924-lm4a4d4kqhv01671h3dihu6gcstjsmv4.apps.googleusercontent.com`; //Google client
 const googleClient = new OAuth2Client(`${GOOGLE_CLIENT_ID}`);
 
-const hostname = '127.0.0.1';
+const hostname = 'localhost';
 const port = 3000;
 
 const publicResources = "./public";
@@ -36,7 +37,7 @@ server.listen(port, function(){
 });
 
 function processUserRequest(request, response){
-    
+
     let requestMethod = request.method.toLowerCase();
     let filePath = publicResources + request.url;
 
@@ -60,12 +61,45 @@ function processUserRequest(request, response){
                     createEventAPICallGC(); // Function will presumably go in another folder
                     // Here will be the case to handle posted event data, presumably a JSON file built and sent from the frontend
                     break;
+                case '/locationService':
+                    console.log("correct case");
+                    testFunction1(request, response);
+                    break;
                 default:
                     validatePOST(request, response);
                     break;
             }
     }
 
+}
+
+function testFunction1(request, response){
+
+    let locationCallPOST = '';
+
+    request.on('data', data => {
+            
+        if (data.length < 1e4) { 
+            locationCallPOST += data;
+
+        } else {
+            let error = 'Payload too large';
+            errorResponseUser(request, response, error, 413);
+        }
+    });
+
+    request.on('end', () => {
+            console.log("form: "+locationCallPOST);
+            let parsedData = new URLSearchParams(locationCallPOST);
+            parsedData = Object.fromEntries(parsedData);
+
+            locationAPICall(parsedData.location).then(data => {
+
+                response.writeHead(200, "OK", {'Content-Type':'text/plain'});
+                response.write(JSON.stringify(data));
+                response.end();
+            });
+    });
 }
 
 function validatePOST(request, response){
@@ -85,10 +119,10 @@ function validatePOST(request, response){
 
     request.on('end', () => {
         if (requestBody != 0){
-
+            console.log("form: "+requestBody);
             let parsedData = new URLSearchParams(requestBody);
             parsedData = Object.fromEntries(parsedData);
-
+            
             console.log(parsedData);
             response.writeHead(200, "OK", {'Content-Type':'text/plain'});
             response.end("Sent form successfully");
@@ -152,6 +186,13 @@ function getContentType(fPath) {
     };
 
     return mimeTypes[extensionName] || 'application/octet-stream';
+}
+
+async function locationAPICall(inputLocation){
+    const response = await fetch('http://xmlopen.rejseplanen.dk/bin/rest.exe/location?format=json&input='+inputLocation);
+    const data = await response.json();
+
+    return data;
 }
 
 function createEventAPICallGC(){

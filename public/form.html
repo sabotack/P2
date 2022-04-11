@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="google-signin-client_id" content="949751936924-lm4a4d4kqhv01671h3dihu6gcstjsmv4.apps.googleusercontent.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/form.css">
@@ -21,37 +22,86 @@
             </div>
             <div class="nav-links">
                 <div>
-                    <a href="form.html">Form</a>
-                    <a href="/">About</a>
+                    <div id="g_id_onload"
+                        data-client_id="949751936924-lm4a4d4kqhv01671h3dihu6gcstjsmv4.apps.googleusercontent.com"
+                        data-context="signin"
+                        data-ux_mode="popup"
+                        data-auto_prompt="false"
+                        data-callback="googleCallback">
+                    </div>
+                    <div class="g_id_signin"
+                        data-type="standard"
+                        data-shape="rectangular"
+                        data-theme="outline"
+                        data-text="signin_with"
+                        data-size="large"
+                        data-logo_alignment="left">
+                    </div>
                 </div>
             </div>
         </div>
         <div class="content">
             <div class="content-flex">
                 <div class="left-content">
-                    <div class="info-box">               
-                        <div class = "transport-button">
-                            <p>+ add transport to event</p>
-                        </div>
-                        <div class="event-box">
-                            <input type="text" name="title" id="" placeholder="Title of event">
-                            <div class="date-time">
-                                <input class="date datepicker" type="date" name="startdate" id="startdate">
-                                <input class="time timepicker" type="time" name="starttime" id="starttime">
+                    <form action="">
+                        
+                        <div class="info-box">  
+                            <div class = "transport-button disabled">
+                                <p>+ add transport to event</p>
                             </div>
-                            <div class="date-time">
-                                <input class="date datepicker" type="date" name="enddate" id="enddate">
-                                <input class="time timepicker" type="time" name="endtime" id="endtime">
-                            </div>                        
-                            
-                            <input type="text" name="eventlocation" id="eventlocation" placeholder="Event location">
-                            <textarea class="formdescription" name="description" id="" cols="30" rows="10" placeholder="Description"></textarea>
+                            <div id="tto-modal" class="modal">
+                                <div class="modal-content">
+                                    <input list="locations-to" name="transport-to" placeholder="Start location" id="transportToEvent">
+                                    <datalist id="locations-to">
+                                        <option value="AAU"></option>
+                                    </datalist>
+                                    <!-- 3 transportmuligheder -->
+                                    <div>
+
+                                    </div>
+                                    <div class="right-container">
+                                        <button class="modal-button">Cancel</button>
+                                        <button class="modal-button">Add</button>
+                                    </div>
+                                </div>                        
+                            </div>
+                            <div class="event-box">
+                                <input type="text" name="title" id="eventtitle" placeholder="Title of event" required>
+                                <div class="date-time">
+                                    <input class="date datepicker" type="date" name="startdate" id="startdate">
+                                    <input class="time timepicker" type="time" name="starttime" id="starttime">
+                                </div>
+                                <div class="date-time">
+                                    <input class="date datepicker" type="date" name="enddate" id="enddate">
+                                    <input class="time timepicker" type="time" name="endtime" id="endtime">
+                                </div>                        
+                                <input class="location" list="eventlocation" name="eventlocation" placeholder="Event location" id="eventlocation">
+                                <datalist id="eventlocationlist"></datalist>
+                
+                                <textarea class="formdescription" name="description" id="" cols="30" rows="10" placeholder="Description"></textarea>
+                            </div>
+                            <div class="transport-button">
+                                <p>+ add transport from event</p>
+                            </div>
+                            <div id="tfrom-modal" class="modal">
+                                <div class="modal-content">
+                                    <input list="locations-from" name="transport-from" placeholder="Start location" id="transportfromEvent">
+                                    <datalist id="locations-from">
+                                        <option value="AAU"></option>
+                                    </datalist>
+                                    <!-- 3 transportmuligheder -->
+                                    <div>
+
+                                    </div>
+                                    <div class="right-container">
+                                        <button class="modal-button">Cancel</button>
+                                        <button class="modal-button">Add</button>
+                                    </div>
+                                </div>                        
+                            </div>
                         </div>
-                        <div class="transport-button">
-                            <p>+ add transport from event</p>
-                        </div>
-                    </div>
-                    <input type="submit" name="submit" id="formsubmit">
+                        <input type="submit" name="submit" id="formsubmit">
+                    </form>             
                 </div>
                 <div class="right-content">
                     <img src="assets/placeholder.jpg" alt="placeholder">
@@ -60,5 +110,7 @@
         </div>
     </div>
     <script src="js/form.js"></script>
+    <script src="js/googleAuth.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </body>
 </html>

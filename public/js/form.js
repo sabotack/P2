@@ -1,50 +1,75 @@
 let addTransportButtons = document.querySelectorAll('.transport-button');
 let addToBtn = addTransportButtons[0], addFromBtn = addTransportButtons[1];
 
-let eventLocation = document.getElementById('eventlocation');
-let eventStartTime = document.getElementById('starttime');
-let eventStartDate = document.getElementById('startdate');
-let eventEndTime = document.getElementById('endtime');
-let eventEndDate = document.getElementById('enddate');
+let startLocationToEvent = document.querySelector('.modal-content input')
 
-let transportToEventFieldInput = false;
-let transportFromEventFieldInput = false;
-let eventStartDateInput = false;
-let eventStartTimeInput = false;
-let eventEndDateInput = false;
-let eventEndTimeInput = false;
-let eventLocationInput = false;
+let tToModal = document.querySelector('#tto-modal');
+let tFromModal = document.querySelector('#tfrom-modal');
+let modalButtons = document.querySelectorAll('.modal-button');
+
+let eventTitle = document.querySelector('#eventtitle').focus();
+let eventLocation = document.querySelector('#eventlocation');
+let eventLocationList = document.querySelector('#eventlocationlist');
+let eventStartTime = document.querySelector('#starttime');
+let eventStartDate = document.querySelector('#startdate');
+let eventEndTime = document.querySelector('#endtime');
+let eventEndDate = document.querySelector('#enddate');
+
+modalButtons[0].addEventListener('click', (e) => {
+    e.preventDefault();
+    tToModal.style.display = 'none';
+});
+
+tToModal.addEventListener('click', (event) => {
+    if (event.target == tToModal){
+        tToModal.style.display = 'none';
+    }
+});
 
 addToBtn.addEventListener('click', () => {
-    addToBtn.innerHTML = "";
+    tToModal.style.display = "block";
+    /* addToBtn.innerHTML = "";
     let location = document.createElement('input');
     let attributes = {'type': 'text', 'name': 'startlocation', 'id': 'startlocation', 'placeholder': 'Starting point'};
     setAttributes(location, attributes);
     
     addToBtn.appendChild(location);  
-    let transportToEventField = document.getElementById('startlocation');
+    let transportToEventField = document.querySelector('#startlocation');
 
     transportToEventField.addEventListener('input', function () {
         console.log("function called for to transport");
         let toTransportValue = transportToEventField.value;
         console.log("Test Value to transport:"+toTransportValue);
-    });
+        locationServiceCallAPI(toTransportValue);
+    }); */
     
-}, { once: true });
+}/* , { once: true } */);
+
+modalButtons[2].addEventListener('click', (e) => {
+    e.preventDefault();
+    tFromModal.style.display = 'none';
+});
+
+tFromModal.addEventListener('click', (event) => {
+    if (event.target == tFromModal){
+        tFromModal.style.display = 'none';
+    }
+});
 
 addFromBtn.addEventListener('click', () => {
+    /* tFromModal.style.display = "block"; */
+
     addFromBtn.innerHTML = "";
     let location = document.createElement('input');
     let attributes = {'type': 'text', 'name': 'endlocation', 'id': 'endlocation', 'placeholder': 'Destination'};
     setAttributes(location, attributes);
     
     addFromBtn.appendChild(location);  
-    let transportFromEventField = document.getElementById(`endlocation`);
+    let transportFromEventField = document.querySelector('#endlocation');
 
     transportFromEventField.addEventListener('input', function () {
-        console.log("function called for from transport");
         let fromTransportValue = transportFromEventField.value;
-        console.log("Test Value from transport:"+fromTransportValue);
+        let location = locationServiceCallAPI(fromTransportValue);
     });
 
 }, { once: true });
@@ -56,48 +81,62 @@ function setAttributes(el, attrs) {
     }
 }
 
-eventStartDate.addEventListener('input', function () {
-    eventStartDateInput = true;
-    toEventAPICall();
-    fromEventAPICall();
-});
-
-eventStartTime.addEventListener('input', function () {
-    eventStartTimeInput = true;
-    toEventAPICall();
-    fromEventAPICall();
-});
-
-eventEndDate.addEventListener('input', function () {
-    eventEndDateInput = true;
-    toEventAPICall();
-    fromEventAPICall();
-});
-
-eventEndTime.addEventListener('input', function () {
-    eventEndTimeInput = true;
-    toEventAPICall();
-    fromEventAPICall();
-});
-
-eventLocation.addEventListener('input', function () {
-    eventLocationInput = true;
-    toEventAPICall();
-    fromEventAPICall();
-});
-
-function toEventAPICall(){
-    if (transportToEventFieldInput && eventStartDateInput && eventStartTimeInput && eventLocationInput){
-
-        console.log("All required fields are filled for transport to event api call ----------------");
-    
+function checkRequiredTransportTo() {
+    if(eventStartDate.value != '' && eventStartTime.value != '' && eventLocation.value != '') {
+        addToBtn.classList.remove('disabled');
+    }
+    else {
+        addToBtn.classList.add('disabled');
     }
 }
 
-function fromEventAPICall(){
-    if(transportFromEventFieldInput && eventEndDateInput && eventEndTimeInput && eventLocationInput){
+eventStartDate.addEventListener('input', () => {
+    checkRequiredTransportTo();
+});
 
-        console.log("All required fields are filled for transport from event api call !!!!!!!!!!!!!");
+eventStartTime.addEventListener('input', () => {
+    checkRequiredTransportTo();
+});
 
-    }
+eventLocation.addEventListener('input', () => {
+    checkRequiredTransportTo();
+    
+    
+    locationServiceCallAPI(eventLocation.value).then(function(response) {
+        console.log(response);
+        /*Object.keys(response.LocationList.CoordLocation).length;
+        console.log("test: "+response.LocationList.CoordLocation.length);
+        let test4 = (response.CoordLocation);
+        console.log("Certain JSON: "+response.CoordLocation);
+        
+
+        test4.forEach(element => {
+            let option = document.createElement('option');
+            option.value = element;
+            eventLocationList.appendChild(eventLocation);
+        }) */
+    
+
+    }, function(err) {
+        console.log(err);
+       });
+
+})
+
+function locationServiceCallAPI(inputField){
+    return new Promise(function(resolve, reject){
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.open("POST", '/locationService', true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        xhr.send("location="+inputField);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4){
+                
+                let result = JSON.parse(xhr.responseText); 
+                this.status == 200 ? resolve(result) : reject('Error');
+            }
+        }
+    });
 }
