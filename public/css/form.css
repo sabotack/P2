@@ -1,0 +1,71 @@
+body {
+    background: white;
+    color: #555;
+}
+
+.navbar {
+    background-color: #00478F;
+}
+
+.left-content {
+    align-items: center;
+}
+
+.info-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;  
+    
+    background-color: #f4f4f4;
+}
+
+.event-box {
+    padding: 10px 20px;
+}
+
+.info-box input {
+    width: 100%;
+}
+
+
+.transport-button {
+    width: 100%;
+    text-align: center;   
+    background-color: #eaeaea;
+    padding: 10px 20px;
+}
+
+.transport-button p {
+    margin: 0;
+}
+
+.transport-button:hover {
+    background-color: #e1e1e1;
+    cursor: pointer;
+}
+
+.date {
+    max-width: 150px;
+}
+
+.time {
+    max-width: 100px;
+}
+
+.date-time {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.formdescription {
+    resize: none;
+    width: 100%;
+}
+
+#formsubmit {
+    margin-top: 10px;
+}

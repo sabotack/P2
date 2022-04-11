@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/form.css">
+    <title>P2 - A304</title>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="nav-logo">
+                <a href="/">
+                    <img src="assets/logo.png" alt="RALENDER logo"> 
+                </a>
+            </div>
+            <div class="nav-title">
+                <h1>P2 | SOFWARE AAU | A304</h1>
+            </div>
+            <div class="nav-links">
+                <div>
+                    <a href="form.html">Form</a>
+                    <a href="/">About</a>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="content-flex">
+                <div class="left-content">
+                    <div class="info-box">               
+                        <div class = "transport-button">
+                            <p>+ add transport to event</p>
+                        </div>
+                        <div class="event-box">
+                            <input type="text" name="title" id="" placeholder="Title of event">
+                            <div class="date-time">
+                                <input class="date datepicker" type="date" name="startdate" id="startdate">
+                                <input class="time timepicker" type="time" name="starttime" id="starttime">
+                            </div>
+                            <div class="date-time">
+                                <input class="date datepicker" type="date" name="enddate" id="enddate">
+                                <input class="time timepicker" type="time" name="endtime" id="endtime">
+                            </div>                        
+                            
+                            <input type="text" name="eventlocation" id="eventlocation" placeholder="Event location">
+                            <textarea class="formdescription" name="description" id="" cols="30" rows="10" placeholder="Description"></textarea>
+                        </div>
+                        <div class="transport-button">
+                            <p>+ add transport from event</p>
+                        </div>
+                    </div>
+                    <input type="submit" name="submit" id="formsubmit">
+                </div>
+                <div class="right-content">
+                    <img src="assets/placeholder.jpg" alt="placeholder">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/form.js"></script>
+</body>
+</html>
