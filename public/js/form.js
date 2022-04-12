@@ -3,8 +3,8 @@ let addToBtn = addTransportButtons[0], addFromBtn = addTransportButtons[1];
 
 let startLocationToEvent = document.querySelector('.modal-content input')
 
-let tToModal = document.querySelector('#tto-modal');
-let tFromModal = document.querySelector('#tfrom-modal');
+let toModal = document.querySelector('#tto-modal');
+let fromModal = document.querySelector('#tfrom-modal');
 let modalButtons = document.querySelectorAll('.modal-button');
 
 let eventTitle = document.querySelector('#eventtitle').focus();
@@ -15,65 +15,37 @@ let eventStartDate = document.querySelector('#startdate');
 let eventEndTime = document.querySelector('#endtime');
 let eventEndDate = document.querySelector('#enddate');
 
+// Cancel button for add transport to event modal
 modalButtons[0].addEventListener('click', (e) => {
     e.preventDefault();
-    tToModal.style.display = 'none';
+    toModal.style.display = 'none';
 });
 
-tToModal.addEventListener('click', (event) => {
-    if (event.target == tToModal){
-        tToModal.style.display = 'none';
+// Cancel button for add transport from event modal
+modalButtons[2].addEventListener('click', (e) => {
+    e.preventDefault();
+    fromModal.style.display = 'none';
+});
+
+toModal.addEventListener('click', (event) => {
+    if (event.target == toModal){
+        toModal.style.display = 'none';
+    }
+});
+
+fromModal.addEventListener('click', (event) => {
+    if (event.target == fromModal){
+        fromModal.style.display = 'none';
     }
 });
 
 addToBtn.addEventListener('click', () => {
-    tToModal.style.display = "block";
-    /* addToBtn.innerHTML = "";
-    let location = document.createElement('input');
-    let attributes = {'type': 'text', 'name': 'startlocation', 'id': 'startlocation', 'placeholder': 'Starting point'};
-    setAttributes(location, attributes);
-    
-    addToBtn.appendChild(location);  
-    let transportToEventField = document.querySelector('#startlocation');
-
-    transportToEventField.addEventListener('input', function () {
-        console.log("function called for to transport");
-        let toTransportValue = transportToEventField.value;
-        console.log("Test Value to transport:"+toTransportValue);
-        locationServiceCallAPI(toTransportValue);
-    }); */
-    
-}/* , { once: true } */);
-
-modalButtons[2].addEventListener('click', (e) => {
-    e.preventDefault();
-    tFromModal.style.display = 'none';
-});
-
-tFromModal.addEventListener('click', (event) => {
-    if (event.target == tFromModal){
-        tFromModal.style.display = 'none';
-    }
+    toModal.style.display = "block";    
 });
 
 addFromBtn.addEventListener('click', () => {
-    /* tFromModal.style.display = "block"; */
-
-    addFromBtn.innerHTML = "";
-    let location = document.createElement('input');
-    let attributes = {'type': 'text', 'name': 'endlocation', 'id': 'endlocation', 'placeholder': 'Destination'};
-    setAttributes(location, attributes);
-    
-    addFromBtn.appendChild(location);  
-    let transportFromEventField = document.querySelector('#endlocation');
-
-    transportFromEventField.addEventListener('input', function () {
-        let fromTransportValue = transportFromEventField.value;
-        let location = locationServiceCallAPI(fromTransportValue);
-    });
-
-}, { once: true });
-
+    fromModal.style.display = "block";
+});
 
 function setAttributes(el, attrs) {
     for(let key in attrs) {
@@ -90,6 +62,15 @@ function checkRequiredTransportTo() {
     }
 }
 
+function checkRequiredTransportFrom() {
+    if(eventEndDate.value != '' && eventEndTime.value != '' && eventLocation.value != '') {
+        addFromBtn.classList.remove('disabled');
+    }
+    else {
+        addFromBtn.classList.add('disabled');
+    }
+}
+
 eventStartDate.addEventListener('input', () => {
     checkRequiredTransportTo();
 });
@@ -98,30 +79,71 @@ eventStartTime.addEventListener('input', () => {
     checkRequiredTransportTo();
 });
 
-eventLocation.addEventListener('input', () => {
-    checkRequiredTransportTo();
-    
-    
-    locationServiceCallAPI(eventLocation.value).then(function(response) {
-        console.log(response);
-        /*Object.keys(response.LocationList.CoordLocation).length;
-        console.log("test: "+response.LocationList.CoordLocation.length);
-        let test4 = (response.CoordLocation);
-        console.log("Certain JSON: "+response.CoordLocation);
-        
+eventEndDate.addEventListener('input', () => {
+    checkRequiredTransportFrom();
+});
 
-        test4.forEach(element => {
-            let option = document.createElement('option');
-            option.value = element;
-            eventLocationList.appendChild(eventLocation);
-        }) */
+eventEndTime.addEventListener('input', () => {
+    checkRequiredTransportFrom();
+});
+
+autocomplete(eventLocation);
+
+function autocomplete(input) { 
+
+    input.addEventListener('input', () => {
+        checkRequiredTransportTo();
+        checkRequiredTransportFrom();
+
+        deleteChild();
+
+        let list = document.createElement("div");
+        list.setAttribute("id", input.id + "autocomplete-list");
+        list.setAttribute("class", "autocomplete-items");
+        input.parentNode.appendChild(list);
+
+        locationServiceCallAPI(input.value).then((response) => {
+
+            response.forEach(element => {
+
+                let option = document.createElement("div");
+                option.innerHTML += (element[':@']['@_name']);
+                option.innerHTML += "<input type='hidden' value='" + (element[':@']['@_name']) + "'>";
+
+                list.appendChild(option);
+            });
+
+            /*option.addEventListener("click", function() {
+                console.log(this.getElementsByTagName("input")[0].value);
+            });*/
+            
+            // option.addEventListener("click", event => {
+            //     value = this.document.querySelector("#eventlocation");
+            //     value.append(event.target);
+            // });
+            
+
+        }, function(err) {
+            console.log(err);
+        });
+
+    });
+
     
 
-    }, function(err) {
-        console.log(err);
-       });
+    function closeLists(element) {
+        let listItems = document.querySelectorAll(".autocomplete-items");
+        for (let i = 0; i < listItems.length; i++) {
+            if (element != listItems[i] && element != input) {
+                listItems[i].parentNode.removeChild(listItems[i]);
+            }
+        }
+    }
 
-})
+    /* document.addEventListener("click", function (e) {
+        closeLists(e.target);
+    }); */
+}
 
 function locationServiceCallAPI(inputField){
     return new Promise(function(resolve, reject){
@@ -139,4 +161,14 @@ function locationServiceCallAPI(inputField){
             }
         }
     });
+}
+
+
+function deleteChild() {
+    console.log("Function Called");
+    let elements = document.getElementsByClassName('autocomplete-items'),
+    element;
+    while (element = elements[0]) {
+    element.parentNode.removeChild(element);
+    }
 }

@@ -73,12 +73,13 @@ body {
 }
 
 .location {
-    margin: 0 0 10px 0;
+    margin: 0;
 }
 
 .formdescription {
     resize: none;
     width: 100%;
+    margin: 10px 0 0 0;
 }
 
 #formsubmit {
@@ -113,3 +114,29 @@ body {
 .modal-button {
     display: inline-block;
 }
+
+.autocomplete {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    text-align: left;
+}
+
+.autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+}
+
+.autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
+  }

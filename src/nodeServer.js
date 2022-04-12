@@ -2,6 +2,8 @@ import http from 'http';
 import fs from 'fs';
 import path from 'path';
 import fetch from 'node-fetch';
+import {locationAPICall } from './rejseplanen/location.js';
+
 //import https from 'https';
 
 //Google authentication stuff
@@ -63,7 +65,7 @@ function processUserRequest(request, response){
                     break;
                 case '/locationService':
                     console.log("correct case");
-                    testFunction1(request, response);
+                    locationServiceRequest(request, response);
                     break;
                 default:
                     validatePOST(request, response);
@@ -73,7 +75,7 @@ function processUserRequest(request, response){
 
 }
 
-function testFunction1(request, response){
+function locationServiceRequest(request, response){
 
     let locationCallPOST = '';
 
@@ -108,7 +110,7 @@ function validatePOST(request, response){
 
     request.on('data', data => {
             
-        if (data.length < 1e4) { 
+        if (data.length < 1e4) {
             requestBody += data;
 
         } else {
@@ -186,13 +188,6 @@ function getContentType(fPath) {
     };
 
     return mimeTypes[extensionName] || 'application/octet-stream';
-}
-
-async function locationAPICall(inputLocation){
-    const response = await fetch('http://xmlopen.rejseplanen.dk/bin/rest.exe/location?format=json&input='+inputLocation);
-    const data = await response.json();
-
-    return data;
 }
 
 function createEventAPICallGC(){

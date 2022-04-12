@@ -74,13 +74,13 @@
                                 <div class="date-time">
                                     <input class="date datepicker" type="date" name="enddate" id="enddate">
                                     <input class="time timepicker" type="time" name="endtime" id="endtime">
-                                </div>                        
-                                <input class="location" list="eventlocation" name="eventlocation" placeholder="Event location" id="eventlocation">
-                                <datalist id="eventlocationlist"></datalist>
-                
+                                </div>
+                                    <div class="autocomplete">           
+                                        <input class="location" autocomplete="off" type="text" name="eventlocation" id="eventlocation" placeholder="Event location">
+                                    </div>    
                                 <textarea class="formdescription" name="description" id="" cols="30" rows="10" placeholder="Description"></textarea>
                             </div>
-                            <div class="transport-button">
+                            <div class="transport-button disabled">
                                 <p>+ add transport from event</p>
                             </div>
                             <div id="tfrom-modal" class="modal">
