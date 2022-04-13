@@ -30,6 +30,7 @@
 - [npm](https://www.npmjs.com/)
 - [nodejs](https://nodejs.org/)
 - google-auth-library
+- googleapis
 
 ### Installation
 
