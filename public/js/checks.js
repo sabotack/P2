@@ -1,21 +1,19 @@
-import * as form from "./form.js";
+import * as form from './form.js';
 
-export {checkRequiredTransportTo, checkRequiredTransportFrom};
+export { checkRequiredTransportTo, checkRequiredTransportFrom };
 
 function checkRequiredTransportTo() {
-    if(form.eventStartDate.value != '' && form.eventStartTime.value != '' && form.eventLocation.value != '') {
+    if (form.eventStartDate.value != '' && form.eventStartTime.value != '' && form.eventLocation.value != '') {
         form.addToBtn.classList.remove('disabled');
-    }
-    else {
+    } else {
         form.addToBtn.classList.add('disabled');
     }
 }
 
 function checkRequiredTransportFrom() {
-    if(form.eventEndDate.value != '' && form.eventEndTime.value != '' && form.eventLocation.value != '') {
+    if (form.eventEndDate.value != '' && form.eventEndTime.value != '' && form.eventLocation.value != '') {
         form.addFromBtn.classList.remove('disabled');
-    }
-    else {
+    } else {
         form.addFromBtn.classList.add('disabled');
     }
 }

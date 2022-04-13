@@ -1,114 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <meta name="google-signin-client_id" content="949751936924-lm4a4d4kqhv01671h3dihu6gcstjsmv4.apps.googleusercontent.com">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/form.css">
-    <title>P2 - A304</title>
-</head>
-<body>
-    <div class="container">
-        <div class="navbar">
-            <div class="nav-logo">
-                <a href="/">
-                    <img src="assets/logo.png" alt="RALENDER logo"> 
-                </a>
-            </div>
-            <div class="nav-title">
-                <h1>P2 | SOFWARE AAU | A304</h1>
-            </div>
-            <div class="nav-links">
-                <div>
-                    <div id="g_id_onload"
-                        data-client_id="949751936924-lm4a4d4kqhv01671h3dihu6gcstjsmv4.apps.googleusercontent.com"
-                        data-context="signin"
-                        data-ux_mode="popup"
-                        data-auto_prompt="false"
-                        data-callback="googleCallback">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+        <meta
+            name="google-signin-client_id"
+            content="949751936924-lm4a4d4kqhv01671h3dihu6gcstjsmv4.apps.googleusercontent.com"
+        />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+        <link rel="stylesheet" href="css/main.css" />
+        <link rel="stylesheet" href="css/form.css" />
+        <title>P2 - A304</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="navbar">
+                <div class="nav-logo">
+                    <a href="/">
+                        <img src="assets/logo.png" alt="RALENDER logo" />
+                    </a>
+                </div>
+                <div class="nav-title">
+                    <h1>P2 | SOFWARE AAU | A304</h1>
+                </div>
+                <div class="nav-links">
+                    <div>
+                        <div
+                            id="g_id_onload"
+                            data-client_id="949751936924-lm4a4d4kqhv01671h3dihu6gcstjsmv4.apps.googleusercontent.com"
+                            data-context="signin"
+                            data-ux_mode="popup"
+                            data-auto_prompt="false"
+                            data-callback="googleCallback"
+                        ></div>
+                        <div
+                            class="g_id_signin"
+                            data-type="standard"
+                            data-shape="rectangular"
+                            data-theme="outline"
+                            data-text="signin_with"
+                            data-size="large"
+                            data-logo_alignment="left"
+                        ></div>
                     </div>
-                    <div class="g_id_signin"
-                        data-type="standard"
-                        data-shape="rectangular"
-                        data-theme="outline"
-                        data-text="signin_with"
-                        data-size="large"
-                        data-logo_alignment="left">
+                </div>
+            </div>
+            <div class="content">
+                <div class="content-flex">
+                    <div class="left-content">
+                        <form action="">
+                            <div class="info-box">
+                                <div class="transport-button disabled">
+                                    <p>+ add transport to event</p>
+                                </div>
+                                <div id="pre-event-modal" class="modal">
+                                    <div class="modal-content">
+                                        <div class="autocomplete">
+                                            <input
+                                                class="location"
+                                                autocomplete="off"
+                                                type="text"
+                                                name="pre-event-location"
+                                                id="pre-event-location"
+                                                placeholder="Start location"
+                                            />
+                                        </div>
+                                        <!-- 3 transportmuligheder -->
+                                        <div></div>
+                                        <div class="right-container">
+                                            <button class="modal-button">Cancel</button>
+                                            <button class="modal-button">Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="event-box">
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        id="eventtitle"
+                                        placeholder="Title of event"
+                                        required
+                                    />
+                                    <div class="date-time">
+                                        <input class="date datepicker" type="date" name="startdate" id="startdate" />
+                                        <input class="time timepicker" type="time" name="starttime" id="starttime" />
+                                    </div>
+                                    <div class="date-time">
+                                        <input class="date datepicker" type="date" name="enddate" id="enddate" />
+                                        <input class="time timepicker" type="time" name="endtime" id="endtime" />
+                                    </div>
+                                    <div class="autocomplete">
+                                        <input
+                                            class="location"
+                                            autocomplete="off"
+                                            type="text"
+                                            name="eventlocation"
+                                            id="eventlocation"
+                                            placeholder="Event location"
+                                        />
+                                    </div>
+                                    <textarea
+                                        class="formdescription"
+                                        name="description"
+                                        id=""
+                                        cols="30"
+                                        rows="10"
+                                        placeholder="Description"
+                                    ></textarea>
+                                </div>
+                                <div class="transport-button disabled">
+                                    <p>+ add transport from event</p>
+                                </div>
+                                <div id="post-event-modal" class="modal">
+                                    <div class="modal-content">
+                                        <div class="autocomplete">
+                                            <input
+                                                class="location"
+                                                autocomplete="off"
+                                                type="text"
+                                                name="post-event-location"
+                                                id="post-event-location"
+                                                placeholder="End location"
+                                            />
+                                        </div>
+                                        <!-- 3 transportmuligheder -->
+                                        <div></div>
+                                        <div class="right-container">
+                                            <button class="modal-button">Cancel</button>
+                                            <button class="modal-button">Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="submit" name="submit" id="formsubmit" />
+                        </form>
+                    </div>
+                    <div class="right-content">
+                        <img src="assets/placeholder.jpg" alt="placeholder" />
                     </div>
                 </div>
             </div>
         </div>
-        <div class="content">
-            <div class="content-flex">
-                <div class="left-content">
-                    <form action="">
-                        
-                        <div class="info-box">  
-                            <div class = "transport-button disabled">
-                                <p>+ add transport to event</p>
-                            </div>
-                            <div id="pre-event-modal" class="modal">
-                                <div class="modal-content">
-                                    <div class="autocomplete">           
-                                        <input class="location" autocomplete="off" type="text" name="pre-event-location" id="pre-event-location" placeholder="Start location">
-                                    </div>  
-                                    <!-- 3 transportmuligheder -->
-                                    <div>
-
-                                    </div>
-                                    <div class="right-container">
-                                        <button class="modal-button">Cancel</button>
-                                        <button class="modal-button">Add</button>
-                                    </div>
-                                </div>                        
-                            </div>
-                            <div class="event-box">
-                                <input type="text" name="title" id="eventtitle" placeholder="Title of event" required>
-                                <div class="date-time">
-                                    <input class="date datepicker" type="date" name="startdate" id="startdate">
-                                    <input class="time timepicker" type="time" name="starttime" id="starttime">
-                                </div>
-                                <div class="date-time">
-                                    <input class="date datepicker" type="date" name="enddate" id="enddate">
-                                    <input class="time timepicker" type="time" name="endtime" id="endtime">
-                                </div>
-                                    <div class="autocomplete">           
-                                        <input class="location" autocomplete="off" type="text" name="eventlocation" id="eventlocation" placeholder="Event location">
-                                    </div>    
-                                <textarea class="formdescription" name="description" id="" cols="30" rows="10" placeholder="Description"></textarea>
-                            </div>
-                            <div class="transport-button disabled">
-                                <p>+ add transport from event</p>
-                            </div>
-                            <div id="post-event-modal" class="modal">
-                                <div class="modal-content">
-                                    <div class="autocomplete">           
-                                        <input class="location" autocomplete="off" type="text" name="post-event-location" id="post-event-location" placeholder="End location">
-                                    </div> 
-                                    <!-- 3 transportmuligheder -->
-                                    <div>
-
-                                    </div>
-                                    <div class="right-container">
-                                        <button class="modal-button">Cancel</button>
-                                        <button class="modal-button">Add</button>
-                                    </div>
-                                </div>                        
-                            </div>
-                        </div>
-                        <input type="submit" name="submit" id="formsubmit">
-                    </form>             
-                </div>
-                <div class="right-content">
-                    <img src="assets/placeholder.jpg" alt="placeholder">
-                </div>
-            </div>
-        </div>
-    </div>
-    <script type="module" src="js/form.js"></script>
-    <script src="js/googleAuth.js"></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-</body>
+        <script type="module" src="js/form.js"></script>
+        <script src="js/googleAuth.js"></script>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+    </body>
 </html>

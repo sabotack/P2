@@ -5,34 +5,34 @@ async function googleCallback(googleResponse) {
     createSessionCookie('google-session-token', googleResponse.credential, 7); //Creates a cookie that is active for 7 days
     let urlResponse = await getAuthorizationURL(); //get authorization url from server.
     let jsonResponse = await urlResponse.json(); //converts response to json
-    window.location.href = jsonResponse.url; //opens the URL that enables user to 
+    window.location.href = jsonResponse.url; //opens the URL that enables user to
 }
 
 //function that validates idToken with Google
 async function validateGoogleToken(googleResponse) {
     let response = await fetch('http://localhost:3000/validateIdToken', {
-        method: "POST",
-        mode: "no-cors",
-        headers: {"Content-type": "application/json; charset=UTF-8"},
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-type': 'application/json; charset=UTF-8' },
         body: googleResponse.credential //
     });
     return response;
 }
 
-//function gets authorizationURL from server. 
+//function gets authorizationURL from server.
 async function getAuthorizationURL() {
     let redirectURL = await fetch(`http://localhost:3000/authorizationRedirect`, {
-      method: "GET"
+        method: 'GET'
     });
     return redirectURL;
-} 
+}
 
 //  COOKIE-HANDLE
 //function creates session cookie at client
 function createSessionCookie(cookieName, cookieValue, exdays) {
     const d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000)); //converts days to ms
-    let expires = "expires="+d.toUTCString();
+    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000); //converts days to ms
+    let expires = 'expires=' + d.toUTCString();
     document.cookie = `${cookieName}=${cookieValue};${expires};path=/`;
 }
 
