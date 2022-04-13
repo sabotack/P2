@@ -14,6 +14,8 @@ const googleClient = new OAuth2Client(`${GOOGLE_CLIENT_ID}`);
 import { google } from 'googleapis';
 import url from 'url';
 
+export { server, getContentType };
+
 const hostname = 'localhost';
 const port = 3000;
 const oauth2Client = new google.auth.OAuth2(
