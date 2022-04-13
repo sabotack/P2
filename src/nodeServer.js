@@ -2,7 +2,8 @@ import http from 'http';
 import fs from 'fs';
 import path from 'path';
 import fetch from 'node-fetch';
-import {locationAPICall } from './rejseplanen/location.js';
+import {locationAPICall} from './rejseplanen/location.js';
+import {tripAPICall} from './rejseplanen/trip.js';
 
 //import https from 'https';
 
@@ -16,7 +17,7 @@ const port = 3000;
 
 const publicResources = "./public";
 
-/*
+/* OPTIONS FOR HTTPS
 let options = {
     key: fs.readFileSync('PRIVATE_KEY_FILE'),
     cert: fs.readFileSync('PUBLIC_KEY_FILE')
@@ -54,6 +55,7 @@ function processUserRequest(request, response){
                     readFile(filePath, request, response);
                     break;
             }
+            break;
         case 'post':
             switch(request.url){
                 case `/login`:
@@ -64,13 +66,19 @@ function processUserRequest(request, response){
                     // Here will be the case to handle posted event data, presumably a JSON file built and sent from the frontend
                     break;
                 case '/locationService':
-                    console.log("correct case");
                     locationServiceRequest(request, response);
                     break;
+                /*case '/tripService':
+                    tripServiceRequest(request, response);
+                    break;*/
                 default:
-                    validatePOST(request, response);
+                    errorResponseUser(request, response, "Resource not found", 404);
                     break;
             }
+            break;
+        default:
+            errorResponseUser(request, response, "Bad request", 400);
+            break;
     }
 
 }
@@ -104,14 +112,14 @@ function locationServiceRequest(request, response){
     });
 }
 
-function validatePOST(request, response){
+function tripServiceRequest(request, response){
 
-    let requestBody = '';
+    let tripCallPOST = '';
 
     request.on('data', data => {
             
-        if (data.length < 1e4) {
-            requestBody += data;
+        if (data.length < 1e4) { 
+            tripCallPOST += data;
 
         } else {
             let error = 'Payload too large';
@@ -120,19 +128,17 @@ function validatePOST(request, response){
     });
 
     request.on('end', () => {
-        if (requestBody != 0){
-            console.log("form: "+requestBody);
-            let parsedData = new URLSearchParams(requestBody);
+            console.log("form: "+tripCallPOST);
+            let parsedData = new URLSearchParams(tripCallPOST);
             parsedData = Object.fromEntries(parsedData);
-            
-            console.log(parsedData);
-            response.writeHead(200, "OK", {'Content-Type':'text/plain'});
-            response.end("Sent form successfully");
 
-            return requestBody;
-        }
+            tripAPICall(parsedData)
+            .then(data => {
+                response.writeHead(200, "OK", {'Content-Type':'text/plain'});
+                response.write(JSON.stringify(data));
+                response.end();
+            });
     });
-
 }
 
 function errorResponseUser(request, response, error, errorCode){

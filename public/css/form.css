@@ -140,3 +140,12 @@ body {
     background-color: #fff;
     border-bottom: 1px solid #d4d4d4;
   }
+  
+  .autocomplete-items div:hover {
+    background-color: #cdcee3;
+  }
+
+  .autocomplete-active {
+    background-color: dodgerblue;
+    color: #ffffff;
+  }

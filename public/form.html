@@ -49,12 +49,11 @@
                             <div class = "transport-button disabled">
                                 <p>+ add transport to event</p>
                             </div>
-                            <div id="tto-modal" class="modal">
+                            <div id="pre-event-modal" class="modal">
                                 <div class="modal-content">
-                                    <input list="locations-to" name="transport-to" placeholder="Start location" id="transportToEvent">
-                                    <datalist id="locations-to">
-                                        <option value="AAU"></option>
-                                    </datalist>
+                                    <div class="autocomplete">           
+                                        <input class="location" autocomplete="off" type="text" name="pre-event-location" id="pre-event-location" placeholder="Start location">
+                                    </div>  
                                     <!-- 3 transportmuligheder -->
                                     <div>
 
@@ -83,12 +82,11 @@
                             <div class="transport-button disabled">
                                 <p>+ add transport from event</p>
                             </div>
-                            <div id="tfrom-modal" class="modal">
+                            <div id="post-event-modal" class="modal">
                                 <div class="modal-content">
-                                    <input list="locations-from" name="transport-from" placeholder="Start location" id="transportfromEvent">
-                                    <datalist id="locations-from">
-                                        <option value="AAU"></option>
-                                    </datalist>
+                                    <div class="autocomplete">           
+                                        <input class="location" autocomplete="off" type="text" name="post-event-location" id="post-event-location" placeholder="End location">
+                                    </div> 
                                     <!-- 3 transportmuligheder -->
                                     <div>
 
@@ -109,7 +107,7 @@
             </div>
         </div>
     </div>
-    <script src="js/form.js"></script>
+    <script type="module" src="js/form.js"></script>
     <script src="js/googleAuth.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 </body>
