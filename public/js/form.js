@@ -1,103 +1,81 @@
+import {autocomplete} from "./autocomplete.js";
+import {checkRequiredTransportTo, checkRequiredTransportFrom} from "./checks.js";
+
+export {eventStartDate, eventStartTime, eventEndDate, eventEndTime, addToBtn, addFromBtn, eventLocation};
+
 let addTransportButtons = document.querySelectorAll('.transport-button');
 let addToBtn = addTransportButtons[0], addFromBtn = addTransportButtons[1];
 
-let eventLocation = document.getElementById('eventlocation');
-let eventStartTime = document.getElementById('starttime');
-let eventStartDate = document.getElementById('startdate');
-let eventEndTime = document.getElementById('endtime');
-let eventEndDate = document.getElementById('enddate');
+let preEventModal = document.querySelector('#pre-event-modal');
+let postEventModal = document.querySelector('#post-event-modal');
+let modalButtons = document.querySelectorAll('.modal-button');
 
-let transportToEventFieldInput = false;
-let transportFromEventFieldInput = false;
-let eventStartDateInput = false;
-let eventStartTimeInput = false;
-let eventEndDateInput = false;
-let eventEndTimeInput = false;
-let eventLocationInput = false;
+let preEventLocation = document.querySelector('#pre-event-location');
+let eventLocation = document.querySelector('#eventlocation');
+let postEventLocation = document.querySelector('#post-event-location');
+
+let eventTitle = document.querySelector('#eventtitle');
+let eventStartTime = document.querySelector('#starttime');
+let eventStartDate = document.querySelector('#startdate');
+let eventEndTime = document.querySelector('#endtime');
+let eventEndDate = document.querySelector('#enddate');
+
+eventTitle.focus();
+autocomplete(eventLocation);
+autocomplete(preEventLocation);
+autocomplete(postEventLocation);
+
+// Cancel button for add transport to event modal
+modalButtons[0].addEventListener('click', (event) => {
+    event.preventDefault();
+    preEventModal.style.display = 'none';
+});
+
+// Cancel button for add transport from event modal
+modalButtons[2].addEventListener('click', (event) => {
+    event.preventDefault();
+    postEventModal.style.display = 'none';
+});
+
+preEventModal.addEventListener('click', (event) => {
+    if (event.target == preEventModal){
+        preEventModal.style.display = 'none';
+    }
+});
+
+postEventModal.addEventListener('click', (event) => {
+    if (event.target == postEventModal){
+        postEventModal.style.display = 'none';
+    }
+});
 
 addToBtn.addEventListener('click', () => {
-    addToBtn.innerHTML = "";
-    let location = document.createElement('input');
-    let attributes = {'type': 'text', 'name': 'startlocation', 'id': 'startlocation', 'placeholder': 'Starting point'};
-    setAttributes(location, attributes);
-    
-    addToBtn.appendChild(location);  
-    let transportToEventField = document.getElementById('startlocation');
-
-    transportToEventField.addEventListener('input', function () {
-        console.log("function called for to transport");
-        let toTransportValue = transportToEventField.value;
-        console.log("Test Value to transport:"+toTransportValue);
-    });
-    
-}, { once: true });
+    preEventModal.style.display = "block";    
+});
 
 addFromBtn.addEventListener('click', () => {
-    addFromBtn.innerHTML = "";
-    let location = document.createElement('input');
-    let attributes = {'type': 'text', 'name': 'endlocation', 'id': 'endlocation', 'placeholder': 'Destination'};
-    setAttributes(location, attributes);
-    
-    addFromBtn.appendChild(location);  
-    let transportFromEventField = document.getElementById(`endlocation`);
-
-    transportFromEventField.addEventListener('input', function () {
-        console.log("function called for from transport");
-        let fromTransportValue = transportFromEventField.value;
-        console.log("Test Value from transport:"+fromTransportValue);
-    });
-
-}, { once: true });
-
-
-function setAttributes(el, attrs) {
-    for(let key in attrs) {
-        el.setAttribute(key, attrs[key]);
-    }
-}
-
-eventStartDate.addEventListener('input', function () {
-    eventStartDateInput = true;
-    toEventAPICall();
-    fromEventAPICall();
+    postEventModal.style.display = "block";
 });
 
-eventStartTime.addEventListener('input', function () {
-    eventStartTimeInput = true;
-    toEventAPICall();
-    fromEventAPICall();
+eventStartDate.addEventListener('input', () => {
+    checkRequiredTransportTo();
 });
 
-eventEndDate.addEventListener('input', function () {
-    eventEndDateInput = true;
-    toEventAPICall();
-    fromEventAPICall();
+eventStartTime.addEventListener('input', () => {
+    checkRequiredTransportTo();
 });
 
-eventEndTime.addEventListener('input', function () {
-    eventEndTimeInput = true;
-    toEventAPICall();
-    fromEventAPICall();
+eventEndDate.addEventListener('input', () => {
+    checkRequiredTransportFrom();
 });
 
-eventLocation.addEventListener('input', function () {
-    eventLocationInput = true;
-    toEventAPICall();
-    fromEventAPICall();
+eventEndTime.addEventListener('input', () => {
+    checkRequiredTransportFrom();
 });
 
-function toEventAPICall(){
-    if (transportToEventFieldInput && eventStartDateInput && eventStartTimeInput && eventLocationInput){
 
-        console.log("All required fields are filled for transport to event api call ----------------");
-    
-    }
-}
 
-function fromEventAPICall(){
-    if(transportFromEventFieldInput && eventEndDateInput && eventEndTimeInput && eventLocationInput){
 
-        console.log("All required fields are filled for transport from event api call !!!!!!!!!!!!!");
 
-    }
-}
+
+

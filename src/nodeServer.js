@@ -1,6 +1,10 @@
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
+import fetch from 'node-fetch';
+import {locationAPICall} from './rejseplanen/location.js';
+import {tripAPICall} from './rejseplanen/trip.js';
+
 //import https from 'https';
 
 //Google authentication stuff
@@ -21,6 +25,13 @@ const scopes = [
   'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events' //google calendar scopes. 
 ];
 const publicResources = "./public";
+
+/* OPTIONS FOR HTTPS
+let options = {
+    key: fs.readFileSync('PRIVATE_KEY_FILE'),
+    cert: fs.readFileSync('PUBLIC_KEY_FILE')
+};
+*/
 
 const authorizationUrl = oauth2Client.generateAuthUrl({
   access_type: 'offline', //ensures that refresh-token is included in google response.
@@ -44,52 +55,63 @@ server.listen(port, function(){
 });
 
 function processUserRequest(request, response){
-    
+
     let requestMethod = request.method.toLowerCase();
     let filePath = publicResources + request.url;
-    if(request.url.startsWith('/googleConsent')) { //special case of google redirect where response is included in url
-      getAccessAndRefreshToken(request, response); //handles the redirect from google's authorization page where scopse are accepted.
-    }
-    else {
-      switch(requestMethod){
-          case 'get':
-              switch(request.url){
-                  case `/`:
-                      filePath = publicResources + '/index.html';
-                      readFile(filePath, request, response);
-                      break;
-                  case `/authorizationRedirect`: //called from client when scopes needs to be accepted
-                      getAuthorizationURL(request, response);
-                      break;
-                  default:
-                      readFile(filePath, request, response);
-                      break;
-              }
-          case 'post':
-              switch(request.url){
-                  case `/validateIdToken`:
-                      validateIdToken(request, response);
-                      break;
-                  case '/create_event':
-                      createEventAPICallGC(); // Function will presumably go in another folder
-                      // Here will be the case to handle posted event data, presumably a JSON file built and sent from the frontend
-                      break;
-                  default:
-                      validatePOST(request, response);
-                      break;
-              }
-      }
+
+    switch(requestMethod){
+        case 'get':
+            if(request.url.startsWith('/googleConsent')) { //special case of google redirect where response is included in url
+                getAccessAndRefreshToken(request, response); //handles the redirect from google's authorization page where scopse are accepted.
+                break;
+            }
+            switch(request.url){
+                case `/`:
+                    filePath = publicResources + '/index.html';
+                    readFile(filePath, request, response);
+                    break;
+                case `/authorizationRedirect`: //called from client when scopes needs to be accepted
+                    getAuthorizationURL(request, response);
+                    break;
+                default:
+                    readFile(filePath, request, response);
+                    break;
+            }
+            break;
+        case 'post':
+            switch(request.url){
+                case `/validateIdToken`:
+                    validateIdToken(request, response);
+                    break;
+                case '/create_event':
+                    createEventAPICallGC(); // Function will presumably go in another folder
+                    // Here will be the case to handle posted event data, presumably a JSON file built and sent from the frontend
+                    break;
+                case '/locationService':
+                    locationServiceRequest(request, response);
+                    break;
+                /*case '/tripService':
+                    tripServiceRequest(request, response);
+                    break;*/
+                default:
+                    errorResponseUser(request, response, "Resource not found", 404);
+                    break;
+            }
+            break;
+        default:
+            errorResponseUser(request, response, "Bad request", 400);
+            break;
     }
 }
 
-function validatePOST(request, response){
+function locationServiceRequest(request, response){
 
-    let requestBody = '';
+    let locationCallPOST = '';
 
     request.on('data', data => {
             
         if (data.length < 1e4) { 
-            requestBody += data;
+            locationCallPOST += data;
 
         } else {
             let error = 'Payload too large';
@@ -98,18 +120,46 @@ function validatePOST(request, response){
     });
 
     request.on('end', () => {
-        if (requestBody != 0){
-
-            let parsedData = new URLSearchParams(requestBody);
+            console.log("form: "+locationCallPOST);
+            let parsedData = new URLSearchParams(locationCallPOST);
             parsedData = Object.fromEntries(parsedData);
 
-            console.log(parsedData);
-            response.writeHead(200, "OK", {'Content-Type':'text/plain'});
-            response.end("Sent form successfully");
-            return requestBody;
+            locationAPICall(parsedData.location).then(data => {
+
+                response.writeHead(200, "OK", {'Content-Type':'text/plain'});
+                response.write(JSON.stringify(data));
+                response.end();
+            });
+    });
+}
+
+function tripServiceRequest(request, response){
+
+    let tripCallPOST = '';
+
+    request.on('data', data => {
+            
+        if (data.length < 1e4) { 
+            tripCallPOST += data;
+
+        } else {
+            let error = 'Payload too large';
+            errorResponseUser(request, response, error, 413);
         }
     });
 
+    request.on('end', () => {
+            console.log("form: "+tripCallPOST);
+            let parsedData = new URLSearchParams(tripCallPOST);
+            parsedData = Object.fromEntries(parsedData);
+
+            tripAPICall(parsedData)
+            .then(data => {
+                response.writeHead(200, "OK", {'Content-Type':'text/plain'});
+                response.write(JSON.stringify(data));
+                response.end();
+            });
+    });
 }
 
 function errorResponseUser(request, response, error, errorCode){
