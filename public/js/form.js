@@ -1,10 +1,11 @@
-import {autocomplete} from "./autocomplete.js";
-import {checkRequiredTransportTo, checkRequiredTransportFrom} from "./checks.js";
+import { autocomplete } from './autocomplete.js';
+import { checkRequiredTransportTo, checkRequiredTransportFrom } from './checks.js';
 
-export {eventStartDate, eventStartTime, eventEndDate, eventEndTime, addToBtn, addFromBtn, eventLocation};
+export { eventStartDate, eventStartTime, eventEndDate, eventEndTime, addToBtn, addFromBtn, eventLocation };
 
 let addTransportButtons = document.querySelectorAll('.transport-button');
-let addToBtn = addTransportButtons[0], addFromBtn = addTransportButtons[1];
+let addToBtn = addTransportButtons[0],
+    addFromBtn = addTransportButtons[1];
 
 let preEventModal = document.querySelector('#pre-event-modal');
 let postEventModal = document.querySelector('#post-event-modal');
@@ -38,23 +39,23 @@ modalButtons[2].addEventListener('click', (event) => {
 });
 
 preEventModal.addEventListener('click', (event) => {
-    if (event.target == preEventModal){
+    if (event.target == preEventModal) {
         preEventModal.style.display = 'none';
     }
 });
 
 postEventModal.addEventListener('click', (event) => {
-    if (event.target == postEventModal){
+    if (event.target == postEventModal) {
         postEventModal.style.display = 'none';
     }
 });
 
 addToBtn.addEventListener('click', () => {
-    preEventModal.style.display = "block";    
+    preEventModal.style.display = 'block';
 });
 
 addFromBtn.addEventListener('click', () => {
-    postEventModal.style.display = "block";
+    postEventModal.style.display = 'block';
 });
 
 eventStartDate.addEventListener('input', () => {
@@ -72,10 +73,3 @@ eventEndDate.addEventListener('input', () => {
 eventEndTime.addEventListener('input', () => {
     checkRequiredTransportFrom();
 });
-
-
-
-
-
-
-

@@ -1,64 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <meta name="google-signin-client_id" content="564813831875-k9pb4mc6qh31agppeaos7ort3ng16gni.apps.googleusercontent.com">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link rel="stylesheet" href="css/main.css">
-    <title>P2 - A304</title>
-</head>
-<body>
-    <div class="container">
-        <div class="navbar">
-            <div class="nav-logo">
-                <a href="/">
-                    <img src="assets/logo.png" alt="RALENDER logo"> 
-                </a>
-            </div>
-            <div class="nav-title">
-                <h1>P2 | SOFWARE AAU | A304</h1>
-            </div>
-            <div class="nav-links">
-                <div>
-                    <div id="g_id_onload"
-                        data-client_id="564813831875-k9pb4mc6qh31agppeaos7ort3ng16gni.apps.googleusercontent.com"
-                        data-context="signin"
-                        data-ux_mode="popup"
-                        data-auto_prompt="false"
-                        data-callback="googleCallback">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+        <meta
+            name="google-signin-client_id"
+            content="564813831875-k9pb4mc6qh31agppeaos7ort3ng16gni.apps.googleusercontent.com"
+        />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+        <link rel="stylesheet" href="css/main.css" />
+        <title>P2 - A304</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="navbar">
+                <div class="nav-logo">
+                    <a href="/">
+                        <img src="assets/logo.png" alt="RALENDER logo" />
+                    </a>
+                </div>
+                <div class="nav-title">
+                    <h1>P2 | SOFWARE AAU | A304</h1>
+                </div>
+                <div class="nav-links">
+                    <div>
+                        <div
+                            id="g_id_onload"
+                            data-client_id="564813831875-k9pb4mc6qh31agppeaos7ort3ng16gni.apps.googleusercontent.com"
+                            data-context="signin"
+                            data-ux_mode="popup"
+                            data-auto_prompt="false"
+                            data-callback="googleCallback"
+                        ></div>
+                        <div
+                            class="g_id_signin"
+                            data-type="standard"
+                            data-shape="rectangular"
+                            data-theme="outline"
+                            data-text="signin_with"
+                            data-size="large"
+                            data-logo_alignment="left"
+                        ></div>
                     </div>
-                    <div class="g_id_signin"
-                        data-type="standard"
-                        data-shape="rectangular"
-                        data-theme="outline"
-                        data-text="signin_with"
-                        data-size="large"
-                        data-logo_alignment="left">
+                </div>
+            </div>
+            <div class="bg">
+                <div class="bg-image"></div>
+                <div class="overlay"></div>
+            </div>
+            <div class="content">
+                <div class="content-flex">
+                    <div class="left-content">
+                        <h2>Rejseplanen | Google Calendar</h2>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel mollitia voluptatem similique
+                            facilis repudiandae omnis ab libero dolorum. Veniam at deleniti reprehenderit autem
+                            necessitatibus excepturi! Nihil explicabo porro doloribus ipsa. Lorem ipsum dolor sit amet
+                            consectetur, adipisicing elit. Modi quas, facilis ab cumque soluta velit accusamus? Harum,
+                            incidunt alias dolorum, dolorem eum provident porro facere unde numquam maiores asperiores
+                            exercitationem.
+                        </p>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel mollitia voluptatem similique
+                            facilis repudiandae omnis ab libero dolorum. Veniam at deleniti reprehenderit autem
+                            necessitatibus excepturi! Nihil explicabo porro doloribus ipsa.
+                        </p>
+                        <a class="button" href="form.html">Get Started</a>
+                    </div>
+                    <div class="right-content">
+                        <img src="assets/placeholder.jpg" alt="placeholder" />
                     </div>
                 </div>
             </div>
         </div>
-    <div class="bg">
-        <div class="bg-image"></div>
-        <div class="overlay"></div>
-    </div>
-    <div class="content">
-        <div class="content-flex">
-            <div class="left-content">
-                <h2>Rejseplanen | Google Calendar</h2>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel mollitia voluptatem similique facilis repudiandae omnis ab libero dolorum. Veniam at deleniti reprehenderit autem necessitatibus excepturi! Nihil explicabo porro doloribus ipsa.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Modi quas, facilis ab cumque soluta velit accusamus? Harum, incidunt alias dolorum, dolorem eum provident porro facere unde numquam maiores asperiores exercitationem.</p>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel mollitia voluptatem similique facilis repudiandae omnis ab libero dolorum. Veniam at deleniti reprehenderit autem necessitatibus excepturi! Nihil explicabo porro doloribus ipsa.</p>
-                <a class="button" href="form.html">Get Started</a>
-            </div>
-            <div class="right-content">
-                <img src="assets/placeholder.jpg" alt="placeholder">
-            </div>
-        </div>
-    </div>
-</div>
-<script src="js/googleAuth.js"></script>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-</body>
+        <script src="js/googleAuth.js"></script>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+    </body>
 </html>
