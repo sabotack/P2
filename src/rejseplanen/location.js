@@ -4,6 +4,8 @@ import { XMLParser } from 'fast-xml-parser';
 export { locationAPICall };
 
 async function locationAPICall(inputLocation) {
+    let resultObject = [];
+    const numOfLocations = 4;
     const response = await fetch('http://xmlopen.rejseplanen.dk/bin/rest.exe/location?input=' + inputLocation);
     const data = await response.text();
 
@@ -19,9 +21,9 @@ async function locationAPICall(inputLocation) {
     splitText.splice(0, 2);
     let result = parser.parse(splitText.join('\n'));
 
-    // console.log(JSON.stringify(result[1][':@']));
-
-    let resultObject = [result[0], result[1], result[2], result[3]];
+    for (let i = 0; i < result.length && i <= numOfLocations; i++) {
+        resultObject.push(result[i]);
+    }
 
     return resultObject;
 }

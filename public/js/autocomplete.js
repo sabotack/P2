@@ -1,5 +1,10 @@
-import { locationServiceCallAPI } from './rejseplanen.js';
+import { locationServiceCallAPI, tripServiceCallAPI } from './rejseplanen.js';
 import { checkRequiredTransportTo, checkRequiredTransportFrom } from './checks.js';
+
+import {eventLocation, eventStartTime, eventStartDate, eventEndTime, eventEndDate} from './form.js'
+
+import {createTripSelection, createNewTrip} from './tripSelector.js';
+
 
 export {
     preEventLocationX,
@@ -20,6 +25,8 @@ let postEventLocationX = '',
     postEventLocationY = '';
 let inputID = '';
 
+let tripData = {};
+
 function autocomplete(input) {
     input.addEventListener('input', () => {
         checkRequiredTransportTo();
@@ -35,7 +42,6 @@ function autocomplete(input) {
         list.setAttribute('id', input.id + 'autocomplete-list');
         list.setAttribute('class', 'autocomplete-items');
         input.parentNode.appendChild(list);
-
         locationServiceCallAPI(input.value).then(
             (response) => {
                 response.forEach((element) => {
@@ -56,7 +62,7 @@ function autocomplete(input) {
                         let targetInput = e.target.querySelector('input');
                         input.value = targetInput.value;
                         inputID = targetInput.getAttribute('data-input');
-
+                        
                         switch (inputID) {
                             case 'eventlocation':
                                 eventLocationX = targetInput.getAttribute('data-x');
@@ -65,32 +71,47 @@ function autocomplete(input) {
                             case 'pre-event-location':
                                 preEventLocationX = targetInput.getAttribute('data-x');
                                 preEventLocationY = targetInput.getAttribute('data-y');
+
+                                tripData = {
+                                    originCoordName: eventLocation.value,
+                                    originCoordX: preEventLocationX,
+                                    originCoordY: preEventLocationY,
+                                    destCoordX:  eventLocationX,
+                                    destCoordY: eventLocationY,
+                                    destCoordName: input.value,
+                                    date: eventStartDate.value.split("-").reverse().join("."),
+                                    time: eventStartTime.value
+                                };
+        
+                                createTripSelection(tripData);
+
                                 break;
                             case 'post-event-location':
                                 postEventLocationX = targetInput.getAttribute('data-x');
                                 postEventLocationY = targetInput.getAttribute('data-y');
+                                
+                                tripData = {
+                                    originCoordName: eventLocation.value,
+                                    originCoordX: eventLocationX,
+                                    originCoordY: eventLocationY,
+                                    destCoordX:  postEventLocationX,
+                                    destCoordY: postEventLocationY,
+                                    destCoordName: input.value,
+                                    date: eventEndDate.value.split("-").reverse().join("."),
+                                    time: eventEndTime.value
+                                };
+
+                                //tripSelector(tripData);
+
+                                tripServiceCallAPI(tripData).then(
+                                (response) => {
+                                    
+                                    console.dir(response[':@']['@_y']);
+
+
+                                });
                                 break;
                         }
-
-                        console.log(
-                            'input: ' +
-                                inputID +
-                                '\n' +
-                                'pre-X: ' +
-                                preEventLocationX +
-                                ' pre-Y: ' +
-                                preEventLocationY +
-                                '\n' +
-                                'event-X: ' +
-                                eventLocationX +
-                                ' event-Y: ' +
-                                eventLocationY +
-                                '\n' +
-                                'post-X: ' +
-                                postEventLocationX +
-                                ' post-Y: ' +
-                                postEventLocationY
-                        );
 
                         deleteList();
                     });

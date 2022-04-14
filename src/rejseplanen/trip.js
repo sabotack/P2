@@ -13,8 +13,9 @@ let parsedData = {
     date: '15.04.22',
     time: '07:02'
 };
-
 async function tripAPICall(parsedData) {
+    let resultObject = [];
+    const numOfTrips = 3;
     const response = await fetch(
         'http://xmlopen.rejseplanen.dk/bin/rest.exe/trip?originCoordName=' +
             parsedData.originCoordName +
@@ -47,11 +48,9 @@ async function tripAPICall(parsedData) {
     splitText.splice(0, 2);
     let result = parser.parse(splitText.join('\n'));
 
-    // console.log(JSON.stringify(result[1][':@']));
-
-    let resultObject = [result[0], result[1], result[2], result[3]];
-
-    console.log(JSON.stringify(resultObject));
+    for (let i = 0; i < result.length && i <= numOfTrips; i++) {
+        resultObject.push(result[i]);
+    }
 
     return resultObject;
 }

@@ -90,9 +90,9 @@ function processUserRequest(request, response) {
                 case '/locationService':
                     locationServiceRequest(request, response);
                     break;
-                /*case '/tripService':
+                case '/tripService':
                     tripServiceRequest(request, response);
-                    break;*/
+                    break;
                 default:
                     errorResponseUser(request, response, 'Resource not found', 404);
                     break;
@@ -117,7 +117,6 @@ function locationServiceRequest(request, response) {
     });
 
     request.on('end', () => {
-        console.log('form: ' + locationCallPOST);
         let parsedData = new URLSearchParams(locationCallPOST);
         parsedData = Object.fromEntries(parsedData);
 
@@ -142,7 +141,6 @@ function tripServiceRequest(request, response) {
     });
 
     request.on('end', () => {
-        console.log('form: ' + tripCallPOST);
         let parsedData = new URLSearchParams(tripCallPOST);
         parsedData = Object.fromEntries(parsedData);
 
