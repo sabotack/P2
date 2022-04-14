@@ -4,28 +4,13 @@ import path from 'path';
 import fetch from 'node-fetch';
 import { locationAPICall } from './rejseplanen/location.js';
 import { tripAPICall } from './rejseplanen/trip.js';
-
+import { getAccessAndRefreshToken, getAuthorizationURL } from './google/googleAuth.js'
 //import https from 'https';
-
-//Google authentication stuff
-import { OAuth2Client } from 'google-auth-library'; //Contructor function from google
-const GOOGLE_CLIENT_ID = `564813831875-k9pb4mc6qh31agppeaos7ort3ng16gni.apps.googleusercontent.com`;
-const googleClient = new OAuth2Client(`${GOOGLE_CLIENT_ID}`);
-import { google } from 'googleapis';
-import url from 'url';
 
 export { server, getContentType };
 
 const hostname = 'localhost';
 const port = 3000;
-const oauth2Client = new google.auth.OAuth2(
-    '564813831875-k9pb4mc6qh31agppeaos7ort3ng16gni.apps.googleusercontent.com', //client id
-    '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', //client secret
-    'http://localhost:3000/googleConsent/' //redirect URL
-);
-const scopes = [
-    'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events' //google calendar scopes.
-];
 const publicResources = './public';
 
 /* OPTIONS FOR HTTPS
@@ -34,12 +19,6 @@ let options = {
     cert: fs.readFileSync('PUBLIC_KEY_FILE')
 };
 */
-
-const authorizationUrl = oauth2Client.generateAuthUrl({
-    access_type: 'offline', //ensures that refresh-token is included in google response.
-    scope: scopes,
-    include_granted_scopes: true
-});
 
 const server = http.createServer(function (request, response) {
     try {
@@ -205,82 +184,3 @@ function getContentType(fPath) {
 }
 
 function createEventAPICallGC() {}
-
-//function validates an idToken and
-function validateIdToken(request, response) {
-    let idToken = '';
-    request.on('data', (data) => {
-        if (idToken.length > 1e6) {
-            alert('Too much');
-            request.connection.destroy();
-        }
-        idToken += data;
-        verifyTokenAtGoogle(idToken).catch(console.error); //verify token with google.
-    });
-
-    request.on('end', () => {
-        console.log('Login accessed');
-        response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
-        response.write('The POST output response: \n\n');
-        response.write(authorizationUrl + '\n');
-        response.end();
-    });
-}
-
-//function verifies idToken with google
-async function verifyTokenAtGoogle(idToken) {
-    const ticket = await googleClient.verifyIdToken({
-        idToken: idToken,
-        audience: GOOGLE_CLIENT_ID
-    });
-    const payload = ticket.getPayload(); //payload contains all relevant information of user.
-    const userid = payload['sub'];
-    oauth2Client.email = payload.email; //adds email of client to oauth2Client. Enables server to call google calendar api on email.
-}
-
-//gets access and refresh tokens that allow for access to GoogleAPIs
-async function getAccessAndRefreshToken(request, response) {
-    let obj = url.parse(request.url, true).query;
-    let { tokens } = await oauth2Client.getToken(obj.code);
-    oauth2Client.setCredentials(tokens);
-    response.writeHead(301, { Location: 'http://localhost:3000/form.html' }); //Redirects to the form.html page after the authorization process has happened
-    response.end();
-}
-
-//function lists events in given calendar.
-function listEvents() {
-    const calendar = google.calendar({ version: 'v3' });
-    calendar.events.list(
-        {
-            auth: oauth2Client,
-            calendarId: oauth2Client.email,
-            timeMin: new Date().toISOString(),
-            maxResults: 10,
-            singleEvents: true,
-            orderBy: 'startTime'
-        },
-        (err, res) => {
-            if (err) return console.log('The API returned an error: ' + err);
-            const events = res.data.items;
-            if (events.length) {
-                console.log('Upcoming 10 events:');
-                events.map((event, i) => {
-                    const start = event.start.dateTime || event.start.date;
-                    console.log(`${start} - ${event.summary}`);
-                });
-            } else {
-                console.log('No upcoming events found.');
-            }
-        }
-    );
-}
-
-//function generates authorization URL and passes it as response.
-function getAuthorizationURL(request, response) {
-    let obj = { url: authorizationUrl };
-    console.log('googleRedirect');
-    response.writeHead(200, { 'Content-Type': 'application/json' });
-    console.log(obj);
-    response.write(JSON.stringify(obj)); //stringifies object t
-    response.end();
-}
