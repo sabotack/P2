@@ -3,21 +3,11 @@ import { XMLParser } from 'fast-xml-parser';
 
 export { tripAPICall };
 
-let parsedData = {
-    originCoordName: 'Sigrid Undsets Vej 196B',
-    originCoordX: '9990189',
-    originCoordY: '57017220',
-    destCoordX: '9912378',
-    destCoordY: '57053150',
-    destCoordName: 'Vestre Kanal Gade',
-    date: '15.04.22',
-    time: '07:02'
-};
 async function tripAPICall(parsedData) {
     let resultObject = [];
-    const numOfTrips = 3;
-    const response = await fetch(
-        'http://xmlopen.rejseplanen.dk/bin/rest.exe/trip?originCoordName=' +
+    const numOfTrips = 5;
+
+    const response = await fetch('http://xmlopen.rejseplanen.dk/bin/rest.exe/trip?originCoordName=' +
             parsedData.originCoordName +
             '&originCoordX=' +
             parsedData.originCoordX +
@@ -34,6 +24,7 @@ async function tripAPICall(parsedData) {
             '&time=' +
             parsedData.time
     );
+   
     const data = await response.text();
 
     const options = {
@@ -48,7 +39,7 @@ async function tripAPICall(parsedData) {
     splitText.splice(0, 2);
     let result = parser.parse(splitText.join('\n'));
 
-    for (let i = 0; i < result.length && i <= numOfTrips; i++) {
+    for (let i = 0; i < result.length && i < numOfTrips; i++) {
         resultObject.push(result[i]);
     }
 

@@ -73,16 +73,16 @@ function autocomplete(input) {
                                 preEventLocationY = targetInput.getAttribute('data-y');
 
                                 tripData = {
-                                    originCoordName: eventLocation.value,
+                                    originCoordName: input.value,
                                     originCoordX: preEventLocationX,
                                     originCoordY: preEventLocationY,
                                     destCoordX:  eventLocationX,
                                     destCoordY: eventLocationY,
-                                    destCoordName: input.value,
+                                    destCoordName: eventLocation.value,
                                     date: eventStartDate.value.split("-").reverse().join("."),
                                     time: eventStartTime.value
                                 };
-        
+                               
                                 createTripSelection(tripData);
 
                                 break;

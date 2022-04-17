@@ -143,7 +143,7 @@ function tripServiceRequest(request, response) {
     request.on('end', () => {
         let parsedData = new URLSearchParams(tripCallPOST);
         parsedData = Object.fromEntries(parsedData);
-
+    
         tripAPICall(parsedData).then((data) => {
             response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
             response.write(JSON.stringify(data));

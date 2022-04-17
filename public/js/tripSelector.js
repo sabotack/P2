@@ -14,6 +14,8 @@ function createTripSelection(tripData) {
 }
 
 function createNewTrip(tripElement) {
+    let tripStartTime1 = tripElement['0']['Leg']['0'][':@']['@_time'];
+    let tripEndTime1 = tripElement[tripElement.length-1]['Leg']['1'][':@']['@_time'];
 
     //Create html elements for the trip box
     let trip = document.createElement('div');
@@ -56,7 +58,9 @@ function createNewTrip(tripElement) {
     tripTop.appendChild(tripBar);
     tripBar.appendChild(bar);
 
-    getIconElements(tripElement).forEach(element => {
+    let iconSpacings = calcIconSpacings(tripElement, bar.offsetWidth, tripStartTime1, tripEndTime1);
+
+    getIconElements(tripElement, iconSpacings).forEach(element => {
         tripBar.appendChild(element);
     });
 
@@ -67,10 +71,6 @@ function createNewTrip(tripElement) {
     trip.appendChild(tripAction);
     tripAction.appendChild(detailsButton);
    
-    let tripElementLength = tripElement.length-1;
-    let tripStartTime1 = tripElement['0']['Leg']['0'][':@']['@_time'];
-    let tripEndTime1 = tripElement[tripElementLength]['Leg']['0'][':@']['@_time'];
-
 
     let timeStart = new Date("01/01/2022 " + tripStartTime1);
     let timeEnd = new Date("01/01/2022 " + tripEndTime1);
@@ -85,22 +85,34 @@ function createNewTrip(tripElement) {
     let timeDiffMinutes = Math.floor(timeDiff/1000/60) - timeDiffHours*60;
 
 
-    tripStartTime.innerHTML = tripStartTime1;
-    tripEndTime.innerHTML = tripEndTime1;
+    tripStartTime.textContent = tripStartTime1;
+    tripEndTime.textContent = tripEndTime1;
     if (timeDiffHours > 0){
-        tripSpecifiedInfo.innerHTML  = timeDiffHours+" h "+timeDiffMinutes+" min, "+countTripChanges(tripElement)+" changes";
+        tripSpecifiedInfo.textContent  = timeDiffHours+" h "+timeDiffMinutes+" min, "+countTripChanges(tripElement)+" changes";
     }else{
-        tripSpecifiedInfo.innerHTML  = timeDiffMinutes+" min, "+countTripChanges(tripElement)+" changes";
+        tripSpecifiedInfo.textContent  = timeDiffMinutes+" min, "+countTripChanges(tripElement)+" changes";
     } 
 
 }
 
-function getIconElements(tripElement) {
+function getIconElements(tripElement, iconSpacings) {
     let iconElement = [];
 
+    let i = 0;
     tripElement.forEach(element => {
+        if(i != 0 && (element['Leg']['0'][':@']['@_name'].toLowerCase().includes(element['Leg']['1'][':@']['@_name'].toLowerCase()) || element['Leg']['1'][':@']['@_name'].toLowerCase().includes(element['Leg']['0'][':@']['@_name'].toLowerCase()))) {
+            i++;
+            return;
+        }
         let tripIconContainer = document.createElement('div');
         tripIconContainer.setAttribute('class', 'trip-icon');
+
+        if(i != 0 && iconSpacings[i] - iconSpacings[i-1] < 35) {
+            tripIconContainer.style.setProperty('--icon-space', (iconSpacings[i-1] + 35) + 'px'); i++;
+        }
+        else {
+            tripIconContainer.style.setProperty('--icon-space', iconSpacings[i] + 'px'); i++;
+        }
         
         let tripIcon = document.createElement('i');
         let tripName = document.createElement('span');
@@ -111,11 +123,11 @@ function getIconElements(tripElement) {
                 break;
             case "BUS": case "EXB": case "TOG": case "NB": case "TB":
                 tripIcon.setAttribute('class', 'fa-solid fa-bus-simple');
-                tripName.innerHTML = element[':@']['@_line'];
+                tripName.textContent = element[':@']['@_line'];
                 break;
             case "IC": case "LYN": case "REG": case "S": case "M":
                 tripIcon.setAttribute('class', 'fa-solid fa-train');
-                tripName.innerHTML = element[':@']['@_name'];
+                tripName.textContent = element[':@']['@_name'];
                 break;
             case "F":
                 tripIcon.setAttribute('class', 'fa-solid fa-ferry');
@@ -133,10 +145,86 @@ function getIconElements(tripElement) {
     return iconElement;
 }
 
-function calcIconSpacing(){
+function calcIconSpacings(tripElement, barWidth, startTime, endTime){    
+    const tripTimes = getTripMinutes(tripElement);
+    
+    let tripTimesSum = tripTimes.reduce((a, b) => a + b, 0);
+    let frac = barWidth/tripTimesSum;
+    console.log('WIDTH: '+barWidth);
+    
+    let iconSpacings = [];
+    let j = 0
+    let time = 0;
 
+    for(let i = 0; i < tripElement.length; i++){
+        if(i == 0) {
+            iconSpacings.push(0);
+        }
+        else if(i == tripElement.length-1){
+            iconSpacings.push((time+tripTimes[j])*frac);
+        }
+        else{
+            time += tripTimes[j] + tripTimes[j+1];
+            iconSpacings.push(time*frac);
+            j += 2;
+        }
+    }
+    
+    return iconSpacings;
 }
 
+function getTripMinutes(data) {
+    let tripTimes = [];
+
+    data.forEach(element => {
+        tripTimes.push({origin: element['Leg']['0'][':@']['@_time'], destination: element['Leg']['1'][':@']['@_time']});
+    });
+
+    let tripTimeDiffs = [];
+    let previousDest = 0;''
+
+    tripTimes.forEach(tripTime => {
+        if (previousDest != 0) {
+            let timeDiff = new Date("01/01/2022 " + tripTime.origin) - new Date("01/01/2022 " + previousDest);
+            
+            if (timeDiff < 0) {
+                timeDiff += 1000*60*60*24;
+            }
+            tripTimeDiffs.push(timeDiff/1000/60);
+        }
+
+        let timeDiff = new Date("01/01/2022 " + tripTime.destination) - new Date("01/01/2022 " + tripTime.origin);
+        if(timeDiff < 0) {
+            timeDiff += 1000*60*60*24;
+        }
+        previousDest = tripTime.destination;
+        tripTimeDiffs.push(timeDiff/1000/60);
+    });
+
+    return tripTimeDiffs;
+}
+/* 
+let timeStart = new Date("01/01/2022 " + tripStartTime1);
+let timeEnd = new Date("01/01/2022 " + tripEndTime1);
+
+let timeDiff = timeEnd - timeStart;
+
+if(timeDiff < 0) {
+    timeDiff += 1000*60*60*24;
+}
+
+let timeDiffHours = Math.floor(timeDiff/1000/60/60);
+let timeDiffMinutes = Math.floor(timeDiff/1000/60) - timeDiffHours*60;
+ */
+function getNumOfTrips(data) {
+    let counter = 0;
+    
+    data.forEach(element => {
+        counter++;
+    });
+
+    return counter;
+}
 
 function countTripChanges(data) {
     let counter = 0;

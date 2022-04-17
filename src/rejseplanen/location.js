@@ -21,7 +21,7 @@ async function locationAPICall(inputLocation) {
     splitText.splice(0, 2);
     let result = parser.parse(splitText.join('\n'));
 
-    for (let i = 0; i < result.length && i <= numOfLocations; i++) {
+    for (let i = 0; i < result.length && i < numOfLocations; i++) {
         resultObject.push(result[i]);
     }
 

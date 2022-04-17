@@ -1,3 +1,7 @@
+:root {
+    --icon-space: 0;
+}
+
 body {
     background: white;
     color: #555;
@@ -239,7 +243,6 @@ body {
     height: 35px;
     position: absolute;
     background-color: whitesmoke;
-    left: 0px;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
@@ -248,6 +251,7 @@ body {
     border-color: #000C2A;
     color: #000C2A;
     transform: translate(-50%, 0);
+    left: var(--icon-space);
 }
 
 .trip-icon > span {
