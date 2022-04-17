@@ -127,7 +127,7 @@ function getIconElements(tripElement, iconSpacings) {
                 break;
             case "IC": case "LYN": case "REG": case "S": case "M":
                 tripIcon.setAttribute('class', 'fa-solid fa-train');
-                tripName.textContent = element[':@']['@_name'];
+                tripName.textContent = element[':@']['@_name'].replace(/\s/g, '');
                 break;
             case "F":
                 tripIcon.setAttribute('class', 'fa-solid fa-ferry');

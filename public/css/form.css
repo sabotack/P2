@@ -258,6 +258,7 @@ body {
     position: absolute;
     top: 33px;
     font-size: 14px;
+    white-space: nowrap;
 }
 
 .bar {
