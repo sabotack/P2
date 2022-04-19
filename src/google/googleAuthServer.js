@@ -110,7 +110,7 @@ async function getAccessAndRefreshToken(request, response) {
 }
 
 
-//function generates authorization URL and passes it as response.
+//function that passes the authorizationURL as the response to redirect on the client-side.
 function getAuthorizationURL(request, response) {
     let obj = { url: authorizationUrl };
     response.writeHead(200, { 'Content-Type': 'application/json' });

@@ -1,6 +1,6 @@
 export { listEvents, postEvents };
 import { google } from 'googleapis';
-import { oauth2Client } from './googleAuth.js';
+import { oauth2Client } from './googleAuthServer.js';
 
 //function lists events in given calendar.
 function listEvents() {
@@ -28,6 +28,7 @@ function listEvents() {
     });
 }
 
+//function that posts an array of events to the newly logged-in user
 function postEvents(events) {
     const calendar = google.calendar({ version: 'v3' });
     for (let event in events) {

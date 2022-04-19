@@ -13,6 +13,7 @@ async function googleCallback(googleResponse) {
 }
 
 //function that validates idToken with Google
+//*NEW* function is no longer in use
 async function validateGoogleToken(googleResponse) {
     let response = await fetch('http://localhost:3000/validateIdToken', {
         method: 'POST',

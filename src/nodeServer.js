@@ -4,7 +4,7 @@ import path from 'path';
 import fetch from 'node-fetch';
 import { locationAPICall } from './rejseplanen/location.js';
 import { tripAPICall } from './rejseplanen/trip.js';
-import { getAccessAndRefreshToken, getAuthorizationURL } from './google/googleAuth.js'
+import { getAccessAndRefreshToken, getAuthorizationURL } from './google/googleAuthServer.js'
 //import https from 'https';
 
 export { server, getContentType };
@@ -41,7 +41,7 @@ function processUserRequest(request, response) {
         case 'get':
             if (request.url.startsWith('/googleConsent')) {
                 //special case of google redirect where response is included in url
-                getAccessAndRefreshToken(request, response); //handles the redirect from google's authorization page where scopse are accepted.
+                getAccessAndRefreshToken(request, response); //handles the redirect from google's authorization page where scopes are accepted.
                 break;
             }
             switch (request.url) {
@@ -50,6 +50,7 @@ function processUserRequest(request, response) {
                     readFile(filePath, request, response);
                     break;
                 case `/authorizationRedirect`: //called from client when scopes needs to be accepted
+                                               //*NEW* now handles both login, idToken validation and scope auth.
                     getAuthorizationURL(request, response);
                     break;
                 default:
@@ -59,7 +60,7 @@ function processUserRequest(request, response) {
             break;
         case 'post':
             switch (request.url) {
-                case `/validateIdToken`:
+                case `/validateIdToken`: //currently not used due to conflicts with double login-screens
                     validateIdToken(request, response);
                     break;
                 case '/create_event':
