@@ -100,23 +100,28 @@ function getIconElements(tripElement, iconSpacings) {
 
     let i = 0;
     tripElement.forEach(element => {
+        // If the trip origin includes the destination name or vice versa, then ignore that trip element.
         if(i != 0 && (element['Leg']['0'][':@']['@_name'].toLowerCase().includes(element['Leg']['1'][':@']['@_name'].toLowerCase()) || element['Leg']['1'][':@']['@_name'].toLowerCase().includes(element['Leg']['0'][':@']['@_name'].toLowerCase()))) {
             i++;
             return;
         }
+
         let tripIconContainer = document.createElement('div');
         tripIconContainer.setAttribute('class', 'trip-icon');
 
-        if(i != 0 && iconSpacings[i] - iconSpacings[i-1] < 35) {
+        // Icon overlap handling
+        /* if(i != 0 && iconSpacings[i] - iconSpacings[i-1] < 35) {
             tripIconContainer.style.setProperty('--icon-space', (iconSpacings[i-1] + 35) + 'px'); i++;
         }
         else {
             tripIconContainer.style.setProperty('--icon-space', iconSpacings[i] + 'px'); i++;
-        }
+        } */
+        tripIconContainer.style.setProperty('left', iconSpacings[i] + '%'); i++;
         
         let tripIcon = document.createElement('i');
         let tripName = document.createElement('span');
 
+        //  Switch on trip type, and then set the appropriate icon and text. 
         switch (element[':@']['@_type']) {
             case "WALK":
                 tripIcon.setAttribute('class', 'fa-solid fa-person-walking');
@@ -137,19 +142,31 @@ function getIconElements(tripElement, iconSpacings) {
                 break;
         }
 
+        // Finally, append the children and push the element in the array.
         tripIconContainer.appendChild(tripIcon);
         tripIconContainer.appendChild(tripName);
         iconElement.push(tripIconContainer);
     });
 
+    // Icon overlap adjustements
+    /* for(let i = 0; i < iconElement.length; i++) {
+        if(i != 0 && iconElement[i].offsetLeft - iconElement[i-1].offsetLeft < 35) {
+            iconElement[i].style.setProperty('left', 'calc(' + iconElement[i-1].offsetLeft + ' + 35px)');
+        }
+    } */
+
     return iconElement;
 }
 
-function calcIconSpacings(tripElement, barWidth, startTime, endTime){    
+function setBarGradient(iconElement, bar) {
+    
+}
+
+function calcIconSpacings(tripElement, barWidth){    
     const tripTimes = getTripMinutes(tripElement);
     
     let tripTimesSum = tripTimes.reduce((a, b) => a + b, 0);
-    let frac = barWidth/tripTimesSum;
+    let frac = 100/tripTimesSum;
     console.log('WIDTH: '+barWidth);
     
     let iconSpacings = [];
@@ -202,28 +219,6 @@ function getTripMinutes(data) {
     });
 
     return tripTimeDiffs;
-}
-/* 
-let timeStart = new Date("01/01/2022 " + tripStartTime1);
-let timeEnd = new Date("01/01/2022 " + tripEndTime1);
-
-let timeDiff = timeEnd - timeStart;
-
-if(timeDiff < 0) {
-    timeDiff += 1000*60*60*24;
-}
-
-let timeDiffHours = Math.floor(timeDiff/1000/60/60);
-let timeDiffMinutes = Math.floor(timeDiff/1000/60) - timeDiffHours*60;
- */
-function getNumOfTrips(data) {
-    let counter = 0;
-    
-    data.forEach(element => {
-        counter++;
-    });
-
-    return counter;
 }
 
 function countTripChanges(data) {
