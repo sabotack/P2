@@ -4,7 +4,8 @@ import path from 'path';
 import fetch from 'node-fetch';
 import { locationAPICall } from './rejseplanen/location.js';
 import { tripAPICall } from './rejseplanen/trip.js';
-import { getAccessAndRefreshToken, getAuthorizationURL } from './google/googleAuthServer.js'
+import { getAccessAndRefreshToken, getAuthorizationURL, validateIdToken } from './google/googleAuthServer.js';
+import { googleCalendarPost} from './google/googleCalendar.js';
 //import https from 'https';
 
 export { server, getContentType };
@@ -50,7 +51,6 @@ function processUserRequest(request, response) {
                     readFile(filePath, request, response);
                     break;
                 case `/authorizationRedirect`: //called from client when scopes needs to be accepted
-                                               //*NEW* now handles both login, idToken validation and scope auth.
                     getAuthorizationURL(request, response);
                     break;
                 default:
@@ -69,6 +69,9 @@ function processUserRequest(request, response) {
                     break;
                 case '/locationService':
                     locationServiceRequest(request, response);
+                    break;
+                case '/GoogleCalendarPost':
+                    googleCalendarPost(request, response);
                     break;
                 /*case '/tripService':
                     tripServiceRequest(request, response);

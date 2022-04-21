@@ -1,6 +1,8 @@
-export { listEvents, postEvents };
+export { listEvents, postEvents, googleCalendarPost, eventsToPost };
 import { google } from 'googleapis';
 import { oauth2Client } from './googleAuthServer.js';
+
+let eventsToPost = "";
 
 //function lists events in given calendar.
 function listEvents() {
@@ -28,8 +30,25 @@ function listEvents() {
     });
 }
 
+async function googleCalendarPost(request, response) {
+    var jsonString;
+    console.log("GoogleCalendarServer");
+    request.on('data', function (data) {
+        jsonString = JSON.parse(data);
+        eventsToPost = jsonString;
+        console.log(eventsToPost);
+    });
+
+    request.on('end', () => {
+            response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
+            response.write(JSON.stringify({body: "events stored at server"}));
+            response.end();
+    });
+}
+
 //function that posts an array of events to the newly logged-in user
 function postEvents(events) {
+    console.log(events);
     const calendar = google.calendar({ version: 'v3' });
     for (let event in events) {
         calendar.events.insert({
