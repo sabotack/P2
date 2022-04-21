@@ -1,4 +1,5 @@
 import { autocomplete } from './autocomplete.js';
+import { tripSelected, setSelectedTrip } from './tripSelection.js';
 import { checkRequiredTransportTo, checkRequiredTransportFrom } from './checks.js';
 
 export { eventStartDate, eventStartTime, eventEndDate, eventEndTime, addToBtn, addFromBtn, eventLocation };
@@ -29,11 +30,24 @@ autocomplete(postEventLocation);
 // Cancel button for add transport to event modal
 modalButtons[0].addEventListener('click', () => {
     preEventModal.style.display = 'none';
+    setSelectedTrip('');
+});
+
+// Add button for add transport to event modal
+modalButtons[1].addEventListener('click', () => {
+    preEventModal.style.display = 'none';
+    addSelectedTrip(addToBtn, tripSelected);
 });
 
 // Cancel button for add transport from event modal
 modalButtons[2].addEventListener('click', () => {
     postEventModal.style.display = 'none';
+});
+
+// Add button for add transport from event modal
+modalButtons[3].addEventListener('click', () => {
+    postEventModal.style.display = 'none';
+    addSelectedTrip(addFromBtn, tripSelected);
 });
 
 preEventModal.addEventListener('click', (event) => {
@@ -71,3 +85,24 @@ eventEndDate.addEventListener('input', () => {
 eventEndTime.addEventListener('input', () => {
     checkRequiredTransportFrom();
 });
+
+function addSelectedTrip(button, tripSelected) {
+    button.textContent = '';
+
+    let eventLocationSelected = document.createElement('div');
+    eventLocationSelected.classList.add('event-selected');
+    let transportTitle = document.createElement('p');
+    transportTitle.classList.add('transport-title');
+    transportTitle.textContent = button === addTransportButtons[0] ? 'Transport to event' : 'Transport from event';
+    let eventLocation = document.createElement('p');
+    eventLocation.textContent = preEventLocation.value;
+    eventLocation.classList.add('event-location')
+    let eventTime = document.createElement('p');
+    eventTime.classList.add('event-time');
+    eventTime.textContent = tripSelected['0']['Leg']['0'][':@']['@_time'] + ' - ' + tripSelected[tripSelected.length-1]['Leg']['1'][':@']['@_time'];
+
+    button.appendChild(eventLocationSelected);
+    eventLocationSelected.appendChild(transportTitle);
+    eventLocationSelected.appendChild(eventLocation);
+    eventLocationSelected.appendChild(eventTime);
+}

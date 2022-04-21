@@ -24,6 +24,7 @@ let eventLocationX = '',
 let postEventLocationX = '',
     postEventLocationY = '';
 let inputID = '';
+let tripBox = '';
 
 let tripData = {};
 
@@ -80,10 +81,12 @@ function autocomplete(input) {
                                     destCoordY: eventLocationY,
                                     destCoordName: eventLocation.value,
                                     date: eventStartDate.value.split("-").reverse().join("."),
-                                    time: eventStartTime.value
+                                    time: eventStartTime.value,
+                                    searchForArrival: 1
                                 };
+                                tripBox = document.querySelector('#pre-event-trips');
                                
-                                createTripSelection(tripData);
+                                createTripSelection(tripData, tripBox);
 
                                 break;
                             case 'post-event-location':
@@ -98,18 +101,13 @@ function autocomplete(input) {
                                     destCoordY: postEventLocationY,
                                     destCoordName: input.value,
                                     date: eventEndDate.value.split("-").reverse().join("."),
-                                    time: eventEndTime.value
+                                    time: eventEndTime.value,
+                                    searchForArrival: 0
                                 };
+                                tripBox = document.querySelector('#post-event-trips');
 
-                                //tripSelector(tripData);
+                                createTripSelection(tripData, tripBox);
 
-                                tripServiceCallAPI(tripData).then(
-                                (response) => {
-                                    
-                                    console.dir(response[':@']['@_y']);
-
-
-                                });
                                 break;
                         }
 

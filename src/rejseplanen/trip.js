@@ -22,7 +22,9 @@ async function tripAPICall(parsedData) {
             '&date=' +
             parsedData.date +
             '&time=' +
-            parsedData.time
+            parsedData.time +
+            '&searchForArrival=' +
+            parsedData.searchForArrival
     );
    
     const data = await response.text();
@@ -43,5 +45,29 @@ async function tripAPICall(parsedData) {
         resultObject.push(result[i]);
     }
 
+    resultObject = removeBaseURL(resultObject);
+
     return resultObject;
+}
+
+function removeBaseURL(input){
+
+    for (let i = 0; i < input.length ; i++){
+
+        for (let j = 0; j < input[i]['Trip'].length ; j++){
+            
+            let legLength = input[i]['Trip'][j]['Leg'].length;
+
+            if (legLength >= 4){
+
+                let tempString = input[i]['Trip'][j]['Leg']['3'][':@']['@_ref'];
+                input[i]['Trip'][j]['Leg']['3'][':@']['@_ref'] = tempString.replace('http://webapp.rejseplanen.dk/bin//rest.exe/','');
+
+            }   
+
+        }
+    }
+
+    return input;
+    
 }

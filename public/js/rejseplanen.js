@@ -1,4 +1,4 @@
-export { locationServiceCallAPI, tripServiceCallAPI };
+export { locationServiceCallAPI, tripServiceCallAPI, detailServiceCallAPI };
 
 function locationServiceCallAPI(inputField) {
     return new Promise(function (resolve, reject) {
@@ -37,7 +37,24 @@ function tripServiceCallAPI(tripData) {
             '&date=' +
             tripData.date +
             '&time=' +
-            tripData.time);
+            tripData.time + 
+            '&searchForArrival=' +
+            tripData.searchForArrival);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                let result = JSON.parse(xhr.responseText);
+                this.status == 200 ? resolve(result) : reject('Error');
+            }
+        };
+    });
+}
+function detailServiceCallAPI(input){
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+
+        xhr.open('POST', '/detailService', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        xhr.send('details=' + input);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4) {
                 let result = JSON.parse(xhr.responseText);

@@ -4,6 +4,7 @@ import path from 'path';
 import fetch from 'node-fetch';
 import { locationAPICall } from './rejseplanen/location.js';
 import { tripAPICall } from './rejseplanen/trip.js';
+import { detailAPICall } from './rejseplanen/journeyDetails.js';
 
 //import https from 'https';
 
@@ -93,6 +94,9 @@ function processUserRequest(request, response) {
                 case '/tripService':
                     tripServiceRequest(request, response);
                     break;
+                case '/detailService':
+                    detailServiceRequest(request, response);
+                    break;
                 default:
                     errorResponseUser(request, response, 'Resource not found', 404);
                     break;
@@ -145,6 +149,28 @@ function tripServiceRequest(request, response) {
         parsedData = Object.fromEntries(parsedData);
     
         tripAPICall(parsedData).then((data) => {
+            response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
+            response.write(JSON.stringify(data));
+            response.end();
+        });
+    });
+}
+//function that handles detailsService request
+function detailServiceRequest(request, response) {
+    let detailCallPOST = '';
+
+    request.on('data', (data) => {
+        if (data.length < 1e4) {
+            detailCallPOST += data;
+        } else {
+            let error = 'Payload too large';
+            errorResponseUser(request, response, error, 413);
+        }
+    });
+
+    request.on('end', () => {
+    
+        detailAPICall(detailCallPOST).then((data) => {
             response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
             response.write(JSON.stringify(data));
             response.end();

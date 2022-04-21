@@ -40,6 +40,21 @@ body {
     user-select: none;
 }
 
+.modal-button {
+    display: inline-block;
+    color: ghostwhite;
+    background-color: #2f5f8f;
+    border-radius: 1px;
+    width: 60px;
+    height: 25px;
+    text-align: center;
+    vertical-align: center;
+    line-height: 25px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 150ms ease-out;
+}
+
 .disabled {
     background-color: #eaeaea;
     color: #bababa;
@@ -85,6 +100,22 @@ body {
     margin-top: 10px;
 }
 
+.transport-title {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.event-selected {
+    text-align: left;
+    font-size: 14px;
+}
+
+.event-time {
+    font-size: 13px;
+}
+
+
+
 .modal {
     display: none;
     position: fixed;
@@ -108,21 +139,6 @@ body {
 
 .right-container {
     text-align: right;
-}
-
-.modal-button {
-    display: inline-block;
-    color: ghostwhite;
-    background-color: #2f5f8f;
-    border-radius: 1px;
-    width: 60px;
-    height: 25px;
-    text-align: center;
-    vertical-align: center;
-    line-height: 25px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 150ms ease-out;
 }
 
 .modal-button:hover {
@@ -189,8 +205,16 @@ body {
 }
 
 .trip:hover {
-    background-color: whitesmoke;
+    background-color: #efefef;
     cursor: pointer;
+}
+
+.trip-selected {
+    background-color: #c7e3ff;
+}
+
+.trip-selected:hover {
+    background-color: #b9dcff;
 }
 
 .trip-top {

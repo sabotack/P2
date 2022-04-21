@@ -1,25 +1,43 @@
 import { tripServiceCallAPI } from "./rejseplanen.js";
+import { getDetailedJourney, createDetailsBox } from "./detailsBox.js";
 
-export {createTripSelection, createNewTrip};
+export {createTripSelection, createNewTrip, tripSelected};
 
-const tripBox = document.querySelector('.trip-box');
+export function setSelectedTrip(value) {tripSelected = value};
+let tripSelected = '';
 
-function createTripSelection(tripData) {
+function createTripSelection(tripData, tripBox) {
+    deleteList(tripBox);
+
     tripServiceCallAPI(tripData).then((response) => {
         response.forEach(element => {
             console.log(element.Trip);
-            createNewTrip(element.Trip);
+            createNewTrip(element.Trip, tripBox);
         });
     });
 }
 
-function createNewTrip(tripElement) {
-    let tripStartTime1 = tripElement['0']['Leg']['0'][':@']['@_time'];
-    let tripEndTime1 = tripElement[tripElement.length-1]['Leg']['1'][':@']['@_time'];
+function createNewTrip(tripElement, tripBox) {
+    let tripTimeStart = tripElement['0']['Leg']['0'][':@']['@_time'];
+    let tripTimeEnd = tripElement[tripElement.length-1]['Leg']['1'][':@']['@_time'];
 
     //Create html elements for the trip box
     let trip = document.createElement('div');
     trip.setAttribute('class', 'trip');
+    trip.addEventListener('click', () => {
+        tripBox.childNodes.forEach(element => {
+            element.classList.remove('trip-selected');
+        });
+        
+        
+        trip.classList.add('trip-selected');
+        
+        let addBtn = tripBox.parentElement.children[2].children[1];
+        addBtn.classList.remove('disabled');
+        
+        tripSelected = tripElement;
+        
+    });
 
     let tripTop = document.createElement('div');
     tripTop.setAttribute('class', 'trip-top');
@@ -43,12 +61,22 @@ function createNewTrip(tripElement) {
     let tripSpecifiedInfo = document.createElement('span');
 
 
-    let tripAction = document.createElement('trip-action');
+
+
+    let tripAction = document.createElement('div');
     tripAction.setAttribute('class', 'trip-action');
 
     let detailsButton = document.createElement('div');
     detailsButton.setAttribute('class', 'details-button');
     detailsButton.append('Details');
+
+    detailsButton.addEventListener('click', () => {
+        
+        console.log("clicked on details button");
+        let transportDetailPicked = tripElement;
+        createDetailsBox(trip, transportDetailPicked);
+        
+    });
 
     //Insert the right elements under the right parent-nodes
     tripBox.appendChild(trip);
@@ -58,7 +86,7 @@ function createNewTrip(tripElement) {
     tripTop.appendChild(tripBar);
     tripBar.appendChild(bar);
 
-    let iconSpacings = calcIconSpacings(tripElement, bar.offsetWidth, tripStartTime1, tripEndTime1);
+    let iconSpacings = calcIconSpacings(tripElement, bar.offsetWidth, tripTimeStart, tripTimeEnd);
 
     getIconElements(tripElement, iconSpacings).forEach(element => {
         tripBar.appendChild(element);
@@ -72,8 +100,8 @@ function createNewTrip(tripElement) {
     tripAction.appendChild(detailsButton);
    
 
-    let timeStart = new Date("01/01/2022 " + tripStartTime1);
-    let timeEnd = new Date("01/01/2022 " + tripEndTime1);
+    let timeStart = new Date("01/01/2022 " + tripTimeStart);
+    let timeEnd = new Date("01/01/2022 " + tripTimeEnd);
 
     let timeDiff = timeEnd - timeStart;
 
@@ -85,14 +113,13 @@ function createNewTrip(tripElement) {
     let timeDiffMinutes = Math.floor(timeDiff/1000/60) - timeDiffHours*60;
 
 
-    tripStartTime.textContent = tripStartTime1;
-    tripEndTime.textContent = tripEndTime1;
+    tripStartTime.textContent = tripTimeStart;
+    tripEndTime.textContent = tripTimeEnd;
     if (timeDiffHours > 0){
         tripSpecifiedInfo.textContent  = timeDiffHours+" h "+timeDiffMinutes+" min, "+countTripChanges(tripElement)+" changes";
     }else{
         tripSpecifiedInfo.textContent  = timeDiffMinutes+" min, "+countTripChanges(tripElement)+" changes";
     } 
-
 }
 
 function getIconElements(tripElement, iconSpacings) {
@@ -231,4 +258,8 @@ function countTripChanges(data) {
     });
 
     return counter-1;
+}
+
+function deleteList(tripBox) {
+    tripBox.textContent = '';
 }
