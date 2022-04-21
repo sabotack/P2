@@ -3,7 +3,7 @@ import { checkRequiredTransportTo, checkRequiredTransportFrom } from './checks.j
 
 import {eventLocation, eventStartTime, eventStartDate, eventEndTime, eventEndDate} from './form.js'
 
-import {createTripSelection, createNewTrip} from './tripSelector.js';
+import {createTripSelection} from './tripSelection.js';
 
 
 export {

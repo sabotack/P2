@@ -27,14 +27,12 @@ autocomplete(preEventLocation);
 autocomplete(postEventLocation);
 
 // Cancel button for add transport to event modal
-modalButtons[0].addEventListener('click', (event) => {
-    event.preventDefault();
+modalButtons[0].addEventListener('click', () => {
     preEventModal.style.display = 'none';
 });
 
 // Cancel button for add transport from event modal
-modalButtons[2].addEventListener('click', (event) => {
-    event.preventDefault();
+modalButtons[2].addEventListener('click', () => {
     postEventModal.style.display = 'none';
 });
 
