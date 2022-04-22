@@ -1,9 +1,8 @@
-
 async function submitForm(googleResponse) {
     let events = await createEventsObj();
     let eventsIsAccepted = await validateEventsObj(events);
     if (!eventsIsAccepted) {
-        window.alert("Events submitted is not accepted");
+        window.alert('Events submitted is not accepted');
     } else {
         await saveEventsOnServer(events);
         await handleGoogleAuth(googleResponse);
@@ -11,32 +10,34 @@ async function submitForm(googleResponse) {
 }
 
 async function createEventsObj() {
-    const testEvents = [{
-        'summary': 'Google I/O 2015',
-        'location': '800 Howard St., San Francisco, CA 94103',
-        'description': 'A chance to hear more about Google\'s developer products.',
-        'start': {
-        'dateTime': '2022-04-15T09:00:00-07:00',
-        'timeZone': 'Europe/Copenhagen'
-        },
-        'end': {
-        'dateTime': '2022-04-15T17:00:00-07:00',
-        'timeZone': 'Europe/Copenhagen'
-        },
+    const testEvents = [
+        {
+            summary: 'Google I/O 2015',
+            location: '800 Howard St., San Francisco, CA 94103',
+            description: "A chance to hear more about Google's developer products.",
+            start: {
+                dateTime: '2022-04-15T09:00:00-07:00',
+                timeZone: 'Europe/Copenhagen'
+            },
+            end: {
+                dateTime: '2022-04-15T17:00:00-07:00',
+                timeZone: 'Europe/Copenhagen'
+            }
         },
         {
-        'summary': 'Simon fuck off',
-        'location': '800 Howard St., San Francisco, CA 94103',
-        'description': 'A chance to hear more about Google\'s developer products.',
-        'start': {
-        'dateTime': '2022-04-16T09:00:00-07:00',
-        'timeZone': 'Europe/Copenhagen'
-        },
-        'end': {
-        'dateTime': '2022-04-16T17:00:00-07:00',
-        'timeZone': 'Europe/Copenhagen'
-        },
-        }];
+            summary: 'Simon fuck off',
+            location: '800 Howard St., San Francisco, CA 94103',
+            description: "A chance to hear more about Google's developer products.",
+            start: {
+                dateTime: '2022-04-16T09:00:00-07:00',
+                timeZone: 'Europe/Copenhagen'
+            },
+            end: {
+                dateTime: '2022-04-16T17:00:00-07:00',
+                timeZone: 'Europe/Copenhagen'
+            }
+        }
+    ];
     return testEvents;
 }
 
@@ -46,11 +47,12 @@ async function validateEventsObj(events) {
 
 async function handleGoogleAuth(googleRespones) {
     let urlResponse = await getAuthorizationURL(); //get authorization url from server.
-    if(urlResponse != false) { //if redirect url is not returned, the server failed and client cannot be redirected.
+    if (urlResponse != false) {
+        //if redirect url is not returned, the server failed and client cannot be redirected.
         let jsonResponse = await urlResponse.json(); //converts response to json
         window.location.href = jsonResponse.url; //opens the URL that enables user to
     } else {
-        window.alert("Error in redirection to authorization procedure!"); //alert user that server failed and redirection did not happen
+        window.alert('Error in redirection to authorization procedure!'); //alert user that server failed and redirection did not happen
     }
 }
 
@@ -77,7 +79,7 @@ async function validateGoogleToken(googleResponse) {
 
 //function gets authorizationURL from server.
 async function getAuthorizationURL() {
-    try{
+    try {
         let redirectURL = await fetch(`http://localhost:3000/authorizationRedirect`, {
             method: 'GET'
         });
@@ -85,7 +87,6 @@ async function getAuthorizationURL() {
     } catch {
         return false;
     }
-    
 }
 
 //  COOKIE-HANDLE
@@ -101,4 +102,3 @@ function createSessionCookie(cookieName, cookieValue, exdays) {
 function deleteSessionCookie(cookieName) {
     document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 }
-
