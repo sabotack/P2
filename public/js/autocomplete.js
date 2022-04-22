@@ -1,10 +1,9 @@
 import { locationServiceCallAPI, tripServiceCallAPI } from './rejseplanen.js';
 import { checkRequiredTransportTo, checkRequiredTransportFrom } from './checks.js';
 
-import {eventLocation, eventStartTime, eventStartDate, eventEndTime, eventEndDate} from './form.js'
+import { eventLocation, eventStartTime, eventStartDate, eventEndTime, eventEndDate } from './form.js';
 
-import {createTripSelection} from './tripSelection.js';
-
+import { createTripSelection } from './tripSelection.js';
 
 export {
     preEventLocationX,
@@ -63,7 +62,7 @@ function autocomplete(input) {
                         let targetInput = e.target.querySelector('input');
                         input.value = targetInput.value;
                         inputID = targetInput.getAttribute('data-input');
-                        
+
                         switch (inputID) {
                             case 'eventlocation':
                                 eventLocationX = targetInput.getAttribute('data-x');
@@ -77,30 +76,30 @@ function autocomplete(input) {
                                     originCoordName: input.value,
                                     originCoordX: preEventLocationX,
                                     originCoordY: preEventLocationY,
-                                    destCoordX:  eventLocationX,
+                                    destCoordX: eventLocationX,
                                     destCoordY: eventLocationY,
                                     destCoordName: eventLocation.value,
-                                    date: eventStartDate.value.split("-").reverse().join("."),
+                                    date: eventStartDate.value.split('-').reverse().join('.'),
                                     time: eventStartTime.value,
                                     searchForArrival: 1
                                 };
                                 tripBox = document.querySelector('#pre-event-trips');
-                               
+
                                 createTripSelection(tripData, tripBox);
 
                                 break;
                             case 'post-event-location':
                                 postEventLocationX = targetInput.getAttribute('data-x');
                                 postEventLocationY = targetInput.getAttribute('data-y');
-                                
+
                                 tripData = {
                                     originCoordName: eventLocation.value,
                                     originCoordX: eventLocationX,
                                     originCoordY: eventLocationY,
-                                    destCoordX:  postEventLocationX,
+                                    destCoordX: postEventLocationX,
                                     destCoordY: postEventLocationY,
                                     destCoordName: input.value,
-                                    date: eventEndDate.value.split("-").reverse().join("."),
+                                    date: eventEndDate.value.split('-').reverse().join('.'),
                                     time: eventEndTime.value,
                                     searchForArrival: 0
                                 };

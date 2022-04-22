@@ -18,6 +18,6 @@ async function detailAPICall(inputDetailURL) {
     let splitText = data.split('\n');
     splitText.splice(0, 2);
     let result = parser.parse(splitText.join('\n'));
-    
+
     return result;
 }

@@ -114,8 +114,6 @@ body {
     font-size: 13px;
 }
 
-
-
 .modal {
     display: none;
     position: fixed;
@@ -243,8 +241,8 @@ body {
 
 .details-button {
     background-color: whitesmoke;
-    color: #000C2A;
-    border-color: #000C2A;
+    color: #000c2a;
+    border-color: #000c2a;
     border-style: solid;
     border-width: 1.5px;
     border-radius: 2px;
@@ -288,8 +286,8 @@ body {
     border-radius: 50%;
     border-width: 2px;
     border-style: solid;
-    border-color: #000C2A;
-    color: #000C2A;
+    border-color: #000c2a;
+    color: #000c2a;
     transform: translate(-50%, 0);
     left: 0;
 }
@@ -304,7 +302,7 @@ body {
 .bar {
     height: 4px;
     width: 100%;
-    background-color: #F8951F;
+    background-color: #f8951f;
 }
 
 .trip-end {

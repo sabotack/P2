@@ -96,10 +96,13 @@ function addSelectedTrip(button, tripSelected) {
     transportTitle.textContent = button === addTransportButtons[0] ? 'Transport to event' : 'Transport from event';
     let eventLocation = document.createElement('p');
     eventLocation.textContent = preEventLocation.value;
-    eventLocation.classList.add('event-location')
+    eventLocation.classList.add('event-location');
     let eventTime = document.createElement('p');
     eventTime.classList.add('event-time');
-    eventTime.textContent = tripSelected['0']['Leg']['0'][':@']['@_time'] + ' - ' + tripSelected[tripSelected.length-1]['Leg']['1'][':@']['@_time'];
+    eventTime.textContent =
+        tripSelected['0']['Leg']['0'][':@']['@_time'] +
+        ' - ' +
+        tripSelected[tripSelected.length - 1]['Leg']['1'][':@']['@_time'];
 
     button.appendChild(eventLocationSelected);
     eventLocationSelected.appendChild(transportTitle);

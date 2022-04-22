@@ -22,24 +22,26 @@ function tripServiceCallAPI(tripData) {
 
         xhr.open('POST', '/tripService', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-        xhr.send('originCoordName='+
-            tripData.originCoordName +
-            '&originCoordX=' +
-            tripData.originCoordX +
-            '&originCoordY=' +
-            tripData.originCoordY +
-            '&destCoordX=' +
-            tripData.destCoordX +
-            '&destCoordY=' +
-            tripData.destCoordY +
-            '&destCoordName=' +
-            tripData.destCoordName +
-            '&date=' +
-            tripData.date +
-            '&time=' +
-            tripData.time + 
-            '&searchForArrival=' +
-            tripData.searchForArrival);
+        xhr.send(
+            'originCoordName=' +
+                tripData.originCoordName +
+                '&originCoordX=' +
+                tripData.originCoordX +
+                '&originCoordY=' +
+                tripData.originCoordY +
+                '&destCoordX=' +
+                tripData.destCoordX +
+                '&destCoordY=' +
+                tripData.destCoordY +
+                '&destCoordName=' +
+                tripData.destCoordName +
+                '&date=' +
+                tripData.date +
+                '&time=' +
+                tripData.time +
+                '&searchForArrival=' +
+                tripData.searchForArrival
+        );
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4) {
                 let result = JSON.parse(xhr.responseText);
@@ -48,7 +50,7 @@ function tripServiceCallAPI(tripData) {
         };
     });
 }
-function detailServiceCallAPI(input){
+function detailServiceCallAPI(input) {
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
 

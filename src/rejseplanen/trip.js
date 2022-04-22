@@ -7,7 +7,8 @@ async function tripAPICall(parsedData) {
     let resultObject = [];
     const numOfTrips = 5;
 
-    const response = await fetch('http://xmlopen.rejseplanen.dk/bin/rest.exe/trip?originCoordName=' +
+    const response = await fetch(
+        'http://xmlopen.rejseplanen.dk/bin/rest.exe/trip?originCoordName=' +
             parsedData.originCoordName +
             '&originCoordX=' +
             parsedData.originCoordX +
@@ -26,7 +27,7 @@ async function tripAPICall(parsedData) {
             '&searchForArrival=' +
             parsedData.searchForArrival
     );
-   
+
     const data = await response.text();
 
     const options = {
@@ -50,24 +51,20 @@ async function tripAPICall(parsedData) {
     return resultObject;
 }
 
-function removeBaseURL(input){
-
-    for (let i = 0; i < input.length ; i++){
-
-        for (let j = 0; j < input[i]['Trip'].length ; j++){
-            
+function removeBaseURL(input) {
+    for (let i = 0; i < input.length; i++) {
+        for (let j = 0; j < input[i]['Trip'].length; j++) {
             let legLength = input[i]['Trip'][j]['Leg'].length;
 
-            if (legLength >= 4){
-
+            if (legLength >= 4) {
                 let tempString = input[i]['Trip'][j]['Leg']['3'][':@']['@_ref'];
-                input[i]['Trip'][j]['Leg']['3'][':@']['@_ref'] = tempString.replace('http://webapp.rejseplanen.dk/bin//rest.exe/','');
-
-            }   
-
+                input[i]['Trip'][j]['Leg']['3'][':@']['@_ref'] = tempString.replace(
+                    'http://webapp.rejseplanen.dk/bin//rest.exe/',
+                    ''
+                );
+            }
         }
     }
 
     return input;
-    
 }

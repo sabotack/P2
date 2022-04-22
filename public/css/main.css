@@ -166,7 +166,7 @@ body {
     width: 60vh;
     border-radius: 0px;
     transform: perspective(600px) rotateY(-20deg) rotateX(0deg);
-    box-shadow: 10px 15px 20px 5px rgba(0,0,0,0.35);
+    box-shadow: 10px 15px 20px 5px rgba(0, 0, 0, 0.35);
 }
 
 .preview-img2 {
@@ -176,7 +176,7 @@ body {
     width: 50vh;
     border-radius: 0px;
     transform: perspective(600px) rotateY(-20deg) rotateX(0deg) translateX(-120px) translateY(40px);
-    box-shadow: 10px 15px 20px 5px rgba(0,0,0,0.35);
+    box-shadow: 10px 15px 20px 5px rgba(0, 0, 0, 0.35);
 }
 
 .button {
