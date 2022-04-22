@@ -1,4 +1,4 @@
-export { listEvents, postEvents, googleCalendarPost, eventsToPost };
+export { listEvents, postEvents, saveEventsOnServer, eventsToPost, isEventsToPostValid };
 import { google } from 'googleapis';
 import { oauth2Client } from './googleAuthServer.js';
 
@@ -30,20 +30,22 @@ function listEvents() {
     });
 }
 
-async function googleCalendarPost(request, response) {
-    var jsonString;
-    console.log("GoogleCalendarServer");
+async function saveEventsOnServer(request, response) {
+    let jsonString;
     request.on('data', function (data) {
         jsonString = JSON.parse(data);
         eventsToPost = jsonString;
-        console.log(eventsToPost);
     });
 
     request.on('end', () => {
-            response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
-            response.write(JSON.stringify({body: "events stored at server"}));
-            response.end();
+        response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
+        response.write(JSON.stringify({body: "events stored at server"}));
+        response.end();
     });
+}
+
+function isEventsToPostValid(events) {
+    return false;
 }
 
 //function that posts an array of events to the newly logged-in user

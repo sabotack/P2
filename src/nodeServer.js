@@ -4,8 +4,8 @@ import path from 'path';
 import fetch from 'node-fetch';
 import { locationAPICall } from './rejseplanen/location.js';
 import { tripAPICall } from './rejseplanen/trip.js';
-import { getAccessAndRefreshToken, getAuthorizationURL, validateIdToken } from './google/googleAuthServer.js';
-import { googleCalendarPost} from './google/googleCalendar.js';
+import { handleGoogleAuthResponse, getAuthorizationURL, validateIdToken } from './google/googleAuthServer.js';
+import { saveEventsOnServer } from './google/googleCalendar.js';
 //import https from 'https';
 
 export { server, getContentType };
@@ -42,7 +42,7 @@ function processUserRequest(request, response) {
         case 'get':
             if (request.url.startsWith('/googleConsent')) {
                 //special case of google redirect where response is included in url
-                getAccessAndRefreshToken(request, response); //handles the redirect from google's authorization page where scopes are accepted.
+                handleGoogleAuthResponse(request, response); //handles the redirect from google's authorization page where scopes are accepted.
                 break;
             }
             switch (request.url) {
@@ -70,8 +70,8 @@ function processUserRequest(request, response) {
                 case '/locationService':
                     locationServiceRequest(request, response);
                     break;
-                case '/GoogleCalendarPost':
-                    googleCalendarPost(request, response);
+                case '/saveEventsOnServer':
+                    saveEventsOnServer(request, response);
                     break;
                 /*case '/tripService':
                     tripServiceRequest(request, response);

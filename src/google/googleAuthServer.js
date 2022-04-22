@@ -1,5 +1,5 @@
-export { getAccessAndRefreshToken, getAuthorizationURL, oauth2Client, validateIdToken };
-import { listEvents, postEvents, eventsToPost } from "./googleCalendar.js";
+export { handleGoogleAuthResponse, getAuthorizationURL, oauth2Client, validateIdToken };
+import { listEvents, postEvents, eventsToPost, isEventsToPostValid } from "./googleCalendar.js";
 import { google } from 'googleapis';
 import { OAuth2Client } from 'google-auth-library'; //Contructor function from google
 const GOOGLE_CLIENT_ID = `564813831875-k9pb4mc6qh31agppeaos7ort3ng16gni.apps.googleusercontent.com`;
@@ -66,8 +66,7 @@ async function isIdTokenGoogleVerified(idToken) {
 }
 
 //gets access and refresh tokens that allow for access to GoogleAPIs. Callback from google authorization.
-async function getAccessAndRefreshToken(request, response) {
-    console.log("Get acces......");
+async function handleGoogleAuthResponse(request, response) {
     let obj = url.parse(request.url, true).query;
     if (obj.error) {
         response.writeHead(301, { Location: 'http://localhost:3000/404.html' }); //Redirect to errorpage if user does not consent to share scopes. 
@@ -78,8 +77,15 @@ async function getAccessAndRefreshToken(request, response) {
         await isIdTokenGoogleVerified(oauth2Client.credentials.id_token);
         response.writeHead(301, { Location: 'http://localhost:3000/form.html' }); //Redirects to the form.html page after the authorization process has happened
         response.end();
-        listEvents();
-        postEvents(eventsToPost);
+        
+        if (isEventsToPostValid(eventsToPost)) {
+            listEvents();
+            postEvents(eventsToPost);
+            console.log("Events accepted by server");
+        } else {
+            console.log("Events was not accepted by server");
+        }
+
     }
 }
 

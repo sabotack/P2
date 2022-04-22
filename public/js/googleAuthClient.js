@@ -1,6 +1,16 @@
-//  GOOGLE FUNCTIONS
-//callback function that is used when sign-in button is clicked.
-async function googleCallback(googleResponse) {
+
+async function submitForm(googleResponse) {
+    let events = await createEventsObj();
+    let eventsIsAccepted = await validateEventsObj(events);
+    if (!eventsIsAccepted) {
+        window.alert("Events submitted is not accepted");
+    } else {
+        await saveEventsOnServer(events);
+        await handleGoogleAuth(googleResponse);
+    }
+}
+
+async function createEventsObj() {
     const testEvents = [{
         'summary': 'Google I/O 2015',
         'location': '800 Howard St., San Francisco, CA 94103',
@@ -15,7 +25,7 @@ async function googleCallback(googleResponse) {
         },
         },
         {
-        'summary': 'Anders mongol',
+        'summary': 'Simon fuck off',
         'location': '800 Howard St., San Francisco, CA 94103',
         'description': 'A chance to hear more about Google\'s developer products.',
         'start': {
@@ -27,14 +37,14 @@ async function googleCallback(googleResponse) {
         'timeZone': 'Europe/Copenhagen'
         },
         }];
-    await postEventsToCalendar(testEvents);
-    await handleGoogleAuth(googleResponse);
+    return testEvents;
 }
 
+async function validateEventsObj(events) {
+    return true;
+}
 
 async function handleGoogleAuth(googleRespones) {
-    // let validateResponse = await validateGoogleToken(googleResponse); //validates that signin happened, and that id_token is accepted
-    // createSessionCookie('google-session-token', googleResponse.credential, 7); //Creates a cookie that is active for 7 days
     let urlResponse = await getAuthorizationURL(); //get authorization url from server.
     if(urlResponse != false) { //if redirect url is not returned, the server failed and client cannot be redirected.
         let jsonResponse = await urlResponse.json(); //converts response to json
@@ -44,9 +54,8 @@ async function handleGoogleAuth(googleRespones) {
     }
 }
 
-async function postEventsToCalendar(events) {
-    console.log(JSON.stringify(events));
-    let response = await fetch('http://localhost:3000/GoogleCalendarPost', {
+async function saveEventsOnServer(events) {
+    let response = await fetch('http://localhost:3000/saveEventsOnServer', {
         method: 'POST',
         headers: { 'Content-type': 'application/json; charset=UTF-8' },
         body: JSON.stringify(events)
