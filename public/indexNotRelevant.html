@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- onload=checkAuth -->
+    <script src="https://apis.google.com/js/client.js?"></script>
+    </head>
+    <body>
+    <p>what the</p>
+    <button id="authorize-button" onclick="handleAuthClick(event)">printevents</button>
+    <!-- <div id="authorize-divORG" style="display: none">
+        <span>Authorize access to Google Calendar API</span>
+        <button id="authorize-button2" onclick="handleAuthClick(event)">
+        Authorize
+        </button>
+    </div> -->
+    <pre id="output"></pre>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+        <div id="authorize-div">
+            <div id="g_id_onload"
+                data-client_id="564813831875-k9pb4mc6qh31agppeaos7ort3ng16gni.apps.googleusercontent.com"
+                data-context="signin"
+                data-ux_mode="popup"
+                data-callback="handleAuthClick"
+                data-nonce=""
+                data-auto_prompt="false">
+            </div>
+
+            <div class="g_id_signin"
+                data-type="standard"
+                data-shape="pill"
+                data-theme="outline"
+                data-text="signin_with"
+                data-size="large"
+                data-logo_alignment="left">
+            </div>
+        </div>
+        <script type="type/javascript" src="js/googleAuthClientNew.js"></script>
+    </body>
+</html>
