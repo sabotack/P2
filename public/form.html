@@ -29,7 +29,7 @@
                     <div class="left-content">
                         <form action="">
                             <div class="info-box">
-                                <div class="transport-button disabled">
+                                <div class="transport-button">
                                     <p>+ add transport to event</p>
                                 </div>
                                 <div id="pre-event-modal" class="modal">
@@ -41,14 +41,14 @@
                                                 type="text"
                                                 name="pre-event-location"
                                                 id="pre-event-location"
-                                                placeholder="Start location"
+                                                placeholder="Pre-event location"
                                             />
                                         </div>
                                         <!-- 3 transportmuligheder -->
-                                        <div></div>
+                                        <div id="pre-event-trips" class="trip-box"></div>
                                         <div class="right-container">
-                                            <button class="modal-button">Cancel</button>
-                                            <button class="modal-button">Add</button>
+                                            <div class="modal-button">Cancel</div>
+                                            <div class="modal-button disabled">Add</div>
                                         </div>
                                     </div>
                                 </div>
@@ -87,7 +87,7 @@
                                         placeholder="Description"
                                     ></textarea>
                                 </div>
-                                <div class="transport-button disabled">
+                                <div class="transport-button">
                                     <p>+ add transport from event</p>
                                 </div>
                                 <div id="post-event-modal" class="modal">
@@ -99,14 +99,14 @@
                                                 type="text"
                                                 name="post-event-location"
                                                 id="post-event-location"
-                                                placeholder="End location"
+                                                placeholder="Post-event location"
                                             />
                                         </div>
                                         <!-- 3 transportmuligheder -->
-                                        <div></div>
+                                        <div id="post-event-trips" class="trip-box"></div>
                                         <div class="right-container">
-                                            <button class="modal-button">Cancel</button>
-                                            <button class="modal-button">Add</button>
+                                            <div class="modal-button">Cancel</div>
+                                            <div class="modal-button disabled">Add</div>
                                         </div>
                                     </div>
                                 </div>
@@ -116,7 +116,7 @@
                         </form>
                     </div>
                     <div class="right-content">
-                        <img src="assets/placeholder.jpg" alt="placeholder" />
+                        <img class="placeholder-img" src="assets/placeholder.jpg" alt="placeholder" />
                     </div>
                 </div>
             </div>
@@ -124,5 +124,6 @@
         <script type="module" src="js/form.js"></script>
         <script src="js/googleAuthClient.js"></script>
         <script src="https://accounts.google.com/gsi/client" async defer></script>
+        <script src="https://kit.fontawesome.com/63b3537dc4.js" crossorigin="anonymous"></script>
     </body>
 </html>

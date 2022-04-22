@@ -3,18 +3,10 @@ import { XMLParser } from 'fast-xml-parser';
 
 export { tripAPICall };
 
-let parsedData = {
-    originCoordName: 'Sigrid Undsets Vej 196B',
-    originCoordX: '9990189',
-    originCoordY: '57017220',
-    destCoordX: '9912378',
-    destCoordY: '57053150',
-    destCoordName: 'Vestre Kanal Gade',
-    date: '15.04.22',
-    time: '07:02'
-};
-
 async function tripAPICall(parsedData) {
+    let resultObject = [];
+    const numOfTrips = 5;
+
     const response = await fetch(
         'http://xmlopen.rejseplanen.dk/bin/rest.exe/trip?originCoordName=' +
             parsedData.originCoordName +
@@ -31,8 +23,11 @@ async function tripAPICall(parsedData) {
             '&date=' +
             parsedData.date +
             '&time=' +
-            parsedData.time
+            parsedData.time +
+            '&searchForArrival=' +
+            parsedData.searchForArrival
     );
+
     const data = await response.text();
 
     const options = {
@@ -47,11 +42,29 @@ async function tripAPICall(parsedData) {
     splitText.splice(0, 2);
     let result = parser.parse(splitText.join('\n'));
 
-    // console.log(JSON.stringify(result[1][':@']));
+    for (let i = 0; i < result.length && i < numOfTrips; i++) {
+        resultObject.push(result[i]);
+    }
 
-    let resultObject = [result[0], result[1], result[2], result[3]];
-
-    console.log(JSON.stringify(resultObject));
+    resultObject = removeBaseURL(resultObject);
 
     return resultObject;
+}
+
+function removeBaseURL(input) {
+    for (let i = 0; i < input.length; i++) {
+        for (let j = 0; j < input[i]['Trip'].length; j++) {
+            let legLength = input[i]['Trip'][j]['Leg'].length;
+
+            if (legLength >= 4) {
+                let tempString = input[i]['Trip'][j]['Leg']['3'][':@']['@_ref'];
+                input[i]['Trip'][j]['Leg']['3'][':@']['@_ref'] = tempString.replace(
+                    'http://webapp.rejseplanen.dk/bin//rest.exe/',
+                    ''
+                );
+            }
+        }
+    }
+
+    return input;
 }

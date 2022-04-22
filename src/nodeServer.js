@@ -4,8 +4,10 @@ import path from 'path';
 import fetch from 'node-fetch';
 import { locationAPICall } from './rejseplanen/location.js';
 import { tripAPICall } from './rejseplanen/trip.js';
+import { detailAPICall } from './rejseplanen/journeyDetails.js';
 import { handleGoogleAuthResponse, getAuthorizationURL, validateIdToken } from './google/googleAuthServer.js';
 import { saveEventsOnServer } from './google/googleCalendar.js';
+
 //import https from 'https';
 
 export { server, getContentType };
@@ -73,9 +75,12 @@ function processUserRequest(request, response) {
                 case '/saveEventsOnServer':
                     saveEventsOnServer(request, response);
                     break;
-                /*case '/tripService':
+                case '/tripService':
                     tripServiceRequest(request, response);
-                    break;*/
+                    break;
+                case '/detailService':
+                    detailServiceRequest(request, response);
+                    break;
                 default:
                     errorResponseUser(request, response, 'Resource not found', 404);
                     break;
@@ -100,7 +105,6 @@ function locationServiceRequest(request, response) {
     });
 
     request.on('end', () => {
-        console.log('form: ' + locationCallPOST);
         let parsedData = new URLSearchParams(locationCallPOST);
         parsedData = Object.fromEntries(parsedData);
 
@@ -125,11 +129,31 @@ function tripServiceRequest(request, response) {
     });
 
     request.on('end', () => {
-        console.log('form: ' + tripCallPOST);
         let parsedData = new URLSearchParams(tripCallPOST);
         parsedData = Object.fromEntries(parsedData);
 
         tripAPICall(parsedData).then((data) => {
+            response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
+            response.write(JSON.stringify(data));
+            response.end();
+        });
+    });
+}
+//function that handles detailsService request
+function detailServiceRequest(request, response) {
+    let detailCallPOST = '';
+
+    request.on('data', (data) => {
+        if (data.length < 1e4) {
+            detailCallPOST += data;
+        } else {
+            let error = 'Payload too large';
+            errorResponseUser(request, response, error, 413);
+        }
+    });
+
+    request.on('end', () => {
+        detailAPICall(detailCallPOST).then((data) => {
             response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
             response.write(JSON.stringify(data));
             response.end();

@@ -1,14 +1,12 @@
 import fetch from 'node-fetch';
 import { XMLParser } from 'fast-xml-parser';
 
-export { locationAPICall };
+export { detailAPICall };
 
-async function locationAPICall(inputLocation) {
+async function detailAPICall(inputDetailURL) {
     let resultObject = [];
-    const numOfLocations = 4;
-    const response = await fetch('http://xmlopen.rejseplanen.dk/bin/rest.exe/location?input=' + inputLocation);
+    const response = await fetch('http://webapp.rejseplanen.dk/bin//rest.exe/' + inputDetailURL);
     const data = await response.text();
-
     const options = {
         ignoreAttributes: false,
         attributeNamePrefix: '@_',
@@ -21,9 +19,5 @@ async function locationAPICall(inputLocation) {
     splitText.splice(0, 2);
     let result = parser.parse(splitText.join('\n'));
 
-    for (let i = 0; i < result.length && i < numOfLocations; i++) {
-        resultObject.push(result[i]);
-    }
-
-    return resultObject;
+    return result;
 }

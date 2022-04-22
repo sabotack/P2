@@ -40,6 +40,21 @@ body {
     user-select: none;
 }
 
+.modal-button {
+    display: inline-block;
+    color: ghostwhite;
+    background-color: #2f5f8f;
+    border-radius: 1px;
+    width: 60px;
+    height: 25px;
+    text-align: center;
+    vertical-align: center;
+    line-height: 25px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 150ms ease-out;
+}
+
 .disabled {
     background-color: #eaeaea;
     color: #bababa;
@@ -85,6 +100,20 @@ body {
     margin-top: 10px;
 }
 
+.transport-title {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.event-selected {
+    text-align: left;
+    font-size: 14px;
+}
+
+.event-time {
+    font-size: 13px;
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -100,7 +129,7 @@ body {
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
+    margin: 20vh auto auto; /* 15% from the top and centered */
     padding: 15px;
     border: 1px solid #888;
     width: 40%;
@@ -110,8 +139,8 @@ body {
     text-align: right;
 }
 
-.modal-button {
-    display: inline-block;
+.modal-button:hover {
+    background-color: #00478f;
 }
 
 .autocomplete {
@@ -147,4 +176,138 @@ body {
 .autocomplete-active {
     background-color: dodgerblue;
     color: #ffffff;
+}
+
+.trip-box {
+    margin: 10px 0;
+    width: 100%;
+    height: 300px;
+    background-color: #eaeaea;
+    border: 1px solid;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.trip {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 50%;
+    background-color: #fafafa;
+    padding: 5px;
+    border-top: solid 1px grey;
+}
+
+.trip:first-child {
+    border-top: none;
+}
+
+.trip:hover {
+    background-color: #efefef;
+    cursor: pointer;
+}
+
+.trip-selected {
+    background-color: #c7e3ff;
+}
+
+.trip-selected:hover {
+    background-color: #b9dcff;
+}
+
+.trip-top {
+    display: flex;
+    flex: 0.55;
+}
+
+.trip-info {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex: 0.15;
+}
+
+.trip-info > span {
+    font-size: 14px;
+    padding-left: 15%;
+}
+
+.trip-action {
+    display: flex;
+    flex: 0.3;
+    justify-content: flex-end;
+    padding-right: 10px;
+}
+
+.details-button {
+    background-color: whitesmoke;
+    color: #000c2a;
+    border-color: #000c2a;
+    border-style: solid;
+    border-width: 1.5px;
+    border-radius: 2px;
+    height: 30px;
+    width: 75px;
+    text-align: center;
+    vertical-align: center;
+    line-height: 25px;
+    transition: background-color 300ms ease-out;
+}
+
+.details-button:hover {
+    background-color: #00478f;
+    color: whitesmoke;
+    cursor: pointer;
+}
+
+.trip-start {
+    flex: 0.15;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.trip-bar {
+    flex: 0.7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.trip-icon {
+    display: flex;
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    background-color: whitesmoke;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #000c2a;
+    color: #000c2a;
+    transform: translate(-50%, 0);
+    left: 0;
+}
+
+.trip-icon > span {
+    position: absolute;
+    top: 33px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.bar {
+    height: 4px;
+    width: 100%;
+    background-color: #f8951f;
+}
+
+.trip-end {
+    flex: 0.15;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

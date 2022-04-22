@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
 
 * {
     box-sizing: border-box;
@@ -71,12 +71,12 @@ body {
     color: whitesmoke;
 }
 
-.nav-links div {
-    margin-right: 5vw;
+.nav-links > div {
+    margin-right: 8vw;
 }
 
 .nav-logo a {
-    margin-left: 5vw;
+    margin-left: 8vw;
 }
 
 .bg {
@@ -152,12 +152,31 @@ body {
     align-items: center;
 }
 
-.right-content img {
+.placeholder-img {
+    width: 60vh;
+    height: 60vh;
     position: relative;
     object-fit: cover;
-    height: 60vh;
+}
+
+.preview-img1 {
+    position: relative;
+    object-fit: cover;
+    border: 0.5px solid gray;
     width: 60vh;
-    border-radius: 5px;
+    border-radius: 0px;
+    transform: perspective(600px) rotateY(-20deg) rotateX(0deg);
+    box-shadow: 10px 15px 20px 5px rgba(0, 0, 0, 0.35);
+}
+
+.preview-img2 {
+    position: absolute;
+    object-fit: cover;
+    border: 0.5px solid gray;
+    width: 50vh;
+    border-radius: 0px;
+    transform: perspective(600px) rotateY(-20deg) rotateX(0deg) translateX(-120px) translateY(40px);
+    box-shadow: 10px 15px 20px 5px rgba(0, 0, 0, 0.35);
 }
 
 .button {
