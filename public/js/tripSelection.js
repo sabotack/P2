@@ -1,12 +1,13 @@
 import { tripServiceCallAPI } from './rejseplanen.js';
 import { getDetailedJourney, createDetailsBox } from './detailsBox.js';
 
-export { createTripSelection, createNewTrip, tripSelected };
+export { createTripSelection, createNewTrip, tripSelected, selectedTrip };
 
 export function setSelectedTrip(value) {
     tripSelected = value;
 }
 let tripSelected = '';
+let selectedTrip = '';
 
 function createTripSelection(tripData, tripBox) {
     deleteList(tripBox);
@@ -26,17 +27,15 @@ function createNewTrip(tripElement, tripBox) {
     //Create html elements for the trip box
     let trip = document.createElement('div');
     trip.setAttribute('class', 'trip');
-    trip.addEventListener('click', () => {
+    trip.addEventListener('click', (event) => {
         tripBox.childNodes.forEach((element) => {
             element.classList.remove('trip-selected');
         });
-
         trip.classList.add('trip-selected');
-
         let addBtn = tripBox.parentElement.children[2].children[1];
         addBtn.classList.remove('disabled');
-
         tripSelected = tripElement;
+        selectedTrip = trip;
     });
 
     let tripTop = document.createElement('div');
@@ -65,12 +64,30 @@ function createNewTrip(tripElement, tripBox) {
 
     let detailsButton = document.createElement('div');
     detailsButton.setAttribute('class', 'details-button');
+    detailsButton.setAttribute('id', 'dropDownDetails');
     detailsButton.append('Details');
 
     detailsButton.addEventListener('click', () => {
-        console.log('clicked on details button');
-        let transportDetailPicked = tripElement;
-        createDetailsBox(trip, transportDetailPicked);
+
+        let details = document.querySelector('#' + trip.id + 'details-List');
+
+        console.log(!details);
+
+        if(!details){
+
+            let transportDetailPicked = tripElement;
+            createDetailsBox(trip, transportDetailPicked);
+
+        }
+        else{
+            if(details.style.display === 'none'){
+                details.style.display = 'block';
+            }
+            else {
+                details.style.display = 'none';
+            }
+        }
+  
     });
 
     //Insert the right elements under the right parent-nodes
@@ -273,4 +290,11 @@ function countTripChanges(data) {
 
 function deleteList(tripBox) {
     tripBox.textContent = '';
+}
+
+function deleteDetails() {
+    let details = document.querySelector('.details-content');
+    if (details != null) {
+       details.remove();
+    }
 }
