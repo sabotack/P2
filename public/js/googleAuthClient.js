@@ -1,3 +1,5 @@
+export { submitForm };
+
 async function submitForm(events) {
     let eventsIsAccepted = await validateEventsObj(events);
     if (eventsIsAccepted.isValid == false) {

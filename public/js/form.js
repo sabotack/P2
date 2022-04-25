@@ -1,3 +1,4 @@
+import { submitForm } from './googleAuthClient.js';
 import { autocomplete } from './autocomplete.js';
 import { selectedTripObject, setSelectedTrip, selectedTrip } from './tripSelection.js';
 import { checkRequiredTransportTo, checkRequiredTransportFrom } from './checks.js';
@@ -36,8 +37,8 @@ formSubmit.addEventListener('click', (event) => {
     let title = eventTitle.value;
     let location = eventLocation.value;
     let description = '';
-    let dateTimeStart = eventStartDate.value + 'T' + eventStartTime.value;
-    let dateTimeEnd = eventEndDate.value + 'T' + eventEndTime.value;
+    let dateTimeStart = eventStartDate.value + 'T' + eventStartTime.value + ':00';
+    let dateTimeEnd = eventEndDate.value + 'T' + eventEndTime.value + ':00';
     events[1] = new Event(title, location, description, dateTimeStart, dateTimeEnd);
 
     console.log(events);
@@ -58,9 +59,9 @@ modalButtons[1].addEventListener('click', () => {
     let title = 'Pre-event transport';
     let location = getFirstStopName(selectedTripObject);
     let description = '';
-    let dateTimeStart = eventStartDate.value + 'T' + selectedTripObject['0']['Leg']['0'][':@']['@_time'];
-    let dateTimeEnd =
-        eventStartDate.value + 'T' + selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'];
+    let dateTimeStart = eventStartDate.value + 'T' + selectedTripObject['0']['Leg']['0'][':@']['@_time'] + ':00';
+    let dateTimeEnd = eventStartDate.value + 'T' +
+                        selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'] + ':00';
     events[0] = new Event(title, location, description, dateTimeStart, dateTimeEnd);
 
     preEventModal.style.display = 'none';
@@ -83,9 +84,9 @@ modalButtons[3].addEventListener('click', () => {
     let title = 'Post-event transport';
     let location = getFirstStopName(selectedTripObject);
     let description = '';
-    let dateTimeStart = eventEndDate.value + 'T' + selectedTripObject['0']['Leg']['0'][':@']['@_time'];
+    let dateTimeStart = eventEndDate.value + 'T' + selectedTripObject['0']['Leg']['0'][':@']['@_time'] + ':00';
     let dateTimeEnd =
-        eventEndDate.value + 'T' + selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'];
+        eventEndDate.value + 'T' + selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'] + ':00';
     events[2] = new Event(title, location, description, dateTimeStart, dateTimeEnd);
 
     postEventModal.style.display = 'none';
@@ -175,11 +176,11 @@ function Event(title, location, description, dateTimeStart, dateTimeEnd) {
     this.colorId = 6;
     this.description = description;
     this.start = {
-        datetime: dateTimeStart,
+        dateTime: dateTimeStart,
         timeZone: 'Europe/Copenhagen'
     };
     this.end = {
-        datetime: dateTimeEnd,
+        dateTime: dateTimeEnd,
         timeZone: 'Europe/Copenhagen'
     };
-}
+}  

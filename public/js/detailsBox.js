@@ -48,10 +48,3 @@ function collectDetailURLs(input) {
 
     return detailURLsObject;
 }
-
-function getDetailedJourney(inputTrip) {
-    //curDetails = document.querySelector()
-    detailServiceCallAPI(inputTrip.value).then((response) => {
-        showDetails.innerHTML += 'lolol';
-    });
-}
