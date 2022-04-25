@@ -33,6 +33,10 @@ autocomplete(preEventLocation);
 autocomplete(postEventLocation);
 
 formSubmit.addEventListener('click', (event) => {
+    if(!document.querySelector('form').checkValidity()) {
+        return false;
+    }
+
     event.preventDefault();
     let title = eventTitle.value;
     let location = eventLocation.value;
