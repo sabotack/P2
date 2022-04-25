@@ -6,7 +6,7 @@ async function submitForm(events) {
         saveAndValidateEventsOnServer(events).then((eventsIsValid) => {
             console.log(eventsIsValid.body);
             if (eventsIsValid.body == false) {
-                window.alert("Server did not accept submitted event");
+                window.alert('Server did not accept submitted event');
             } else {
                 handleGoogleAuth();
             }
@@ -19,8 +19,8 @@ async function createEventsObj() {
     testEvents[1] = {
         summary: 'GG',
         location: '800 Howard St., San Francisco, CA 94103',
-        description: "<h1>Test</h1> test",
-        colorId: "7",
+        description: '<h1>Test</h1> test',
+        colorId: '7',
         start: {
             dateTime: '2022-04-25T12:00:00',
             timeZone: 'Europe/Copenhagen'
@@ -29,12 +29,12 @@ async function createEventsObj() {
             dateTime: '2022-04-25T17:00:00',
             timeZone: 'Europe/Copenhagen'
         }
-        }
+    };
     testEvents[2] = {
         summary: 'Simon fuck off',
         location: '800 Howard St., San Francisco, CA 94103',
         description: "A chance to hear more about Google's developer products.",
-        colorId: "5",
+        colorId: '5',
         start: {
             dateTime: '2022-04-25T12:00:00',
             timeZone: 'Europe/Copenhagen'
@@ -43,23 +43,25 @@ async function createEventsObj() {
             dateTime: '2022-04-25T17:00:00',
             timeZone: 'Europe/Copenhagen'
         }
-    }
+    };
     return testEvents;
 }
 
 async function validateEventsObj(events) {
     let validateObj = {
         isValid: true,
-        comment: ""
+        comment: ''
     };
 
-    try{
-        if(isNumberOfEventsValid(events) == false) throw "Number of events not accepted";
+    try {
+        if (isNumberOfEventsValid(events) == false) throw 'Number of events not accepted';
         for (let event of events) {
-            if(events[event] != null) {
-                if(isTitleValid(events[event]) == false) throw "Missing title of event";
-                if(isEndDatetimeAfterStartDatetime(events[event]) == false) throw "End date/time of event '" + events[event].summary + "' is before start date/time";
-                if(isStartDateTimeInPast(events[event]) == false) throw "Start date/time of event '" + events[event].summary + "' is in the past";
+            if (events[event] != null) {
+                if (isTitleValid(events[event]) == false) throw 'Missing title of event';
+                if (isEndDatetimeAfterStartDatetime(events[event]) == false)
+                    throw "End date/time of event '" + events[event].summary + "' is before start date/time";
+                if (isStartDateTimeInPast(events[event]) == false)
+                    throw "Start date/time of event '" + events[event].summary + "' is in the past";
             }
         }
     } catch (err) {
@@ -67,12 +69,12 @@ async function validateEventsObj(events) {
         validateObj.comment = err;
         return validateObj;
     }
-    
+
     return validateObj;
 }
 
 function isTitleValid(event) {
-    if (event.summary === "") {
+    if (event.summary === '') {
         return false;
     }
 }
@@ -84,16 +86,16 @@ function isNumberOfEventsValid(events) {
 }
 
 function isEndDatetimeAfterStartDatetime(event) {
-    if(event.start.dateTime >= event.end.dateTime) {
+    if (event.start.dateTime >= event.end.dateTime) {
         return false;
     }
 }
 
 function isStartDateTimeInPast(event) {
-    let tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
-    let localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -5);
+    let tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+    let localISOTime = new Date(Date.now() - tzoffset).toISOString().slice(0, -5);
 
-    if(event.start.dateTime <= localISOTime) {
+    if (event.start.dateTime <= localISOTime) {
         return false;
     }
 }
@@ -111,10 +113,10 @@ async function handleGoogleAuth(googleRespones) {
 
 async function saveAndValidateEventsOnServer(events) {
     let response = await postEventsServer(events);
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
         // do some async task
         resolve(response);
-     });
+    });
 }
 
 async function postEventsServer(events) {
@@ -122,14 +124,15 @@ async function postEventsServer(events) {
         method: 'POST',
         headers: { 'Content-type': 'application/json; charset=UTF-8' },
         body: JSON.stringify(events)
-    }).then(response => {
-        return response.json();
-    }).then(jsonRes => {
-        console.log(jsonRes);
-        return jsonRes;
-    });
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((jsonRes) => {
+            console.log(jsonRes);
+            return jsonRes;
+        });
 }
-
 
 //function that validates idToken with Google
 //*NEW* function is no longer in use

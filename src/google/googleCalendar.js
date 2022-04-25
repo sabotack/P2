@@ -46,13 +46,12 @@ async function saveEventsOnServer(request, response) {
             response.end();
             console.log('Events accepted by server');
         } else {
-            eventsToPost = "";
+            eventsToPost = '';
             response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
             response.write(JSON.stringify({ body: false }));
             response.end();
             console.log('Events was not accepted by server');
         }
-        
     });
 }
 
