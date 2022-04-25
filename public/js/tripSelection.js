@@ -1,5 +1,5 @@
 import { tripServiceCallAPI } from './rejseplanen.js';
-import { getDetailedJourney, createDetailsBox } from './detailsBox.js';
+import { createDetailsBox } from './detailsBox.js';
 
 export { createTripSelection, createNewTrip, selectedTripObject, selectedTrip };
 
