@@ -18,7 +18,7 @@ function createDetailsBox(trip, transportDetailPicked) {
                 if ('Stop' in element){ 
                     test.innerHTML += "Stop Name: <b>"+element[':@']['@_name']+'</b> ';
                     if ('@_depTime' in element[':@']){
-                        test.innerHTML += "Departue Time: <b>"+element[':@']['@_depTime']+'</b> ';
+                        test.innerHTML += "Departure Time: <b>"+element[':@']['@_depTime']+'</b> ';
                     }
                     else if('@_arrTime' in element[':@']){
                         test.innerHTML += "Arrival Time: <b>"+element[':@']['@_arrTime']+'</b> ';
