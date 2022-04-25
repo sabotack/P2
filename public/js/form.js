@@ -31,13 +31,18 @@ autocomplete(eventLocation);
 autocomplete(preEventLocation);
 autocomplete(postEventLocation);
 
-formSubmit.addEventListener('click', () => {
+formSubmit.addEventListener('click', (event) => {
+    event.preventDefault();
     let title = eventTitle.value;
-    let location = getFirstStopName(selectedTripObject);
+    let location = eventLocation.value
     let description = '';
-    let dateTimeStart = eventStartDate.value + 'T' + selectedTripObject['0']['Leg']['0'][':@']['@_time'];
+    let dateTimeStart = eventStartDate.value + 'T' + eventStartTime.value;
     let dateTimeEnd = eventEndDate.value + 'T' + eventEndTime.value;
     events[1] = new Event(title, location, description, dateTimeStart, dateTimeEnd);
+
+    console.log(events);
+
+    submitForm(events);
 });
 
 // Cancel button for add transport to event modal
@@ -50,15 +55,18 @@ modalButtons[0].addEventListener('click', () => {
 
 // Add button for add transport to event modal
 modalButtons[1].addEventListener('click', () => {
+    let title = 'Pre-event transport';
+    let location = getFirstStopName(selectedTripObject);
+    let description = '';
+    let dateTimeStart = eventStartDate.value + 'T' + selectedTripObject['0']['Leg']['0'][':@']['@_time'];
+    let dateTimeEnd = eventStartDate.value + 'T' + selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'];;
+    events[0] = new Event(title, location, description, dateTimeStart, dateTimeEnd);
+    
     preEventModal.style.display = 'none';
     addSelectedTrip(preEventLocation, addToBtn, selectedTripObject);
-    
-    events[0] = new Event('Pre-event transport', getFirstStopName(selectedTripObject), '', eventStartDate.value + 'T' + eventStartTime.value, eventEndDate.value + 'T' + eventEndTime.value);
-    
     setSelectedTrip('');
     selectedTrip.classList.remove('trip-selected');
     modalButtons[1].classList.add('disabled');
-
 });
 
 // Cancel button for add transport from event modal
@@ -71,13 +79,18 @@ modalButtons[2].addEventListener('click', () => {
 
 // Add button for add transport from event modal
 modalButtons[3].addEventListener('click', () => {
+    let title = 'Post-event transport';
+    let location = getFirstStopName(selectedTripObject);
+    let description = '';
+    let dateTimeStart = eventEndDate.value + 'T' + selectedTripObject['0']['Leg']['0'][':@']['@_time'];
+    let dateTimeEnd = eventEndDate.value + 'T' + selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'];;
+    events[2] = new Event(title, location, description, dateTimeStart, dateTimeEnd);
+
     postEventModal.style.display = 'none';
     addSelectedTrip(postEventLocation, addFromBtn, selectedTripObject);
     setSelectedTrip('');
     selectedTrip.classList.remove('trip-selected');
     modalButtons[3].classList.add('disabled');
-
-    events[2] = new Event('Pre-event transport', preEventLocation.value, '', eventStartDate.value + 'T' + eventStartTime.value, eventEndDate.value + 'T' + eventEndTime.value);
 });
 
 preEventModal.addEventListener('click', (event) => {

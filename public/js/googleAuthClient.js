@@ -1,5 +1,4 @@
-async function submitForm(googleResponse) {
-    let events = await createEventsObj();
+async function submitForm(events) {
     let eventsIsAccepted = await validateEventsObj(events);
     if (!eventsIsAccepted) {
         window.alert('Events submitted is not accepted');
