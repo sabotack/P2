@@ -39,7 +39,7 @@ formSubmit.addEventListener('click', (event) => {
     let description = '';
     let dateTimeStart = eventStartDate.value + 'T' + eventStartTime.value + ':00';
     let dateTimeEnd = eventEndDate.value + 'T' + eventEndTime.value + ':00';
-    events[1] = new Event(title, location, description, dateTimeStart, dateTimeEnd);
+    events[1] = new Event(title, location, description, dateTimeStart, dateTimeEnd, 9);
 
     console.log(events);
 
@@ -62,7 +62,7 @@ modalButtons[1].addEventListener('click', () => {
     let dateTimeStart = eventStartDate.value + 'T' + selectedTripObject['0']['Leg']['0'][':@']['@_time'] + ':00';
     let dateTimeEnd = eventStartDate.value + 'T' +
                         selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'] + ':00';
-    events[0] = new Event(title, location, description, dateTimeStart, dateTimeEnd);
+    events[0] = new Event(title, location, description, dateTimeStart, dateTimeEnd, 6);
 
     preEventModal.style.display = 'none';
     addSelectedTrip(preEventLocation, addToBtn, selectedTripObject);
@@ -87,7 +87,7 @@ modalButtons[3].addEventListener('click', () => {
     let dateTimeStart = eventEndDate.value + 'T' + selectedTripObject['0']['Leg']['0'][':@']['@_time'] + ':00';
     let dateTimeEnd =
         eventEndDate.value + 'T' + selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'] + ':00';
-    events[2] = new Event(title, location, description, dateTimeStart, dateTimeEnd);
+    events[2] = new Event(title, location, description, dateTimeStart, dateTimeEnd, 6);
 
     postEventModal.style.display = 'none';
     addSelectedTrip(postEventLocation, addFromBtn, selectedTripObject);
@@ -170,10 +170,10 @@ function addSelectedTrip(locationInput, button, selectedTripObject) {
     eventLocationSelected.appendChild(eventTime);
 }
 
-function Event(title, location, description, dateTimeStart, dateTimeEnd) {
+function Event(title, location, description, dateTimeStart, dateTimeEnd, color) {
     this.summary = title;
     this.location = location;
-    this.colorId = 6;
+    this.colorId = color;
     this.description = description;
     this.start = {
         dateTime: dateTimeStart,

@@ -1,4 +1,4 @@
-export { getDetailedJourney, createDetailsBox };
+export { createDetailsBox };
 import { detailServiceCallAPI } from './rejseplanen.js';
 
 function createDetailsBox(trip, transportDetailPicked) {
