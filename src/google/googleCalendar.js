@@ -1,8 +1,9 @@
-export { listEvents, postEvents, saveEventsOnServer, eventsToPost, isEventsToPostValid };
+export { listEvents, postEvents, saveEventsOnServer, eventsToPost };
 import { google } from 'googleapis';
 import { oauth2Client } from './googleAuthServer.js';
+import {validateEventsObj} from '../validation.js';
 
-let eventsToPost = '';
+let eventsToPost;
 
 //function lists events in given calendar.
 function listEvents() {
@@ -34,13 +35,17 @@ function listEvents() {
 
 async function saveEventsOnServer(request, response) {
     let jsonString;
-    request.on('data', function (data) {
+    let validationResponse;
+
+    await request.on('data', (data) => {
         jsonString = JSON.parse(data);
         eventsToPost = jsonString;
     });
 
+    validationResponse = await validateEventsObj(eventsToPost);
+    
     request.on('end', () => {
-        if (isEventsToPostValid(eventsToPost)) {
+        if (validationResponse) {
             response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
             response.write(JSON.stringify({ body: 'events stored at server' }));
             response.end();
@@ -55,13 +60,8 @@ async function saveEventsOnServer(request, response) {
     });
 }
 
-function isEventsToPostValid(events) {
-    return true;
-}
-
 //function that posts an array of events to the newly logged-in user
 function postEvents(events) {
-    console.log(events);
     const calendar = google.calendar({ version: 'v3' });
     for (let event in events) {
         calendar.events.insert(

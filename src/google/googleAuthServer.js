@@ -1,5 +1,5 @@
 export { handleGoogleAuthResponse, getAuthorizationURL, oauth2Client, validateIdToken };
-import { listEvents, postEvents, eventsToPost, isEventsToPostValid } from './googleCalendar.js';
+import { listEvents, postEvents, eventsToPost } from './googleCalendar.js';
 import { google } from 'googleapis';
 import { OAuth2Client } from 'google-auth-library'; //Contructor function from google
 const GOOGLE_CLIENT_ID = `564813831875-k9pb4mc6qh31agppeaos7ort3ng16gni.apps.googleusercontent.com`;
@@ -80,7 +80,8 @@ async function handleGoogleAuthResponse(request, response) {
         await isIdTokenGoogleVerified(oauth2Client.credentials.id_token);
         response.writeHead(301, { Location: 'http://localhost:3000/form.html' }); //Redirects to the form.html page after the authorization process has happened
         response.end();
-        listEvents();
+        //listEvents();
+        console.log(eventsToPost);
         postEvents(eventsToPost);
     }
 }
