@@ -40,9 +40,18 @@ async function saveEventsOnServer(request, response) {
     });
 
     request.on('end', () => {
-        response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
-        response.write(JSON.stringify({ body: 'events stored at server' }));
-        response.end();
+        if (isEventsToPostValid(eventsToPost)) {
+            response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
+            response.write(JSON.stringify({ body: 'events stored at server' }));
+            response.end();
+            console.log('Events accepted by server');
+        } else {
+            eventsToPost = '';
+            response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
+            response.write(JSON.stringify({ body: false }));
+            response.end();
+            console.log('Events was not accepted by server');
+        }
     });
 }
 

@@ -80,14 +80,8 @@ async function handleGoogleAuthResponse(request, response) {
         await isIdTokenGoogleVerified(oauth2Client.credentials.id_token);
         response.writeHead(301, { Location: 'http://localhost:3000/form.html' }); //Redirects to the form.html page after the authorization process has happened
         response.end();
-
-        if (isEventsToPostValid(eventsToPost)) {
-            listEvents();
-            postEvents(eventsToPost);
-            console.log('Events accepted by server');
-        } else {
-            console.log('Events was not accepted by server');
-        }
+        listEvents();
+        postEvents(eventsToPost);
     }
 }
 
