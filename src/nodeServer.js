@@ -207,7 +207,6 @@ function getContentType(fPath) {
         '.otf': 'application/font-otf',
         '.wasm': 'application/wasm'
     };
-
     return mimeTypes[extensionName] || 'application/octet-stream';
 }
 

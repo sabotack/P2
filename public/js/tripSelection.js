@@ -1,19 +1,19 @@
 import { tripServiceCallAPI } from './rejseplanen.js';
 import { getDetailedJourney, createDetailsBox } from './detailsBox.js';
 
-export { createTripSelection, createNewTrip, tripSelected };
+export { createTripSelection, createNewTrip, selectedTripObject, selectedTrip };
 
 export function setSelectedTrip(value) {
-    tripSelected = value;
+    selectedTripObject = value;
 }
-let tripSelected = '';
+let selectedTripObject = '';
+let selectedTrip = '';
 
 function createTripSelection(tripData, tripBox) {
     deleteList(tripBox);
 
     tripServiceCallAPI(tripData).then((response) => {
         response.forEach((element) => {
-            console.log(element.Trip);
             createNewTrip(element.Trip, tripBox);
         });
     });
@@ -26,17 +26,15 @@ function createNewTrip(tripElement, tripBox) {
     //Create html elements for the trip box
     let trip = document.createElement('div');
     trip.setAttribute('class', 'trip');
-    trip.addEventListener('click', () => {
+    trip.addEventListener('click', (event) => {
         tripBox.childNodes.forEach((element) => {
             element.classList.remove('trip-selected');
         });
-
         trip.classList.add('trip-selected');
-
         let addBtn = tripBox.parentElement.children[2].children[1];
         addBtn.classList.remove('disabled');
-
-        tripSelected = tripElement;
+        selectedTripObject = tripElement;
+        selectedTrip = trip;
     });
 
     let tripTop = document.createElement('div');
@@ -65,13 +63,29 @@ function createNewTrip(tripElement, tripBox) {
 
     let detailsButton = document.createElement('div');
     detailsButton.setAttribute('class', 'details-button');
+    detailsButton.setAttribute('id', 'dropDownDetails');
     detailsButton.append('Details');
 
-    detailsButton.addEventListener('click', () => {
-        console.log('clicked on details button');
-        let transportDetailPicked = tripElement;
-        createDetailsBox(trip, transportDetailPicked);
-    });
+    detailsButton.addEventListener(
+        'click',
+        (e) => {
+            console.log(e.target.parentNode.parentNode);
+
+            createDetailsBox(e.target.parentNode.parentNode, tripElement);
+            console.log('create details box');
+
+            detailsButton.addEventListener('click', (e) => {
+                let x = e.target.parentNode.parentNode.nextSibling;
+
+                if (x.style.display == '') {
+                    x.style.display = 'none';
+                } else if (x.style.display == 'none') {
+                    x.style = 'show';
+                }
+            });
+        },
+        { once: true }
+    );
 
     //Insert the right elements under the right parent-nodes
     tripBox.appendChild(trip);
@@ -273,4 +287,11 @@ function countTripChanges(data) {
 
 function deleteList(tripBox) {
     tripBox.textContent = '';
+}
+
+function deleteDetails() {
+    let details = document.querySelector('.details-content');
+    if (details != null) {
+        details.remove();
+    }
 }

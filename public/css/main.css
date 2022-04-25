@@ -227,3 +227,9 @@ hr {
         flex-direction: column;
     }
 }
+
+.details-info {
+    text-align: left;
+    font-size: 16px;
+    font-weight: 100;
+}
