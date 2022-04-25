@@ -12,10 +12,8 @@ function createDetailsBox(trip, transportDetailPicked) {
     let postData = collectDetailURLs(transportDetailPicked);
     postData.forEach((element) => {
         detailServiceCallAPI(element).then((response) => {
-            console.log(response);
             response.forEach((element) => {
-                if ('Stop' in element){
-                    console.log(element); 
+                if ('Stop' in element){ 
                     test.innerHTML += "Stop Name: <b>"+element[':@']['@_name']+'</b> ';
                     if ('@_depTime' in element[':@']){
                         test.innerHTML += "Departue Time: <b>"+element[':@']['@_depTime']+'</b> ';
@@ -29,6 +27,8 @@ function createDetailsBox(trip, transportDetailPicked) {
             });
         });
     });
+
+    details.style.display = "show";
 
 }
 

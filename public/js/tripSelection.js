@@ -1,12 +1,12 @@
 import { tripServiceCallAPI } from './rejseplanen.js';
 import { getDetailedJourney, createDetailsBox } from './detailsBox.js';
 
-export { createTripSelection, createNewTrip, tripSelected, selectedTrip };
+export { createTripSelection, createNewTrip, selectedTripObject, selectedTrip };
 
 export function setSelectedTrip(value) {
-    tripSelected = value;
+    selectedTripObject = value;
 }
-let tripSelected = '';
+let selectedTripObject = '';
 let selectedTrip = '';
 
 function createTripSelection(tripData, tripBox) {
@@ -14,7 +14,6 @@ function createTripSelection(tripData, tripBox) {
 
     tripServiceCallAPI(tripData).then((response) => {
         response.forEach((element) => {
-            console.log(element.Trip);
             createNewTrip(element.Trip, tripBox);
         });
     });
@@ -34,7 +33,7 @@ function createNewTrip(tripElement, tripBox) {
         trip.classList.add('trip-selected');
         let addBtn = tripBox.parentElement.children[2].children[1];
         addBtn.classList.remove('disabled');
-        tripSelected = tripElement;
+        selectedTripObject = tripElement;
         selectedTrip = trip;
     });
 
@@ -67,28 +66,26 @@ function createNewTrip(tripElement, tripBox) {
     detailsButton.setAttribute('id', 'dropDownDetails');
     detailsButton.append('Details');
 
-    detailsButton.addEventListener('click', () => {
+    detailsButton.addEventListener('click', (e) => {
 
-        let details = document.querySelector('#' + trip.id + 'details-List');
+        console.log(e.target.parentNode.parentNode);
 
-        console.log(!details);
 
-        if(!details){
+        createDetailsBox(e.target.parentNode.parentNode, tripElement);    
+        console.log("create details box");
+        
+        detailsButton.addEventListener('click', (e) => {
+            let x = e.target.parentNode.parentNode.nextSibling;
 
-            let transportDetailPicked = tripElement;
-            createDetailsBox(trip, transportDetailPicked);
-
-        }
-        else{
-            if(details.style.display === 'none'){
-                details.style.display = 'block';
+            if (x.style.display == "") {
+                x.style.display = "none";
+            } else if (x.style.display == "none"){
+                x.style = "show";
             }
-            else {
-                details.style.display = 'none';
-            }
-        }
+
+        });
   
-    });
+    }, { once: true });
 
     //Insert the right elements under the right parent-nodes
     tripBox.appendChild(trip);
