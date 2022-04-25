@@ -3,17 +3,18 @@ import { detailServiceCallAPI } from './rejseplanen.js';
 
 function createDetailsBox(trip, transportDetailPicked) {
     let details = document.createElement('div');
-    details.setAttribute('id', trip.id + 'details-List');
     details.setAttribute('class', 'details-content');
     trip.after(details);
     let test = document.createElement('p');
     test.setAttribute('class', 'details-info');
     details.appendChild(test);
-
+    details.style.display = 'none';
     let postData = collectDetailURLs(transportDetailPicked);
     postData.forEach((element) => {
         detailServiceCallAPI(element).then((response) => {
+            
             console.log(response);
+
             response.forEach((element) => {
                 if ('Stop' in element) {
                     test.innerHTML += 'Stop Name: <b>' + element[':@']['@_name'] + '</b> ';
@@ -22,16 +23,14 @@ function createDetailsBox(trip, transportDetailPicked) {
                     } else if ('@_arrTime' in element[':@']) {
                         test.innerHTML += 'Arrival Time: <b>' + element[':@']['@_arrTime'] + '</b> ';
                     } else {
-                        console.log('nothing');
                     }
                     //test.innerHTML += "route: "+element[':@']['@_routeIdx']+' ';
                     test.innerHTML += '<br>';
                 }
             });
+            details.style.display = 'block';
         });
     });
-
-    details.style.display = 'show';
 }
 
 function collectDetailURLs(input) {

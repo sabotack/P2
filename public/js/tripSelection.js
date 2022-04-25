@@ -63,7 +63,6 @@ function createNewTrip(tripElement, tripBox) {
 
     let detailsButton = document.createElement('div');
     detailsButton.setAttribute('class', 'details-button');
-    detailsButton.setAttribute('id', 'dropDownDetails');
     detailsButton.append('Details');
 
     detailsButton.addEventListener(
@@ -77,10 +76,10 @@ function createNewTrip(tripElement, tripBox) {
             detailsButton.addEventListener('click', (e) => {
                 let x = e.target.parentNode.parentNode.nextSibling;
 
-                if (x.style.display == '') {
+                if (x.style.display == 'block') {
                     x.style.display = 'none';
                 } else if (x.style.display == 'none') {
-                    x.style = 'show';
+                    x.style.display = 'block';
                 }
             });
         },

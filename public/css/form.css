@@ -3,6 +3,11 @@ body {
     color: #555;
 }
 
+label {
+    font-size: 14px;
+    text-align: left;
+}
+
 .navbar {
     background-color: #00478f;
 }
@@ -86,7 +91,7 @@ body {
 .date-time {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: left;
     align-items: center;
     margin: 10px 0;
 }
@@ -263,6 +268,14 @@ body {
     background-color: #00478f;
     color: whitesmoke;
     cursor: pointer;
+}
+
+.details-info {
+    text-align: left;
+    font-size: 16px;
+    font-weight: 100;
+    margin: 0;
+    padding: 8px;
 }
 
 .trip-start {
