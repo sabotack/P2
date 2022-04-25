@@ -56,17 +56,13 @@ function removeBaseURL(input) {
         for (let j = 0; j < input[i]['Trip'].length; j++) {
             let legLength = input[i]['Trip'][j]['Leg'].length;
             let test = input[i]['Trip'][j]['Leg']['3'];
-            
-            input[i]['Trip'][j]['Leg'].forEach(leg => {
+
+            input[i]['Trip'][j]['Leg'].forEach((leg) => {
                 if ('JourneyDetailRef' in leg) {
-                    let tempString = leg[':@']['@_ref']
-                    leg[':@']['@_ref'] = tempString.replace(
-                        'http://webapp.rejseplanen.dk/bin//rest.exe/',
-                        ''
-                    );
+                    let tempString = leg[':@']['@_ref'];
+                    leg[':@']['@_ref'] = tempString.replace('http://webapp.rejseplanen.dk/bin//rest.exe/', '');
                 }
             });
-            
         }
     }
 

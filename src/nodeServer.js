@@ -206,7 +206,7 @@ function getContentType(fPath) {
         '.eot': 'application/vnd.ms-fontobject',
         '.otf': 'application/font-otf',
         '.wasm': 'application/wasm'
-    };  
+    };
     return mimeTypes[extensionName] || 'application/octet-stream';
 }
 

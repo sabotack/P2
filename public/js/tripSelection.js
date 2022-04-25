@@ -66,26 +66,26 @@ function createNewTrip(tripElement, tripBox) {
     detailsButton.setAttribute('id', 'dropDownDetails');
     detailsButton.append('Details');
 
-    detailsButton.addEventListener('click', (e) => {
+    detailsButton.addEventListener(
+        'click',
+        (e) => {
+            console.log(e.target.parentNode.parentNode);
 
-        console.log(e.target.parentNode.parentNode);
+            createDetailsBox(e.target.parentNode.parentNode, tripElement);
+            console.log('create details box');
 
+            detailsButton.addEventListener('click', (e) => {
+                let x = e.target.parentNode.parentNode.nextSibling;
 
-        createDetailsBox(e.target.parentNode.parentNode, tripElement);    
-        console.log("create details box");
-        
-        detailsButton.addEventListener('click', (e) => {
-            let x = e.target.parentNode.parentNode.nextSibling;
-
-            if (x.style.display == "") {
-                x.style.display = "none";
-            } else if (x.style.display == "none"){
-                x.style = "show";
-            }
-
-        });
-  
-    }, { once: true });
+                if (x.style.display == '') {
+                    x.style.display = 'none';
+                } else if (x.style.display == 'none') {
+                    x.style = 'show';
+                }
+            });
+        },
+        { once: true }
+    );
 
     //Insert the right elements under the right parent-nodes
     tripBox.appendChild(trip);
@@ -292,6 +292,6 @@ function deleteList(tripBox) {
 function deleteDetails() {
     let details = document.querySelector('.details-content');
     if (details != null) {
-       details.remove();
+        details.remove();
     }
 }

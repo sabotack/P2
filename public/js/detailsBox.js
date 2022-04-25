@@ -15,16 +15,14 @@ function createDetailsBox(trip, transportDetailPicked) {
         detailServiceCallAPI(element).then((response) => {
             console.log(response);
             response.forEach((element) => {
-                if ('Stop' in element){ 
-                    test.innerHTML += "Stop Name: <b>"+element[':@']['@_name']+'</b> ';
-                    if ('@_depTime' in element[':@']){
-                        test.innerHTML += "Departure Time: <b>"+element[':@']['@_depTime']+'</b> ';
-                    }
-                    else if('@_arrTime' in element[':@']){
-                        test.innerHTML += "Arrival Time: <b>"+element[':@']['@_arrTime']+'</b> ';
-                    }
-                    else{
-                        console.log("nothing");
+                if ('Stop' in element) {
+                    test.innerHTML += 'Stop Name: <b>' + element[':@']['@_name'] + '</b> ';
+                    if ('@_depTime' in element[':@']) {
+                        test.innerHTML += 'Departure Time: <b>' + element[':@']['@_depTime'] + '</b> ';
+                    } else if ('@_arrTime' in element[':@']) {
+                        test.innerHTML += 'Arrival Time: <b>' + element[':@']['@_arrTime'] + '</b> ';
+                    } else {
+                        console.log('nothing');
                     }
                     //test.innerHTML += "route: "+element[':@']['@_routeIdx']+' ';
                     test.innerHTML += '<br>';
@@ -33,8 +31,7 @@ function createDetailsBox(trip, transportDetailPicked) {
         });
     });
 
-    details.style.display = "show";
-
+    details.style.display = 'show';
 }
 
 function collectDetailURLs(input) {
