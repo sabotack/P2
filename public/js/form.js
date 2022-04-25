@@ -33,6 +33,10 @@ autocomplete(preEventLocation);
 autocomplete(postEventLocation);
 
 formSubmit.addEventListener('click', (event) => {
+    if (!document.querySelector('form').checkValidity()) {
+        return false;
+    }
+
     event.preventDefault();
     let title = eventTitle.value;
     let location = eventLocation.value;
@@ -60,8 +64,11 @@ modalButtons[1].addEventListener('click', () => {
     let location = getFirstStopName(selectedTripObject);
     let description = '';
     let dateTimeStart = eventStartDate.value + 'T' + selectedTripObject['0']['Leg']['0'][':@']['@_time'] + ':00';
-    let dateTimeEnd = eventStartDate.value + 'T' +
-                        selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'] + ':00';
+    let dateTimeEnd =
+        eventStartDate.value +
+        'T' +
+        selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'] +
+        ':00';
     events[0] = new Event(title, location, description, dateTimeStart, dateTimeEnd, 6);
 
     preEventModal.style.display = 'none';
@@ -86,7 +93,10 @@ modalButtons[3].addEventListener('click', () => {
     let description = '';
     let dateTimeStart = eventEndDate.value + 'T' + selectedTripObject['0']['Leg']['0'][':@']['@_time'] + ':00';
     let dateTimeEnd =
-        eventEndDate.value + 'T' + selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'] + ':00';
+        eventEndDate.value +
+        'T' +
+        selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'] +
+        ':00';
     events[2] = new Event(title, location, description, dateTimeStart, dateTimeEnd, 6);
 
     postEventModal.style.display = 'none';
@@ -183,4 +193,4 @@ function Event(title, location, description, dateTimeStart, dateTimeEnd, color) 
         dateTime: dateTimeEnd,
         timeZone: 'Europe/Copenhagen'
     };
-}  
+}

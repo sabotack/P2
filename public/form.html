@@ -7,6 +7,7 @@
             name="google-signin-client_id"
             content="949751936924-lm4a4d4kqhv01671h3dihu6gcstjsmv4.apps.googleusercontent.com"
         />
+        <link rel="icon" type="image/x-icon" href="/assets/logo.svg" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
         <link rel="stylesheet" href="css/main.css" />
         <link rel="stylesheet" href="css/form.css" />
@@ -17,7 +18,7 @@
             <div class="navbar">
                 <div class="nav-logo">
                     <a href="/">
-                        <img src="assets/logo.png" alt="RALENDER logo" />
+                        <img src="assets/logo.svg" alt="RALENDER logo" />
                     </a>
                 </div>
                 <div class="nav-title">
@@ -62,12 +63,36 @@
                                         required
                                     />
                                     <div class="date-time">
-                                        <input class="date datepicker" type="date" name="startdate" id="startdate" />
-                                        <input class="time timepicker" type="time" name="starttime" id="starttime" />
+                                        <input
+                                            class="date datepicker"
+                                            type="date"
+                                            name="startdate"
+                                            id="startdate"
+                                            required
+                                        />
+                                        <input
+                                            class="time timepicker"
+                                            type="time"
+                                            name="starttime"
+                                            id="starttime"
+                                            required
+                                        />
                                     </div>
                                     <div class="date-time">
-                                        <input class="date datepicker" type="date" name="enddate" id="enddate" />
-                                        <input class="time timepicker" type="time" name="endtime" id="endtime" />
+                                        <input
+                                            class="date datepicker"
+                                            type="date"
+                                            name="enddate"
+                                            id="enddate"
+                                            required
+                                        />
+                                        <input
+                                            class="time timepicker"
+                                            type="time"
+                                            name="endtime"
+                                            id="endtime"
+                                            required
+                                        />
                                     </div>
                                     <div class="autocomplete">
                                         <input
@@ -77,6 +102,7 @@
                                             name="eventlocation"
                                             id="eventlocation"
                                             placeholder="Event location"
+                                            required
                                         />
                                     </div>
                                     <textarea
@@ -122,7 +148,6 @@
             </div>
         </div>
         <script type="module" src="js/form.js"></script>
-        <script src="js/googleAuthClient.js"></script>
         <script src="https://accounts.google.com/gsi/client" async defer></script>
         <script src="https://kit.fontawesome.com/63b3537dc4.js" crossorigin="anonymous"></script>
     </body>
