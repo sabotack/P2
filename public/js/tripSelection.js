@@ -3,7 +3,7 @@ import { createDetailsBox } from './detailsBox.js';
 
 export { createTripSelection, createNewTrip, selectedTripObject, selectedTrip };
 
-export function setSelectedTrip(value) {
+export function setSelectedTripObject(value) {
     selectedTripObject = value;
 }
 let selectedTripObject = '';
@@ -14,6 +14,7 @@ function createTripSelection(tripData, tripBox) {
 
     tripServiceCallAPI(tripData).then((response) => {
         response.forEach((element) => {
+            console.log(element.Trip);
             createNewTrip(element.Trip, tripBox);
         });
     });
@@ -216,7 +217,6 @@ function calcIconSpacings(tripElement, barWidth) {
 
     let tripTimesSum = tripTimes.reduce((a, b) => a + b, 0);
     let frac = 100 / tripTimesSum;
-    console.log('WIDTH: ' + barWidth);
 
     let iconSpacings = [];
     let j = 0;
