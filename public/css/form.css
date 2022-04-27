@@ -42,7 +42,7 @@ label {
     width: 100%;
     text-align: center;
     background-color: #eaeaea;
-    /* padding: 10px 20px; */
+    padding: 10px 20px;
     user-select: none;
 }
 
@@ -72,21 +72,20 @@ label {
     pointer-events: none;
 }
 
+.transport {
+    width: 100%;
+    position: relative;
+}
+
 .transport-button p {
     margin: 0;
 }
 
-.transport-button > p {
+/* .transport-button > p {
     margin: 10px 20px;
-}
+} */
 
 .transport-button:hover {
-    background-color: #e1e1e1;
-    cursor: pointer;
-}
-
-/* .transport-button:hover */
-.transport-info:hover {
     background-color: #e1e1e1;
     cursor: pointer;
 }
@@ -131,15 +130,10 @@ label {
     flex-direction: row; */
     text-align: left;
     font-size: 14px;
-    position: relative;
 }
 
 .event-time {
     font-size: 13px;
-}
-
-.transport-info {
-    padding: 10px 20px;
 }
 
 .transport-remove {
@@ -149,7 +143,9 @@ label {
     align-items: center;
     justify-content: center;
     position: absolute;
-    transform: translate(400px, -160%);
+    top: 50%;
+    right: 15px;
+    transform: translate(0, -50%);
 }
 
 .transport-remove:hover {

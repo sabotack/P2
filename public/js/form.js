@@ -164,11 +164,9 @@ function getFirstStopName(trip) {
 function addSelectedTrip(locationInput, button, selectedTripObject) {
     button.textContent = '';
 
-    let eventLocationSelected = document.createElement('div');
-    eventLocationSelected.classList.add('event-selected');
-
-    let transportInfo = document.createElement('div');
-    transportInfo.classList.add('transport-info');
+    /* let eventLocationSelected = document.createElement('div');
+    eventLocationSelected.classList.add('event-selected'); */
+    button.classList.add('event-selected');
 
     let transportRemove = document.createElement('div');
     transportRemove.classList.add('transport-remove');
@@ -176,14 +174,19 @@ function addSelectedTrip(locationInput, button, selectedTripObject) {
     let removeIcon = document.createElement('i');
     removeIcon.classList.add('fa-solid', 'fa-xmark', 'fa-xl');
 
-    removeIcon.addEventListener('click', () => {
+    transportRemove.addEventListener('click', () => {
         button.innerHTML = '';
+        button.classList.remove('event-selected');
+        button.parentElement.children[1].remove();
+
         let p = document.createElement('p');
         if(button === addTransportButtons[0]){
             p.textContent = '+ add transport to event';
+            events.splice(0);
         }
         else {
             p.textContent = '+ add transport from event';
+            events.splice(2);
         }
         button.appendChild(p);
     });
@@ -201,12 +204,10 @@ function addSelectedTrip(locationInput, button, selectedTripObject) {
         ' - ' +
         selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'];
 
-    button.appendChild(eventLocationSelected);
-    eventLocationSelected.appendChild(transportInfo);
-    eventLocationSelected.appendChild(transportRemove);
-    transportInfo.appendChild(transportTitle);
-    transportInfo.appendChild(eventLocation);
-    transportInfo.appendChild(eventTime);
+    button.appendChild(transportTitle);
+    button.appendChild(eventLocation);
+    button.appendChild(eventTime);
+    button.after(transportRemove);
     transportRemove.appendChild(removeIcon);
 }
 
