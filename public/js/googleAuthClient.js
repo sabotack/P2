@@ -1,175 +1,77 @@
+import { validateEventsObj } from './eventValidation.js';
 export { submitForm };
 
+//function that handles submission of form. Recieves array of event(s) as imput
 async function submitForm(events) {
-    let eventsIsAccepted = await validateEventsObj(events);
+    let eventsIsAccepted = await validateEventsObj(events); //client-side validation of events.
     if (eventsIsAccepted.isValid == false) {
+        //if events is not valid
         window.alert(eventsIsAccepted.comment);
     } else {
+        //if events is valid.
         saveAndValidateEventsOnServer(events).then((eventsIsValid) => {
-            console.log(eventsIsValid.body);
+            //post events to server where they are stored temporarily
             if (eventsIsValid.body == false) {
+                //server responds with wether events is valid or not.
                 window.alert('Server did not accept submitted event');
             } else {
+                //if server validated events, then sign in with google and post events to calendar.
                 handleGoogleAuth();
             }
         });
     }
 }
 
-async function createEventsObj() {
-    let testEvents = [];
-    testEvents[1] = {
-        summary: 'GG',
-        location: '800 Howard St., San Francisco, CA 94103',
-        description: '<h1>Test</h1> test',
-        colorId: '7',
-        start: {
-            dateTime: '2022-04-25T12:00:00',
-            timeZone: 'Europe/Copenhagen'
-        },
-        end: {
-            dateTime: '2022-04-25T17:00:00',
-            timeZone: 'Europe/Copenhagen'
-        }
-    };
-    testEvents[2] = {
-        summary: 'Simon fuck off',
-        location: '800 Howard St., San Francisco, CA 94103',
-        description: "A chance to hear more about Google's developer products.",
-        colorId: '5',
-        start: {
-            dateTime: '2022-04-25T12:00:00',
-            timeZone: 'Europe/Copenhagen'
-        },
-        end: {
-            dateTime: '2022-04-25T17:00:00',
-            timeZone: 'Europe/Copenhagen'
-        }
-    };
-    return testEvents;
-}
-
-async function validateEventsObj(events) {
-    let validateObj = {
-        isValid: true,
-        comment: ''
-    };
-
-    try {
-        if (isNumberOfEventsValid(events) == false) throw 'Number of events not accepted';
-        for (let event of events) {
-            if (events[event] != null) {
-                if (isTitleValid(events[event]) == false) throw 'Missing title of event';
-                if (isEndDatetimeAfterStartDatetime(events[event]) == false)
-                    throw "End date/time of event '" + events[event].summary + "' is before start date/time";
-                if (isStartDateTimeInPast(events[event]) == false)
-                    throw "Start date/time of event '" + events[event].summary + "' is in the past";
-            }
-        }
-    } catch (err) {
-        validateObj.isValid = false;
-        validateObj.comment = err;
-        return validateObj;
-    }
-
-    return validateObj;
-}
-
-function isTitleValid(event) {
-    if (event.summary === '') {
-        return false;
-    }
-}
-
-function isNumberOfEventsValid(events) {
-    if (events.length == 0 || events.length > 3) {
-        return false;
-    }
-}
-
-function isEndDatetimeAfterStartDatetime(event) {
-    if (event.start.dateTime >= event.end.dateTime) {
-        return false;
-    }
-}
-
-function isStartDateTimeInPast(event) {
-    let tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
-    let localISOTime = new Date(Date.now() - tzoffset).toISOString().slice(0, -5);
-
-    if (event.start.dateTime <= localISOTime) {
-        return false;
-    }
-}
-
-async function handleGoogleAuth(googleRespones) {
+//function that redirects user to google authorization
+async function handleGoogleAuth() {
     let urlResponse = await getAuthorizationURL(); //get authorization url from server.
     if (urlResponse != false) {
         //if redirect url is not returned, the server failed and client cannot be redirected.
         let jsonResponse = await urlResponse.json(); //converts response to json
-        window.location.href = jsonResponse.url; //opens the URL that enables user to
+        window.location.href = jsonResponse.url; //opens the URL that prompts login and authorization
     } else {
+        //if error on server, client gets error message.
         window.alert('Error in redirection to authorization procedure!'); //alert user that server failed and redirection did not happen
     }
 }
 
+//function that posts events to server
 async function saveAndValidateEventsOnServer(events) {
-    let response = await postEventsServer(events);
+    let response = await postEventsServer(events); //post events to server
     return new Promise((resolve, reject) => {
-        // do some async task
-        resolve(response);
+        //returns promise to enable ".then" in order to wait for validation respones from server.
+        resolve(response); //resolves response when it is recieved from server.
     });
 }
 
+//function does a fetch POST to server with events.
 async function postEventsServer(events) {
     return fetch('http://localhost:3000/saveEventsOnServer', {
+        //returns promise, and then proceeds to fetch server.
         method: 'POST',
         headers: { 'Content-type': 'application/json; charset=UTF-8' },
-        body: JSON.stringify(events)
+        body: JSON.stringify(events) //body contains stringified events in order to send accross network
     })
         .then((response) => {
+            //when response is recieved, convert it to json.
             return response.json();
         })
         .then((jsonRes) => {
-            console.log(jsonRes);
+            //when json response is recieved, return it
             return jsonRes;
         });
-}
-
-//function that validates idToken with Google
-//*NEW* function is no longer in use
-async function validateGoogleToken(googleResponse) {
-    let response = await fetch('http://localhost:3000/validateIdToken', {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-type': 'application/json; charset=UTF-8' },
-        body: googleResponse.credential
-    });
-    return response;
 }
 
 //function gets authorizationURL from server.
 async function getAuthorizationURL() {
     try {
         let redirectURL = await fetch(`http://localhost:3000/authorizationRedirect`, {
+            //get url from server endpoint
             method: 'GET'
         });
         return redirectURL;
     } catch {
+        //on server error, return false in order to notify client.
         return false;
     }
-}
-
-//  COOKIE-HANDLE
-//function creates session cookie at client
-function createSessionCookie(cookieName, cookieValue, exdays) {
-    const d = new Date();
-    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000); //converts days to ms
-    let expires = 'expires=' + d.toUTCString();
-    document.cookie = `${cookieName}=${cookieValue};${expires};path=/`;
-}
-
-//function deletes session cookie at client
-function deleteSessionCookie(cookieName) {
-    document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 }

@@ -5,7 +5,7 @@ import fetch from 'node-fetch';
 import { locationAPICall } from './rejseplanen/location.js';
 import { tripAPICall } from './rejseplanen/trip.js';
 import { detailAPICall } from './rejseplanen/journeyDetails.js';
-import { handleGoogleAuthResponse, getAuthorizationURL, validateIdToken } from './google/googleAuthServer.js';
+import { handleGoogleAuthResponse, writeAuthorizationURL } from './google/googleAuthServer.js';
 import { saveEventsOnServer } from './google/googleCalendar.js';
 
 //import https from 'https';
@@ -44,7 +44,7 @@ function processUserRequest(request, response) {
         case 'get':
             if (request.url.startsWith('/googleConsent')) {
                 //special case of google redirect where response is included in url
-                handleGoogleAuthResponse(request, response); //handles the redirect from google's authorization page where scopes are accepted.
+                handleGoogleAuthResponse(request, response); //handles google reponse in url
                 break;
             }
             switch (request.url) {
@@ -53,7 +53,7 @@ function processUserRequest(request, response) {
                     readFile(filePath, request, response);
                     break;
                 case `/authorizationRedirect`: //called from client when scopes needs to be accepted
-                    getAuthorizationURL(request, response);
+                    writeAuthorizationURL(request, response); //function handles call to endpoint
                     break;
                 default:
                     readFile(filePath, request, response);
@@ -62,18 +62,11 @@ function processUserRequest(request, response) {
             break;
         case 'post':
             switch (request.url) {
-                case `/validateIdToken`: //currently not used due to conflicts with double login-screens
-                    validateIdToken(request, response);
-                    break;
-                case '/create_event':
-                    createEventAPICallGC(); // Function will presumably go in another folder
-                    // Here will be the case to handle posted event data, presumably a JSON file built and sent from the frontend
-                    break;
                 case '/locationService':
                     locationServiceRequest(request, response);
                     break;
-                case '/saveEventsOnServer':
-                    saveEventsOnServer(request, response);
+                case '/saveEventsOnServer': //called from client when events is posted to be saved on server
+                    saveEventsOnServer(request, response); //saves posted events on server-side
                     break;
                 case '/tripService':
                     tripServiceRequest(request, response);
@@ -209,5 +202,3 @@ function getContentType(fPath) {
     };
     return mimeTypes[extensionName] || 'application/octet-stream';
 }
-
-function createEventAPICallGC() {}

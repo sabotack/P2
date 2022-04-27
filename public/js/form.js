@@ -210,21 +210,6 @@ function addSelectedTrip(locationInput, button, selectedTripObject) {
     transportRemove.appendChild(removeIcon);
 }
 
-function Event(title, location, description, dateTimeStart, dateTimeEnd, color) {
-    this.summary = title;
-    this.location = location;
-    this.colorId = color;
-    this.description = description;
-    this.start = {
-        dateTime: dateTimeStart,
-        timeZone: 'Europe/Copenhagen'
-    };
-    this.end = {
-        dateTime: dateTimeEnd,
-        timeZone: 'Europe/Copenhagen'
-    };
-}
-
 function transportDescriptionCreator(trip) {
     let description = '';
 
@@ -253,4 +238,19 @@ function transportDescriptionCreator(trip) {
     }
 
     return description;
+}
+
+function Event(title, location, description, dateTimeStart, dateTimeEnd, color) {
+    this.summary = title;
+    this.location = location;
+    this.colorId = color;
+    this.description = description;
+    this.start = {
+        dateTime: dateTimeStart,
+        timeZone: 'Europe/Copenhagen'
+    };
+    this.end = {
+        dateTime: dateTimeEnd,
+        timeZone: 'Europe/Copenhagen'
+    };
 }
