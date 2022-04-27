@@ -31,8 +31,10 @@
                     <div class="left-content">
                         <form action="">
                             <div class="info-box">
-                                <div class="transport-button">
-                                    <p>+ add transport to event</p>
+                                <div class="transport">
+                                    <div class="transport-button disabled">
+                                        <p>+ add transport to event</p>
+                                    </div>
                                 </div>
                                 <div id="pre-event-modal" class="modal">
                                     <div class="modal-content">
@@ -43,6 +45,7 @@
                                                 type="text"
                                                 name="pre-event-location"
                                                 id="pre-event-location"
+                                                maxlength="51"
                                                 placeholder="Pre-event location"
                                             />
                                         </div>
@@ -63,36 +66,40 @@
                                         required
                                     />
                                     <div class="date-time">
-                                        <input
-                                            class="date datepicker"
-                                            type="date"
-                                            name="startdate"
-                                            id="startdate"
-                                            required
-                                        />
-                                        <input
-                                            class="time timepicker"
-                                            type="time"
-                                            name="starttime"
-                                            id="starttime"
-                                            required
-                                        />
+                                        <label for="startdate"
+                                            >Startdate:<input
+                                                class="date datepicker"
+                                                type="date"
+                                                name="startdate"
+                                                id="startdate"
+                                                required
+                                        /></label>
+                                        <label for="starttime"
+                                            >Starttime:<input
+                                                class="time timepicker"
+                                                type="time"
+                                                name="starttime"
+                                                id="starttime"
+                                                required
+                                        /></label>
                                     </div>
                                     <div class="date-time">
-                                        <input
-                                            class="date datepicker"
-                                            type="date"
-                                            name="enddate"
-                                            id="enddate"
-                                            required
-                                        />
-                                        <input
-                                            class="time timepicker"
-                                            type="time"
-                                            name="endtime"
-                                            id="endtime"
-                                            required
-                                        />
+                                        <label for="enddate"
+                                            >Enddate:<input
+                                                class="date datepicker"
+                                                type="date"
+                                                name="enddate"
+                                                id="enddate"
+                                                required
+                                        /></label>
+                                        <label for="endtime"
+                                            >Endtime:<input
+                                                class="time timepicker"
+                                                type="time"
+                                                name="endtime"
+                                                id="endtime"
+                                                required
+                                        /></label>
                                     </div>
                                     <div class="autocomplete">
                                         <input
@@ -102,20 +109,23 @@
                                             name="eventlocation"
                                             id="eventlocation"
                                             placeholder="Event location"
+                                            maxlength="51"
                                             required
                                         />
                                     </div>
                                     <textarea
                                         class="formdescription"
                                         name="description"
-                                        id=""
+                                        id="eventdescription"
                                         cols="30"
                                         rows="10"
                                         placeholder="Description"
                                     ></textarea>
                                 </div>
-                                <div class="transport-button">
-                                    <p>+ add transport from event</p>
+                                <div class="transport">
+                                    <div class="transport-button disabled">
+                                        <p>+ add transport from event</p>
+                                    </div>
                                 </div>
                                 <div id="post-event-modal" class="modal">
                                     <div class="modal-content">
@@ -126,6 +136,7 @@
                                                 type="text"
                                                 name="post-event-location"
                                                 id="post-event-location"
+                                                maxlength="51"
                                                 placeholder="Post-event location"
                                             />
                                         </div>

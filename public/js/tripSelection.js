@@ -3,7 +3,7 @@ import { createDetailsBox } from './detailsBox.js';
 
 export { createTripSelection, createNewTrip, selectedTripObject, selectedTrip };
 
-export function setSelectedTrip(value) {
+export function setSelectedTripObject(value) {
     selectedTripObject = value;
 }
 let selectedTripObject = '';
@@ -14,6 +14,7 @@ function createTripSelection(tripData, tripBox) {
 
     tripServiceCallAPI(tripData).then((response) => {
         response.forEach((element) => {
+            console.log(element.Trip);
             createNewTrip(element.Trip, tripBox);
         });
     });
@@ -63,7 +64,6 @@ function createNewTrip(tripElement, tripBox) {
 
     let detailsButton = document.createElement('div');
     detailsButton.setAttribute('class', 'details-button');
-    detailsButton.setAttribute('id', 'dropDownDetails');
     detailsButton.append('Details');
 
     detailsButton.addEventListener(
@@ -77,10 +77,10 @@ function createNewTrip(tripElement, tripBox) {
             detailsButton.addEventListener('click', (e) => {
                 let x = e.target.parentNode.parentNode.nextSibling;
 
-                if (x.style.display == '') {
+                if (x.style.display == 'block') {
                     x.style.display = 'none';
                 } else if (x.style.display == 'none') {
-                    x.style = 'show';
+                    x.style.display = 'block';
                 }
             });
         },
@@ -217,7 +217,6 @@ function calcIconSpacings(tripElement, barWidth) {
 
     let tripTimesSum = tripTimes.reduce((a, b) => a + b, 0);
     let frac = 100 / tripTimesSum;
-    console.log('WIDTH: ' + barWidth);
 
     let iconSpacings = [];
     let j = 0;
