@@ -1,4 +1,4 @@
-export {validateEventsObj};
+export { validateEventsObj };
 
 //function that validates inputs on the client-side and returns the error message
 async function validateEventsObj(events) {
@@ -8,13 +8,11 @@ async function validateEventsObj(events) {
     };
 
     try {
-        if (isNumberOfEventsValid(events) == false) 
-            throw 'Number of events not accepted';
+        if (isNumberOfEventsValid(events) == false) throw 'Number of events not accepted';
         //each event is checked for missing title, end-time and start-time mismatch and start-date in the past
         for (let event in events) {
             if (events[event] != null) {
-                if (isTitleValid(events[event]) == false) 
-                    throw 'Missing title of event';
+                if (isTitleValid(events[event]) == false) throw 'Missing title of event';
                 if (isEndDatetimeAfterStartDatetime(events[event]) == false)
                     throw "End date/time of event '" + events[event].summary + "' is before start date/time";
                 if (isStartDateTimeInPast(events[event]) == false)
@@ -31,7 +29,8 @@ async function validateEventsObj(events) {
 }
 //Function that checks whether the Title/Summary of the event is valid.
 function isTitleValid(event) {
-    if (event.summary === '') {//Checks if the input box have been filled, if not it returns an error.
+    if (event.summary === '') {
+        //Checks if the input box have been filled, if not it returns an error.
         return false;
     }
 }
@@ -52,9 +51,10 @@ function isEndDatetimeAfterStartDatetime(event) {
 //Function that checks if the start time of the event has already happened.
 function isStartDateTimeInPast(event) {
     let tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
-    let localISOTime = new Date(Date.now() - tzoffset).toISOString().slice(0, -5);//Ignores milliseconds.
+    let localISOTime = new Date(Date.now() - tzoffset).toISOString().slice(0, -5); //Ignores milliseconds.
 
-    if (event.start.dateTime <= localISOTime) {//If the start time of the event is less than the actual time, then the function returns an error.
+    if (event.start.dateTime <= localISOTime) {
+        //If the start time of the event is less than the actual time, then the function returns an error.
         return false;
     }
 }
