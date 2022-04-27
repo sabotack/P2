@@ -5,7 +5,7 @@ import fetch from 'node-fetch';
 import { locationAPICall } from './rejseplanen/location.js';
 import { tripAPICall } from './rejseplanen/trip.js';
 import { detailAPICall } from './rejseplanen/journeyDetails.js';
-import { handleGoogleAuthResponse, getAuthorizationURL } from './google/googleAuthServer.js';
+import { handleGoogleAuthResponse, writeAuthorizationURL } from './google/googleAuthServer.js';
 import { saveEventsOnServer } from './google/googleCalendar.js';
 
 //import https from 'https';
@@ -53,7 +53,7 @@ function processUserRequest(request, response) {
                     readFile(filePath, request, response);
                     break;
                 case `/authorizationRedirect`: //called from client when scopes needs to be accepted
-                    getAuthorizationURL(request, response); //function handles call to endpoint
+                    writeAuthorizationURL(request, response); //function handles call to endpoint
                     break;
                 default:
                     readFile(filePath, request, response);

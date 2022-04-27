@@ -1,4 +1,4 @@
-export { handleGoogleAuthResponse, getAuthorizationURL, oauth2Client };
+export { handleGoogleAuthResponse, writeAuthorizationURL, oauth2Client };
 import { postEvents, eventsToPost } from './googleCalendar.js';
 import { google } from 'googleapis';
 const GOOGLE_CLIENT_ID = `564813831875-k9pb4mc6qh31agppeaos7ort3ng16gni.apps.googleusercontent.com`;
@@ -39,7 +39,7 @@ async function handleGoogleAuthResponse(request, response) {
 }
 
 //function to send google redirect url to client on fetch
-function getAuthorizationURL(request, response) {
+function writeAuthorizationURL(request, response) {
     let obj = { url: authorizationUrl }; //creates object containing url
     response.writeHead(200, { 'Content-Type': 'application/json' });
     response.write(JSON.stringify(obj)); //stringifies object to send it accross web
