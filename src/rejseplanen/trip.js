@@ -52,16 +52,16 @@ async function tripAPICall(parsedData) {
 }
 
 function removeBaseURL(input) {
-
     for (let i = 0; i < input.length; i++) {
         for (let j = 0; j < input[i]['Trip'].length; j++) {
-            for (let k = 0; k < input[i]['Trip'][j]['Leg'].length; k++){
-
-                if ('JourneyDetailRef' in input[i]['Trip'][j]['Leg'][k]){
-                    let tempString = input[i]['Trip'][j]['Leg'][k][':@']['@_ref']
-                    input[i]['Trip'][j]['Leg'][k][':@']['@_ref'] = tempString.replace('http://webapp.rejseplanen.dk/bin//rest.exe/', '');
+            for (let k = 0; k < input[i]['Trip'][j]['Leg'].length; k++) {
+                if ('JourneyDetailRef' in input[i]['Trip'][j]['Leg'][k]) {
+                    let tempString = input[i]['Trip'][j]['Leg'][k][':@']['@_ref'];
+                    input[i]['Trip'][j]['Leg'][k][':@']['@_ref'] = tempString.replace(
+                        'http://webapp.rejseplanen.dk/bin//rest.exe/',
+                        ''
+                    );
                 }
-            
             }
         }
     }

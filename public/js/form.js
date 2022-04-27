@@ -55,7 +55,7 @@ formSubmit.addEventListener('click', (event) => {
 modalButtons[0].addEventListener('click', () => {
     preEventModal.style.display = 'none';
     setSelectedTripObject('');
-    if(selectedTrip){
+    if (selectedTrip) {
         selectedTrip.classList.remove('trip-selected');
         modalButtons[1].classList.add('disabled');
     }
@@ -85,7 +85,7 @@ modalButtons[1].addEventListener('click', () => {
 modalButtons[2].addEventListener('click', () => {
     postEventModal.style.display = 'none';
     setSelectedTripObject('');
-    if(selectedTrip) {
+    if (selectedTrip) {
         selectedTrip.classList.remove('trip-selected');
         modalButtons[3].classList.add('disabled');
     }
@@ -180,17 +180,16 @@ function addSelectedTrip(locationInput, button, selectedTripObject) {
         button.parentElement.children[1].remove();
 
         let p = document.createElement('p');
-        if(button === addTransportButtons[0]){
+        if (button === addTransportButtons[0]) {
             p.textContent = '+ add transport to event';
             events.splice(0);
-        }
-        else {
+        } else {
             p.textContent = '+ add transport from event';
             events.splice(2);
         }
         button.appendChild(p);
     });
-    
+
     let transportTitle = document.createElement('p');
     transportTitle.classList.add('transport-title');
     transportTitle.textContent = button === addTransportButtons[0] ? 'Pre-event transport' : 'Post-event transport';
@@ -226,31 +225,30 @@ function Event(title, location, description, dateTimeStart, dateTimeEnd, color) 
     };
 }
 
-function transportDescriptionCreator(trip){
-
+function transportDescriptionCreator(trip) {
     let description = '';
 
-    for(let i = 0; i < trip.length; i++){
+    for (let i = 0; i < trip.length; i++) {
+        description +=
+            'Travel time: <b>' +
+            trip[i]['Leg'][0][':@']['@_time'] +
+            ' </b>' +
+            '→' +
+            '<b> ' +
+            trip[i]['Leg'][1][':@']['@_time'] +
+            '</b><br>';
+        description += 'Origin: <b>' + trip[i]['Leg'][0][':@']['@_name'] + '</b><br>';
 
-        description += 'Travel time: <b>'+trip[i]['Leg'][0][':@']['@_time']+' </b>'+'→'+'<b> '+trip[i]['Leg'][1][":@"]["@_time"]+'</b><br>';
-        description += 'Origin: <b>'+trip[i]['Leg'][0][':@']['@_name']+'</b><br>';
-
-        if (trip[i][":@"]["@_type"] == 'WALK'){
-
-            description += 'Transportation type: <b>' + trip[i][":@"]["@_type"]+'</b><br>';
-
+        if (trip[i][':@']['@_type'] == 'WALK') {
+            description += 'Transportation type: <b>' + trip[i][':@']['@_type'] + '</b><br>';
         } else {
-
-            description += 'Transportation name: <b>'+trip[i][":@"]["@_name"]+'</b><br>';
-
+            description += 'Transportation name: <b>' + trip[i][':@']['@_name'] + '</b><br>';
         }
 
-        description += 'Destination: <b>' + trip[i]['Leg'][1][":@"]["@_name"]+'</b><br>';
-        
-        if (i !== trip.length - 1){
+        description += 'Destination: <b>' + trip[i]['Leg'][1][':@']['@_name'] + '</b><br>';
 
-            description += '<br>'
-            
+        if (i !== trip.length - 1) {
+            description += '<br>';
         }
     }
 
