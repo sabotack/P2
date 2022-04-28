@@ -116,7 +116,8 @@ modalButtons[3].addEventListener('click', () => {
 });
 
 preEventModal.addEventListener('click', (event) => {
-    if (event.target == preEventModal) {
+                console.log("eventStartDate event listener");
+                if (event.target == preEventModal) {
         preEventModal.style.display = 'none';
         setSelectedTripObject('');
         modalButtons[1].classList.add('disabled');
@@ -180,93 +181,66 @@ function addSelectedTrip(locationInput, button, selectedTripObject) {
     let removeIcon = document.createElement('i');
     removeIcon.classList.add('fa-solid', 'fa-xmark', 'fa-xl');
 
-    transportRemove.addEventListener('click', () => {
-        removeTransport(button);
-    });
-
     let transportTitle = document.createElement('p');
     transportTitle.classList.add('transport-title');
     transportTitle.textContent = button === addTransportButtons[0] ? 'Pre-event transport' : 'Post-event transport';
-    let eventLocation = document.createElement('p');
-    if (button === addTransportButtons[0]) { // Pre-event
-        eventLocation.textContent = selectedTripObject[0]['Leg'][0][':@']['@_name'];
-    } else { // Post-event
-        let lastTrip = selectedTripObject.length-1;
-        eventLocation.textContent = selectedTripObject[lastTrip]['Leg'][0][':@']['@_name'];
-    }
-    eventLocation.classList.add('event-location');
+    let eventLocationText = document.createElement('p');
+    eventLocationText.classList.add('event-location');
     let eventTime = document.createElement('p');
     eventTime.classList.add('event-time');
     eventTime.textContent =
         selectedTripObject['0']['Leg']['0'][':@']['@_time'] +
         ' - ' +
         selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'];
-    
+
     button.appendChild(transportTitle);
-    button.appendChild(eventLocation);
+    button.appendChild(eventLocationText);
     button.appendChild(eventTime);
     button.after(transportRemove);
     transportRemove.appendChild(removeIcon);
 
-    if (button === addTransportButtons[0]) { // Pre-event
+    eventLocation.addEventListener('input', () => {
+        if(button.parentElement.children[1]){
+            removeTransport(button);  
+        }
+    }, {once: true});
+
+    transportRemove.addEventListener('click', () => {
+        removeTransport(button);
+    });
+    
+    // Button specific functions
+    if (button === addTransportButtons[0]) {
+        eventLocationText.textContent = selectedTripObject[0]['Leg'][0][':@']['@_name'];
 
         eventStartDate.addEventListener('input', () => {
-
             if (button.parentElement.children[1]){
-
                 removeTransport(button);
-                console.log("eventStartDate event listener");
-
             }
-
         }, { once: true });
     
         eventStartTime.addEventListener('input', () => {
-    
             if (button.parentElement.children[1]){
-
                 removeTransport(button);
-                console.log("eventStartDate event listener");
-
-            }
-            
+            }            
         }, { once: true });
 
-    } else { // Post-event
+    } else {
+        let lastTrip = selectedTripObject.length-1;
+        eventLocationText.textContent = selectedTripObject[lastTrip]['Leg'][0][':@']['@_name'];
 
         eventEndDate.addEventListener('input', () => {
-
             if (button.parentElement.children[1]){
-
                 removeTransport(button);
-                console.log("eventEndDate event listener");
-
             }
-
         }, { once: true });
     
         eventEndTime.addEventListener('input', () => {
-    
             if (button.parentElement.children[1]){
-
                 removeTransport(button);
-                console.log("eventEndTIme event listener");
-
             }
-            
         }, { once: true });
     }
-
-    document.querySelector('#eventlocation').addEventListener('input', () => {
-        if(button.parentElement.children[1]){
-
-            removeTransport(button);
-               
-        }
-    
-    }, {once: true});
-
-    
 }
 
 function transportDescriptionCreator(trip) {
