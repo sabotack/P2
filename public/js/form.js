@@ -308,7 +308,7 @@ function setMinDate(){
     mm='0'+mm
     } 
 
-today = yyyy+'-'+mm+'-'+dd;
+    today = yyyy+'-'+mm+'-'+dd;
 
     eventStartDate.setAttribute("min", today);
     eventEndDate.setAttribute("min", today);

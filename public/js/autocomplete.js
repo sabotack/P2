@@ -34,7 +34,7 @@ function autocomplete(input) {
 
         deleteList();
 
-        if (input.value == '' || input.value.length > 51) {
+        if (input.value == '') {
             return;
         }
 
