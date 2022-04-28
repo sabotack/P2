@@ -132,10 +132,10 @@ function createNewTrip(tripElement, tripBox) {
     }
 }
 
-function countTripChanges(data) {
+function countTripChanges(trip) {
     let counter = 0;
 
-    data.forEach((element) => {
+    trip.forEach((element) => {
         if (element[':@']['@_type'] !== 'WALK') {
             counter++;
         }
