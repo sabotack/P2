@@ -104,6 +104,11 @@ function locationServiceRequest(request, response) {
             response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
             response.write(JSON.stringify(data));
             response.end();
+        })
+        .catch((e) => {
+            console.log(e);
+            response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
+            response.end();
         });
     });
 }
@@ -127,6 +132,11 @@ function tripServiceRequest(request, response) {
         tripAPICall(parsedData).then((data) => {
             response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
             response.write(JSON.stringify(data));
+            response.end();
+        })
+        .catch((e) => {
+            console.log(e);
+            response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
             response.end();
         });
     });

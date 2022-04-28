@@ -52,6 +52,7 @@ async function tripAPICall(parsedData) {
 }
 
 function removeBaseURL(input) {
+    console.log(input);
     for (let i = 0; i < input.length; i++) {
         for (let j = 0; j < input[i]['Trip'].length; j++) {
             for (let k = 0; k < input[i]['Trip'][j]['Leg'].length; k++) {
