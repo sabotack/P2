@@ -6,7 +6,7 @@ export { tripAPICall };
 async function tripAPICall(parsedData) {
     for (let property in parsedData) {
         if(parsedData[property].length === 0) {
-            throw('ERROR: Received incomplete data from client');
+            throw('Received incomplete data from client');
         }
     }
 

@@ -54,8 +54,6 @@ formSubmit.addEventListener('click', (event) => {
     let dateTimeEnd = eventEndDate.value + 'T' + eventEndTime.value + ':00';
     events[1] = new Event(title, location, description, dateTimeStart, dateTimeEnd, 9);
 
-    console.log(events);
-
     submitForm(events);
 });
 
@@ -169,6 +167,8 @@ eventEndTime.addEventListener('input', () => {
 
 eventLocation.addEventListener('input', () => {
     setEventLocationPicked(false);
+    checkRequiredTransportFrom();
+    checkRequiredTransportTo();
 });
 
 function getFirstStopName(trip) {
