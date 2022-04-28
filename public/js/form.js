@@ -26,10 +26,11 @@ let eventEndTime = document.querySelector('#endtime');
 let eventEndDate = document.querySelector('#enddate');
 let eventDescription = document.querySelector('#eventdescription');
 
-
 let formSubmit = document.querySelector('#formsubmit');
 
 let events = [];
+
+setMaxDate(2); // Input parameter is how many months ahead you can select trips
 
 eventTitle.focus();
 autocomplete(eventLocation);
@@ -116,9 +117,8 @@ modalButtons[3].addEventListener('click', () => {
     modalButtons[3].classList.add('disabled');
 });
 
-preEventModal.addEventListener('click', (event) => {
-                console.log("eventStartDate event listener");
-                if (event.target == preEventModal) {
+preEventModal.addEventListener('click', (event) => {    
+    if (event.target == preEventModal) {
         preEventModal.style.display = 'none';
         setSelectedTripObject('');
         modalButtons[1].classList.add('disabled');
@@ -275,3 +275,21 @@ function Event(title, location, description, dateTimeStart, dateTimeEnd, color) 
     };
 }
 
+function setMaxDate(monthsAhead){
+
+    let today = new Date();
+
+    let test123 = addMonths(today, monthsAhead).toISOString().split("T")[0];
+    eventStartDate.max = test123;
+    eventEndDate.max = test123;
+
+}
+
+function addMonths(date, months) {
+    var d = date.getDate();
+    date.setMonth(date.getMonth() + +months);
+    if (date.getDate() != d) {
+      date.setDate(0);
+    }
+    return date;
+}
