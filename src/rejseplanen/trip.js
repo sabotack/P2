@@ -4,6 +4,12 @@ import { XMLParser } from 'fast-xml-parser';
 export { tripAPICall };
 
 async function tripAPICall(parsedData) {
+    for (let property in parsedData) {
+        if (parsedData[property].length === 0) {
+            throw 'Received incomplete data from client';
+        }
+    }
+
     let resultObject = [];
     const numOfTrips = 5;
 

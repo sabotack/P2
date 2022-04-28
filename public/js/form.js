@@ -1,9 +1,12 @@
-import { submitForm } from './googleAuthClient.js';
-import { autocomplete } from './autocomplete.js';
 import { selectedTripObject, setSelectedTripObject, selectedTrip } from './tripSelection.js';
 import { checkRequiredTransportTo, checkRequiredTransportFrom } from './checks.js';
+import { autocomplete, setEventLocationPicked } from './autocomplete.js';
+import { transportDescriptionCreator } from './tripDescription.js';
+import { addSelectedTrip } from './addSelectedTrip.js';
+import { convertToDate } from './dateConverter.js';
+import { submitForm } from './googleAuthClient.js';
 
-export { eventStartDate, eventStartTime, eventEndDate, eventEndTime, addToBtn, addFromBtn, eventLocation };
+export { eventStartDate, eventStartTime, eventEndDate, eventEndTime, addToBtn, addFromBtn, eventLocation, events };
 
 let addTransportButtons = document.querySelectorAll('.transport-button');
 let addToBtn = addTransportButtons[0],
@@ -28,6 +31,10 @@ let formSubmit = document.querySelector('#formsubmit');
 
 let events = [];
 
+setMaxDate(2); // Input parameter is how many months ahead you can select trips
+eventStartDate.valueAsDate = new Date();
+setMinDate();
+
 eventTitle.focus();
 autocomplete(eventLocation);
 autocomplete(preEventLocation);
@@ -46,8 +53,6 @@ formSubmit.addEventListener('click', (event) => {
     let dateTimeEnd = eventEndDate.value + 'T' + eventEndTime.value + ':00';
     events[1] = new Event(title, location, description, dateTimeStart, dateTimeEnd, 9);
 
-    console.log(events);
-
     submitForm(events);
 });
 
@@ -65,13 +70,14 @@ modalButtons[0].addEventListener('click', () => {
 modalButtons[1].addEventListener('click', () => {
     let title = 'Pre-event transport';
     let location = getFirstStopName(selectedTripObject);
-    let description = transportDescriptionCreator(selectedTripObject); // here asshole
-    let dateTimeStart = eventStartDate.value + 'T' + selectedTripObject['0']['Leg']['0'][':@']['@_time'] + ':00';
-    let dateTimeEnd =
-        eventStartDate.value +
-        'T' +
-        selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'] +
-        ':00';
+    let description = transportDescriptionCreator(selectedTripObject);
+    let dateStart = convertToDate(selectedTripObject['0']['Leg']['0'][':@']['@_date']);
+    let dateEnd = convertToDate(selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_date']);
+    let timeStart = selectedTripObject['0']['Leg']['0'][':@']['@_time'] + ':00';
+    let timeEnd = selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'] + ':00';
+
+    let dateTimeStart = dateStart + 'T' + timeStart;
+    let dateTimeEnd = dateEnd + 'T' + timeEnd;
     events[0] = new Event(title, location, description, dateTimeStart, dateTimeEnd, 6);
 
     preEventModal.style.display = 'none';
@@ -95,13 +101,14 @@ modalButtons[2].addEventListener('click', () => {
 modalButtons[3].addEventListener('click', () => {
     let title = 'Post-event transport';
     let location = getFirstStopName(selectedTripObject);
-    let description = transportDescriptionCreator(selectedTripObject); // here asshole
-    let dateTimeStart = eventEndDate.value + 'T' + selectedTripObject['0']['Leg']['0'][':@']['@_time'] + ':00';
-    let dateTimeEnd =
-        eventEndDate.value +
-        'T' +
-        selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'] +
-        ':00';
+    let description = transportDescriptionCreator(selectedTripObject);
+    let dateStart = convertToDate(selectedTripObject['0']['Leg']['0'][':@']['@_date']);
+    let dateEnd = convertToDate(selectedTripObject[selectedTripObject.length - 1]['Leg']['0'][':@']['@_date']);
+    let timeStart = selectedTripObject['0']['Leg']['0'][':@']['@_time'] + ':00';
+    let timeEnd = selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'] + ':00';
+
+    let dateTimeStart = dateStart + 'T' + timeStart;
+    let dateTimeEnd = dateEnd + 'T' + timeEnd;
     events[2] = new Event(title, location, description, dateTimeStart, dateTimeEnd, 6);
 
     postEventModal.style.display = 'none';
@@ -141,6 +148,10 @@ eventStartDate.addEventListener('input', () => {
     checkRequiredTransportTo();
 });
 
+eventStartDate.addEventListener('focusout', () => {
+    eventEndDate.valueAsDate = eventStartDate.valueAsDate;
+});
+
 eventStartTime.addEventListener('input', () => {
     checkRequiredTransportTo();
 });
@@ -153,6 +164,12 @@ eventEndTime.addEventListener('input', () => {
     checkRequiredTransportFrom();
 });
 
+eventLocation.addEventListener('input', () => {
+    setEventLocationPicked(false);
+    checkRequiredTransportFrom();
+    checkRequiredTransportTo();
+});
+
 function getFirstStopName(trip) {
     for (const element of trip) {
         if (element[':@']['@_type'] !== 'WALK') {
@@ -161,83 +178,39 @@ function getFirstStopName(trip) {
     }
 }
 
-function addSelectedTrip(locationInput, button, selectedTripObject) {
-    button.textContent = '';
+function setMaxDate(monthsAhead) {
+    let today = new Date();
 
-    /* let eventLocationSelected = document.createElement('div');
-    eventLocationSelected.classList.add('event-selected'); */
-    button.classList.add('event-selected');
-
-    let transportRemove = document.createElement('div');
-    transportRemove.classList.add('transport-remove');
-
-    let removeIcon = document.createElement('i');
-    removeIcon.classList.add('fa-solid', 'fa-xmark', 'fa-xl');
-
-    transportRemove.addEventListener('click', () => {
-        button.innerHTML = '';
-        button.classList.remove('event-selected');
-        button.parentElement.children[1].remove();
-
-        let p = document.createElement('p');
-        if (button === addTransportButtons[0]) {
-            p.textContent = '+ add transport to event';
-            events.splice(0);
-        } else {
-            p.textContent = '+ add transport from event';
-            events.splice(2);
-        }
-        button.appendChild(p);
-    });
-
-    let transportTitle = document.createElement('p');
-    transportTitle.classList.add('transport-title');
-    transportTitle.textContent = button === addTransportButtons[0] ? 'Pre-event transport' : 'Post-event transport';
-    let eventLocation = document.createElement('p');
-    eventLocation.textContent = locationInput.value;
-    eventLocation.classList.add('event-location');
-    let eventTime = document.createElement('p');
-    eventTime.classList.add('event-time');
-    eventTime.textContent =
-        selectedTripObject['0']['Leg']['0'][':@']['@_time'] +
-        ' - ' +
-        selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'];
-
-    button.appendChild(transportTitle);
-    button.appendChild(eventLocation);
-    button.appendChild(eventTime);
-    button.after(transportRemove);
-    transportRemove.appendChild(removeIcon);
+    let monthsAheadDate = addMonths(today, monthsAhead).toISOString().split('T')[0];
+    eventStartDate.max = monthsAheadDate;
+    eventEndDate.max = monthsAheadDate;
 }
 
-function transportDescriptionCreator(trip) {
-    let description = '';
+function addMonths(date, months) {
+    let d = date.getDate();
+    date.setMonth(date.getMonth() + +months);
+    if (date.getDate() != d) {
+        date.setDate(0);
+    }
+    return date;
+}
 
-    for (let i = 0; i < trip.length; i++) {
-        description +=
-            'Travel time: <b>' +
-            trip[i]['Leg'][0][':@']['@_time'] +
-            ' </b>' +
-            '→' +
-            '<b> ' +
-            trip[i]['Leg'][1][':@']['@_time'] +
-            '</b><br>';
-        description += 'Origin: <b>' + trip[i]['Leg'][0][':@']['@_name'] + '</b><br>';
-
-        if (trip[i][':@']['@_type'] == 'WALK') {
-            description += 'Transportation type: <b>' + trip[i][':@']['@_type'] + '</b><br>';
-        } else {
-            description += 'Transportation name: <b>' + trip[i][':@']['@_name'] + '</b><br>';
-        }
-
-        description += 'Destination: <b>' + trip[i]['Leg'][1][':@']['@_name'] + '</b><br>';
-
-        if (i !== trip.length - 1) {
-            description += '<br>';
-        }
+function setMinDate() {
+    let today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth() + 1; //January is 0 so need to add 1 to make it 1!
+    let yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+    if (mm < 10) {
+        mm = '0' + mm;
     }
 
-    return description;
+    today = yyyy + '-' + mm + '-' + dd;
+
+    eventStartDate.setAttribute('min', today);
+    eventEndDate.setAttribute('min', today);
 }
 
 function Event(title, location, description, dateTimeStart, dateTimeEnd, color) {
