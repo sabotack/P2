@@ -31,7 +31,9 @@ let formSubmit = document.querySelector('#formsubmit');
 let events = [];
 
 setMaxDate(2); // Input parameter is how many months ahead you can select trips
+eventStartDate.valueAsDate = new Date();
 setMinDate();
+
 
 
 eventTitle.focus();

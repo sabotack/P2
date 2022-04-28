@@ -4,6 +4,10 @@ import { XMLParser } from 'fast-xml-parser';
 export { locationAPICall };
 
 async function locationAPICall(inputLocation) {
+    if (inputLocation.length > 51) {
+        // If the input is too long, return an error/empty
+        return [];
+    }    
     let resultObject = [];
     const numOfLocations = 4;
     const response = await fetch('http://xmlopen.rejseplanen.dk/bin/rest.exe/location?input=' + inputLocation);
