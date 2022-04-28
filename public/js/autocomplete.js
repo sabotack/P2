@@ -3,6 +3,10 @@ import { locationServiceCallAPI, tripServiceCallAPI } from './rejseplanen.js';
 import { checkRequiredTransportTo, checkRequiredTransportFrom } from './checks.js';
 import { eventLocation, eventStartTime, eventStartDate, eventEndTime, eventEndDate } from './form.js';
 
+export function setEventLocationPicked(value) {
+    eventLocationPicked = value;
+}
+
 export {
     preEventLocationX,
     preEventLocationY,
@@ -25,7 +29,7 @@ let tripData = {};
 
 function autocomplete(input) {
     input.addEventListener('input', () => {
-        eventLocationPicked = false;
+
         checkRequiredTransportTo();
         checkRequiredTransportFrom();
 

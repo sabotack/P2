@@ -1,6 +1,6 @@
 import { convertToDate } from './dateConverter.js';
 import { submitForm } from './googleAuthClient.js';
-import { autocomplete } from './autocomplete.js';
+import { autocomplete, setEventLocationPicked } from './autocomplete.js';
 import { transportDescriptionCreator } from './tripDescription.js';
 import { selectedTripObject, setSelectedTripObject, selectedTrip } from './tripSelection.js';
 import { checkRequiredTransportTo, checkRequiredTransportFrom } from './checks.js';
@@ -167,6 +167,10 @@ eventEndTime.addEventListener('input', () => {
     checkRequiredTransportFrom();
 });
 
+eventLocation.addEventListener('input', () => {
+    setEventLocationPicked(false);
+});
+
 function getFirstStopName(trip) {
     for (const element of trip) {
         if (element[':@']['@_type'] !== 'WALK') {
@@ -211,6 +215,8 @@ function addSelectedTrip(locationInput, button, selectedTripObject) {
         if(button.parentElement.children[1]){
             removeTransport(button);  
         }
+        checkRequiredTransportFrom();
+        checkRequiredTransportTo();
     }, {once: true});
 
     transportRemove.addEventListener('click', () => {
