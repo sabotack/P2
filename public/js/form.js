@@ -151,6 +151,10 @@ eventStartDate.addEventListener('input', () => {
     checkRequiredTransportTo();
 });
 
+eventStartDate.addEventListener('focusout', () => {
+    eventEndDate.valueAsDate = eventStartDate.valueAsDate;
+})
+
 eventStartTime.addEventListener('input', () => {
     checkRequiredTransportTo();
 });
@@ -172,12 +176,11 @@ function getFirstStopName(trip) {
 }
 
 function addSelectedTrip(locationInput, button, selectedTripObject) {
-    button.textContent = '';
-
     if(button.parentElement.children[1]) {
         button.parentElement.children[1].remove();
     }
     
+    button.textContent = '';
     button.classList.add('event-selected');
 
     let transportRemove = document.createElement('div');
