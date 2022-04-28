@@ -1,5 +1,5 @@
 import { tripServiceCallAPI } from './rejseplanen.js';
-import { createDetailsBox } from './detailsBox.js';
+import { createDetailsBox } from './tripDetails.js';
 import { convertToDate } from './dateConverter.js';
 
 export { createTripSelection, createNewTrip, selectedTripObject, selectedTrip };
@@ -219,8 +219,6 @@ function getIconElements(tripElement, iconSpacings) {
 
     return iconElement;
 }
-
-function setBarGradient(iconElement, bar) {}
 
 function calcIconSpacings(tripElement, barWidth) {
     const tripTimes = getTripMinutes(tripElement);
