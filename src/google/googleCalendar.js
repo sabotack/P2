@@ -42,20 +42,22 @@ function postEvents(events) {
     const calendar = google.calendar({ version: 'v3' }); //creates calendar object from googleapis package.
     for (let event in events) {
         //loops throug events in event-array
-        calendar.events.insert(
-            //inserts an event in calendar.
-            {
-                auth: oauth2Client, //auth constant (now containing id-, access and refresh token.)
-                calendarId: 'primary', //posts events to primary calendar of user that logged in.
-                resource: events[event] //event to be posted
-            },
-            function (err, event) {
-                //if error posting to google calendar.
-                if (err) {
-                    console.log('There was an error contacting the Calendar service: ' + err);
-                    return;
+        if (events[event] != null) {
+            calendar.events.insert(
+                //inserts an event in calendar.
+                {
+                    auth: oauth2Client, //auth constant (now containing id-, access and refresh token.)
+                    calendarId: 'primary', //posts events to primary calendar of user that logged in.
+                    resource: events[event] //event to be posted
+                },
+                function (err, event) {
+                    //if error posting to google calendar.
+                    if (err) {
+                        console.log('There was an error contacting the Calendar service: ' + err);
+                        return;
+                    }
                 }
-            }
-        );
+            );
+        }
     }
 }

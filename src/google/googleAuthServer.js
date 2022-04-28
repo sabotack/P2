@@ -30,11 +30,12 @@ async function handleGoogleAuthResponse(request, response) {
         response.end();
     } else {
         //if user did concent
-        let { tokens } = await oauth2Client.getToken(googleRes.code); //converts google code into google tokens (id-, access and redirect token)
-        oauth2Client.setCredentials(tokens); //tokens is added to credentials in oauth2Client
-        response.writeHead(301, { Location: 'http://localhost:3000/form.html' }); //Redirects to the form.html page after the authorization process has happened
-        response.end();
-        postEvents(eventsToPost); //posts events to google calendar.
+        oauth2Client.getToken(googleRes.code).then(({ tokens }) => {
+            oauth2Client.setCredentials(tokens); //tokens is added to credentials in oauth2Client
+            response.writeHead(301, { Location: 'http://localhost:3000/form.html' }); //Redirects to the form.html page after the authorization process has happened
+            response.end();
+            postEvents(eventsToPost); //posts events to google calendar.
+        });
     }
 }
 
