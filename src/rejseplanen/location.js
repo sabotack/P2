@@ -5,7 +5,7 @@ export { locationAPICall };
 
 async function locationAPICall(inputLocation) {
     if(inputLocation.length > 51) {
-        throw(new Error('Location name too long'));
+        throw('ERROR: Location name too long');
     }
 
     let resultObject = [];

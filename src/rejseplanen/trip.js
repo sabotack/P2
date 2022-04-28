@@ -4,6 +4,12 @@ import { XMLParser } from 'fast-xml-parser';
 export { tripAPICall };
 
 async function tripAPICall(parsedData) {
+    for (let property in parsedData) {
+        if(parsedData[property].length === 0) {
+            throw('ERROR: Received incomplete data from client');
+        }
+    }
+
     let resultObject = [];
     const numOfTrips = 5;
 
@@ -52,7 +58,6 @@ async function tripAPICall(parsedData) {
 }
 
 function removeBaseURL(input) {
-    console.log(input);
     for (let i = 0; i < input.length; i++) {
         for (let j = 0; j < input[i]['Trip'].length; j++) {
             for (let k = 0; k < input[i]['Trip'][j]['Leg'].length; k++) {

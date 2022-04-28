@@ -1,9 +1,7 @@
+import { createTripSelection } from './tripSelection.js';
 import { locationServiceCallAPI, tripServiceCallAPI } from './rejseplanen.js';
 import { checkRequiredTransportTo, checkRequiredTransportFrom } from './checks.js';
-
 import { eventLocation, eventStartTime, eventStartDate, eventEndTime, eventEndDate } from './form.js';
-
-import { createTripSelection } from './tripSelection.js';
 
 export {
     preEventLocationX,
@@ -12,23 +10,22 @@ export {
     eventLocationY,
     postEventLocationX,
     postEventLocationY,
-    inputID
+    inputID,
+    eventLocationPicked,
+    autocomplete
 };
-export { autocomplete };
 
-let preEventLocationX = '',
-    preEventLocationY = '';
-let eventLocationX = '',
-    eventLocationY = '';
-let postEventLocationX = '',
-    postEventLocationY = '';
+let preEventLocationX = '', preEventLocationY = '';
+let postEventLocationX = '', postEventLocationY = '';
+let eventLocationX = '', eventLocationY = '';
 let inputID = '';
 let tripBox = '';
-
+let eventLocationPicked = false;
 let tripData = {};
 
 function autocomplete(input) {
     input.addEventListener('input', () => {
+        eventLocationPicked = false;
         checkRequiredTransportTo();
         checkRequiredTransportFrom();
 
@@ -67,6 +64,9 @@ function autocomplete(input) {
                             case 'eventlocation':
                                 eventLocationX = targetInput.getAttribute('data-x');
                                 eventLocationY = targetInput.getAttribute('data-y');
+                                eventLocationPicked = true;
+                                checkRequiredTransportTo();
+                                checkRequiredTransportFrom();
                                 break;
                             case 'pre-event-location':
                                 preEventLocationX = targetInput.getAttribute('data-x');
