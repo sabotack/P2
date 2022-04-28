@@ -29,4 +29,3 @@ function transportDescriptionCreator(trip) {
 
     return description;
 }
-
