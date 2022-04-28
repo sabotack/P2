@@ -1,3 +1,4 @@
+import { convertToDate } from './dateConverter.js';
 import { submitForm } from './googleAuthClient.js';
 import { autocomplete } from './autocomplete.js';
 import { selectedTripObject, setSelectedTripObject, selectedTrip } from './tripSelection.js';
@@ -24,6 +25,7 @@ let eventEndTime = document.querySelector('#endtime');
 let eventEndDate = document.querySelector('#enddate');
 let eventDescription = document.querySelector('#eventdescription');
 
+
 let formSubmit = document.querySelector('#formsubmit');
 
 let events = [];
@@ -37,7 +39,7 @@ formSubmit.addEventListener('click', (event) => {
     if (!document.querySelector('form').checkValidity()) {
         return false;
     }
-
+    
     event.preventDefault();
     let title = eventTitle.value;
     let location = eventLocation.value;
@@ -65,13 +67,14 @@ modalButtons[0].addEventListener('click', () => {
 modalButtons[1].addEventListener('click', () => {
     let title = 'Pre-event transport';
     let location = getFirstStopName(selectedTripObject);
-    let description = transportDescriptionCreator(selectedTripObject); // here asshole
-    let dateTimeStart = eventStartDate.value + 'T' + selectedTripObject['0']['Leg']['0'][':@']['@_time'] + ':00';
-    let dateTimeEnd =
-        eventStartDate.value +
-        'T' +
-        selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'] +
-        ':00';
+    let description = transportDescriptionCreator(selectedTripObject);
+    let dateStart = convertToDate(selectedTripObject['0']['Leg']['0'][':@']['@_date']);
+    let dateEnd = convertToDate(selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_date']);
+    let timeStart = selectedTripObject['0']['Leg']['0'][':@']['@_time'] + ':00';
+    let timeEnd = selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'] + ':00';
+
+    let dateTimeStart = dateStart + 'T' + timeStart;
+    let dateTimeEnd = dateEnd + 'T' + timeEnd;
     events[0] = new Event(title, location, description, dateTimeStart, dateTimeEnd, 6);
 
     preEventModal.style.display = 'none';
@@ -95,13 +98,14 @@ modalButtons[2].addEventListener('click', () => {
 modalButtons[3].addEventListener('click', () => {
     let title = 'Post-event transport';
     let location = getFirstStopName(selectedTripObject);
-    let description = transportDescriptionCreator(selectedTripObject); // here asshole
-    let dateTimeStart = eventEndDate.value + 'T' + selectedTripObject['0']['Leg']['0'][':@']['@_time'] + ':00';
-    let dateTimeEnd =
-        eventEndDate.value +
-        'T' +
-        selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'] +
-        ':00';
+    let description = transportDescriptionCreator(selectedTripObject);
+    let dateStart = convertToDate(selectedTripObject['0']['Leg']['0'][':@']['@_date']);
+    let dateEnd = convertToDate(selectedTripObject[selectedTripObject.length - 1]['Leg']['0'][':@']['@_date']);
+    let timeStart = selectedTripObject['0']['Leg']['0'][':@']['@_time'] + ':00';
+    let timeEnd = selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'] + ':00';
+
+    let dateTimeStart = dateStart + 'T' + timeStart;
+    let dateTimeEnd = dateEnd + 'T' + timeEnd;
     events[2] = new Event(title, location, description, dateTimeStart, dateTimeEnd, 6);
 
     postEventModal.style.display = 'none';
@@ -164,8 +168,10 @@ function getFirstStopName(trip) {
 function addSelectedTrip(locationInput, button, selectedTripObject) {
     button.textContent = '';
 
-    /* let eventLocationSelected = document.createElement('div');
-    eventLocationSelected.classList.add('event-selected'); */
+    if(button.parentElement.children[1]) {
+        button.parentElement.children[1].remove();
+    }
+    
     button.classList.add('event-selected');
 
     let transportRemove = document.createElement('div');
@@ -175,26 +181,19 @@ function addSelectedTrip(locationInput, button, selectedTripObject) {
     removeIcon.classList.add('fa-solid', 'fa-xmark', 'fa-xl');
 
     transportRemove.addEventListener('click', () => {
-        button.innerHTML = '';
-        button.classList.remove('event-selected');
-        button.parentElement.children[1].remove();
-
-        let p = document.createElement('p');
-        if (button === addTransportButtons[0]) {
-            p.textContent = '+ add transport to event';
-            events.splice(0);
-        } else {
-            p.textContent = '+ add transport from event';
-            events.splice(2);
-        }
-        button.appendChild(p);
+        removeTransport(button);
     });
 
     let transportTitle = document.createElement('p');
     transportTitle.classList.add('transport-title');
     transportTitle.textContent = button === addTransportButtons[0] ? 'Pre-event transport' : 'Post-event transport';
     let eventLocation = document.createElement('p');
-    eventLocation.textContent = locationInput.value;
+    if (button === addTransportButtons[0]) { // Pre-event
+        eventLocation.textContent = selectedTripObject[0]['Leg'][0][':@']['@_name'];
+    } else { // Post-event
+        let lastTrip = selectedTripObject.length-1;
+        eventLocation.textContent = selectedTripObject[lastTrip]['Leg'][0][':@']['@_name'];
+    }
     eventLocation.classList.add('event-location');
     let eventTime = document.createElement('p');
     eventTime.classList.add('event-time');
@@ -202,12 +201,72 @@ function addSelectedTrip(locationInput, button, selectedTripObject) {
         selectedTripObject['0']['Leg']['0'][':@']['@_time'] +
         ' - ' +
         selectedTripObject[selectedTripObject.length - 1]['Leg']['1'][':@']['@_time'];
-
+    
     button.appendChild(transportTitle);
     button.appendChild(eventLocation);
     button.appendChild(eventTime);
     button.after(transportRemove);
     transportRemove.appendChild(removeIcon);
+
+    if (button === addTransportButtons[0]) { // Pre-event
+
+        eventStartDate.addEventListener('input', () => {
+
+            if (button.parentElement.children[1]){
+
+                removeTransport(button);
+                console.log("eventStartDate event listener");
+
+            }
+
+        }, { once: true });
+    
+        eventStartTime.addEventListener('input', () => {
+    
+            if (button.parentElement.children[1]){
+
+                removeTransport(button);
+                console.log("eventStartDate event listener");
+
+            }
+            
+        }, { once: true });
+
+    } else { // Post-event
+
+        eventEndDate.addEventListener('input', () => {
+
+            if (button.parentElement.children[1]){
+
+                removeTransport(button);
+                console.log("eventEndDate event listener");
+
+            }
+
+        }, { once: true });
+    
+        eventEndTime.addEventListener('input', () => {
+    
+            if (button.parentElement.children[1]){
+
+                removeTransport(button);
+                console.log("eventEndTIme event listener");
+
+            }
+            
+        }, { once: true });
+    }
+
+    document.querySelector('#eventlocation').addEventListener('input', () => {
+        if(button.parentElement.children[1]){
+
+            removeTransport(button);
+               
+        }
+    
+    }, {once: true});
+
+    
 }
 
 function transportDescriptionCreator(trip) {
@@ -240,6 +299,22 @@ function transportDescriptionCreator(trip) {
     return description;
 }
 
+function removeTransport(button){
+    button.innerHTML = '';
+    button.classList.remove('event-selected');
+    button.parentElement.children[1].remove();
+
+    let p = document.createElement('p');
+    if (button === addTransportButtons[0]) {
+        p.textContent = '+ add pre-event transport';
+        events.splice(0);
+    } else {
+        p.textContent = '+ add post-event transport';
+        events.splice(2);
+    }
+    button.appendChild(p);
+}
+
 function Event(title, location, description, dateTimeStart, dateTimeEnd, color) {
     this.summary = title;
     this.location = location;
@@ -254,3 +329,4 @@ function Event(title, location, description, dateTimeStart, dateTimeEnd, color) 
         timeZone: 'Europe/Copenhagen'
     };
 }
+

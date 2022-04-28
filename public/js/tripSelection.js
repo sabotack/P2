@@ -1,5 +1,6 @@
 import { tripServiceCallAPI } from './rejseplanen.js';
 import { createDetailsBox } from './detailsBox.js';
+import { convertToDate } from './dateConverter.js';
 
 export { createTripSelection, createNewTrip, selectedTripObject, selectedTrip };
 
@@ -108,14 +109,23 @@ function createNewTrip(tripElement, tripBox) {
     trip.appendChild(tripAction);
     tripAction.appendChild(detailsButton);
 
-    let timeStart = new Date('01/01/2022 ' + tripTimeStart);
-    let timeEnd = new Date('01/01/2022 ' + tripTimeEnd);
 
-    let timeDiff = timeEnd - timeStart;
+    let dateStart =  tripElement['0']['Leg']['0'][':@']['@_date'];
+    let dateEnd = tripElement[tripElement.length - 1]['Leg']['1'][':@']['@_date'];
+    
+    /* let dateStartParts = dateStart.split('.');
+    let dateEndParts = dateEnd.split('.');
 
-    if (timeDiff < 0) {
-        timeDiff += 1000 * 60 * 60 * 24;
-    }
+    dateStart = ('20'+dateStartParts[2]) + '.' + (dateStartParts[1]) + '.' + dateStartParts[0];
+    dateEnd = ('20'+dateEndParts[2]) + '.' + (dateEndParts[1]) + '.' + dateEndParts[0]; */
+
+    dateStart = convertToDate(dateStart);
+    dateEnd = convertToDate(dateEnd);
+
+    let dateStartObj = new Date(dateStart + ' ' + tripTimeStart);
+    let dateEndObj = new Date(dateEnd + ' ' + tripTimeEnd);
+
+    let timeDiff = dateEndObj - dateStartObj;
 
     let timeDiffHours = Math.floor(timeDiff / 1000 / 60 / 60);
     let timeDiffMinutes = Math.floor(timeDiff / 1000 / 60) - timeDiffHours * 60;

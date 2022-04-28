@@ -1,7 +1,6 @@
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
-import fetch from 'node-fetch';
 import { locationAPICall } from './rejseplanen/location.js';
 import { tripAPICall } from './rejseplanen/trip.js';
 import { detailAPICall } from './rejseplanen/journeyDetails.js';
