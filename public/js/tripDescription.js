@@ -1,4 +1,4 @@
-export {transportDescriptionCreator};
+export { transportDescriptionCreator };
 
 function transportDescriptionCreator(trip) {
     let description = '';
@@ -29,3 +29,4 @@ function transportDescriptionCreator(trip) {
 
     return description;
 }
+

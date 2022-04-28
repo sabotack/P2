@@ -4,8 +4,8 @@ import { XMLParser } from 'fast-xml-parser';
 export { locationAPICall };
 
 async function locationAPICall(inputLocation) {
-    if(inputLocation.length > 51) {
-        throw('Location name too long');
+    if (inputLocation.length > 51) {
+        throw 'Location name too long';
     }
 
     let resultObject = [];

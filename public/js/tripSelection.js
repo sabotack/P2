@@ -107,8 +107,7 @@ function createNewTrip(tripElement, tripBox) {
     trip.appendChild(tripAction);
     tripAction.appendChild(detailsButton);
 
-
-    let dateStart =  tripElement['0']['Leg']['0'][':@']['@_date'];
+    let dateStart = tripElement['0']['Leg']['0'][':@']['@_date'];
     let dateEnd = tripElement[tripElement.length - 1]['Leg']['1'][':@']['@_date'];
 
     dateStart = convertToDate(dateStart);

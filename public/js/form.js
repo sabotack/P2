@@ -34,8 +34,6 @@ setMaxDate(2); // Input parameter is how many months ahead you can select trips
 eventStartDate.valueAsDate = new Date();
 setMinDate();
 
-
-
 eventTitle.focus();
 autocomplete(eventLocation);
 autocomplete(preEventLocation);
@@ -45,7 +43,7 @@ formSubmit.addEventListener('click', (event) => {
     if (!document.querySelector('form').checkValidity()) {
         return false;
     }
-    
+
     event.preventDefault();
     let title = eventTitle.value;
     let location = eventLocation.value;
@@ -119,7 +117,7 @@ modalButtons[3].addEventListener('click', () => {
     modalButtons[3].classList.add('disabled');
 });
 
-preEventModal.addEventListener('click', (event) => {    
+preEventModal.addEventListener('click', (event) => {
     if (event.target == preEventModal) {
         preEventModal.style.display = 'none';
         setSelectedTripObject('');
@@ -151,7 +149,7 @@ eventStartDate.addEventListener('input', () => {
 
 eventStartDate.addEventListener('focusout', () => {
     eventEndDate.valueAsDate = eventStartDate.valueAsDate;
-})
+});
 
 eventStartTime.addEventListener('input', () => {
     checkRequiredTransportTo();
@@ -180,10 +178,10 @@ function getFirstStopName(trip) {
 }
 
 function addSelectedTrip(locationInput, button, selectedTripObject) {
-    if(button.parentElement.children[1]) {
+    if (button.parentElement.children[1]) {
         button.parentElement.children[1].remove();
     }
-    
+
     button.textContent = '';
     button.classList.add('event-selected');
 
@@ -211,53 +209,72 @@ function addSelectedTrip(locationInput, button, selectedTripObject) {
     button.after(transportRemove);
     transportRemove.appendChild(removeIcon);
 
-    eventLocation.addEventListener('input', () => {
-        if(button.parentElement.children[1]){
-            removeTransport(button);  
-        }
-        checkRequiredTransportFrom();
-        checkRequiredTransportTo();
-    }, {once: true});
+    eventLocation.addEventListener(
+        'input',
+        () => {
+            if (button.parentElement.children[1]) {
+                removeTransport(button);
+            }
+            checkRequiredTransportFrom();
+            checkRequiredTransportTo();
+        },
+        { once: true }
+    );
 
     transportRemove.addEventListener('click', () => {
         removeTransport(button);
     });
-    
+
     // Button specific functions
     if (button === addTransportButtons[0]) {
         eventLocationText.textContent = selectedTripObject[0]['Leg'][0][':@']['@_name'];
 
-        eventStartDate.addEventListener('input', () => {
-            if (button.parentElement.children[1]){
-                removeTransport(button);
-            }
-        }, { once: true });
-    
-        eventStartTime.addEventListener('input', () => {
-            if (button.parentElement.children[1]){
-                removeTransport(button);
-            }            
-        }, { once: true });
+        eventStartDate.addEventListener(
+            'input',
+            () => {
+                if (button.parentElement.children[1]) {
+                    removeTransport(button);
+                }
+            },
+            { once: true }
+        );
 
+        eventStartTime.addEventListener(
+            'input',
+            () => {
+                if (button.parentElement.children[1]) {
+                    removeTransport(button);
+                }
+            },
+            { once: true }
+        );
     } else {
-        let lastTrip = selectedTripObject.length-1;
+        let lastTrip = selectedTripObject.length - 1;
         eventLocationText.textContent = selectedTripObject[lastTrip]['Leg'][0][':@']['@_name'];
 
-        eventEndDate.addEventListener('input', () => {
-            if (button.parentElement.children[1]){
-                removeTransport(button);
-            }
-        }, { once: true });
-    
-        eventEndTime.addEventListener('input', () => {
-            if (button.parentElement.children[1]){
-                removeTransport(button);
-            }
-        }, { once: true });
+        eventEndDate.addEventListener(
+            'input',
+            () => {
+                if (button.parentElement.children[1]) {
+                    removeTransport(button);
+                }
+            },
+            { once: true }
+        );
+
+        eventEndTime.addEventListener(
+            'input',
+            () => {
+                if (button.parentElement.children[1]) {
+                    removeTransport(button);
+                }
+            },
+            { once: true }
+        );
     }
 }
 
-function removeTransport(button){
+function removeTransport(button) {
     button.innerHTML = '';
     button.classList.remove('event-selected');
     button.parentElement.children[1].remove();
@@ -288,39 +305,37 @@ function Event(title, location, description, dateTimeStart, dateTimeEnd, color) 
     };
 }
 
-function setMaxDate(monthsAhead){
-
+function setMaxDate(monthsAhead) {
     let today = new Date();
 
-    let test123 = addMonths(today, monthsAhead).toISOString().split("T")[0];
+    let test123 = addMonths(today, monthsAhead).toISOString().split('T')[0];
     eventStartDate.max = test123;
     eventEndDate.max = test123;
-
 }
 
 function addMonths(date, months) {
     let d = date.getDate();
     date.setMonth(date.getMonth() + +months);
     if (date.getDate() != d) {
-      date.setDate(0);
+        date.setDate(0);
     }
     return date;
 }
 
-function setMinDate(){
+function setMinDate() {
     let today = new Date();
     let dd = today.getDate();
-    let mm = today.getMonth()+1; //January is 0 so need to add 1 to make it 1!
+    let mm = today.getMonth() + 1; //January is 0 so need to add 1 to make it 1!
     let yyyy = today.getFullYear();
-    if(dd<10){
-    dd='0'+dd
-    } 
-    if(mm<10){
-    mm='0'+mm
-    } 
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
 
-    today = yyyy+'-'+mm+'-'+dd;
+    today = yyyy + '-' + mm + '-' + dd;
 
-    eventStartDate.setAttribute("min", today);
-    eventEndDate.setAttribute("min", today);
+    eventStartDate.setAttribute('min', today);
+    eventEndDate.setAttribute('min', today);
 }

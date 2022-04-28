@@ -99,16 +99,17 @@ function locationServiceRequest(request, response) {
         let parsedData = new URLSearchParams(locationCallPOST);
         parsedData = Object.fromEntries(parsedData);
 
-        locationAPICall(parsedData.location).then((data) => {
-            response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
-            response.write(JSON.stringify(data));
-            response.end();
-        })
-        .catch((e) => {
-            console.log(e);
-            response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
-            response.end();
-        });
+        locationAPICall(parsedData.location)
+            .then((data) => {
+                response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
+                response.write(JSON.stringify(data));
+                response.end();
+            })
+            .catch((e) => {
+                console.log(e);
+                response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
+                response.end();
+            });
     });
 }
 
@@ -128,16 +129,17 @@ function tripServiceRequest(request, response) {
         let parsedData = new URLSearchParams(tripCallPOST);
         parsedData = Object.fromEntries(parsedData);
 
-        tripAPICall(parsedData).then((data) => {
-            response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
-            response.write(JSON.stringify(data));
-            response.end();
-        })
-        .catch((e) => {
-            console.log(e);
-            response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
-            response.end();
-        });
+        tripAPICall(parsedData)
+            .then((data) => {
+                response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
+                response.write(JSON.stringify(data));
+                response.end();
+            })
+            .catch((e) => {
+                console.log(e);
+                response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
+                response.end();
+            });
     });
 }
 

@@ -19,9 +19,12 @@ export {
     autocomplete
 };
 
-let preEventLocationX = '', preEventLocationY = '';
-let postEventLocationX = '', postEventLocationY = '';
-let eventLocationX = '', eventLocationY = '';
+let preEventLocationX = '',
+    preEventLocationY = '';
+let postEventLocationX = '',
+    postEventLocationY = '';
+let eventLocationX = '',
+    eventLocationY = '';
 let inputID = '';
 let tripBox = '';
 let eventLocationPicked = false;
@@ -29,7 +32,6 @@ let tripData = {};
 
 function autocomplete(input) {
     input.addEventListener('input', () => {
-
         checkRequiredTransportTo();
         checkRequiredTransportFrom();
 
