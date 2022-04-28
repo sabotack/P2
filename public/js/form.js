@@ -31,6 +31,8 @@ let formSubmit = document.querySelector('#formsubmit');
 let events = [];
 
 setMaxDate(2); // Input parameter is how many months ahead you can select trips
+setMinDate();
+
 
 eventTitle.focus();
 autocomplete(eventLocation);
@@ -286,10 +288,28 @@ function setMaxDate(monthsAhead){
 }
 
 function addMonths(date, months) {
-    var d = date.getDate();
+    let d = date.getDate();
     date.setMonth(date.getMonth() + +months);
     if (date.getDate() != d) {
       date.setDate(0);
     }
     return date;
+}
+
+function setMinDate(){
+    let today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth()+1; //January is 0 so need to add 1 to make it 1!
+    let yyyy = today.getFullYear();
+    if(dd<10){
+    dd='0'+dd
+    } 
+    if(mm<10){
+    mm='0'+mm
+    } 
+
+today = yyyy+'-'+mm+'-'+dd;
+
+    eventStartDate.setAttribute("min", today);
+    eventEndDate.setAttribute("min", today);
 }
