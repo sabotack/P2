@@ -25,6 +25,8 @@ function processUserRequest(request, response) {
     let requestMethod = request.method.toLowerCase();
     let filePath = publicResources + request.url;
 
+
+
     switch (requestMethod) {
         case 'get':
             if (request.url.startsWith('/googleConsent')) {
@@ -50,7 +52,7 @@ function processUserRequest(request, response) {
                 case '/locationService':
                     locationServiceRequest(request, response);
                     break;
-                case '/saveEventsOnServer': //called from client when events is posted to be saved on server
+                case '/saveEventsOnServer': //called from client when events is posted to be saved on serverw
                     saveEventsOnServer(request, response); //saves posted events on server-side
                     break;
                 case '/tripService':
@@ -62,7 +64,7 @@ function processUserRequest(request, response) {
             }
             break;
         default:
-            errorResponseUser(request, response, 'Bad request', 400);
+            errorResponseUser(request, response, 'Method not allowed', 405);
             break;
     }
 }
@@ -121,7 +123,7 @@ function tripServiceRequest(request, response) {
             })
             .catch((e) => {
                 console.log(e);
-                response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });
+                response.writeHead(e.code, 'OK', { 'Content-Type': 'text/plain' });
                 response.end();
             });
     });
@@ -175,5 +177,3 @@ function getContentType(fPath) {
     };
     return mimeTypes[extensionName] || 'application/octet-stream';
 }
-
-
