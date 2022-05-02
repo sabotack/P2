@@ -93,7 +93,7 @@ function locationServiceRequest(request, response) {
             })
             .catch((e) => {
                 console.log(e);
-                response.writeHead(404, 'OK', { 'Content-Type': 'text/plain' });
+                response.writeHead(e.code, e.message, { 'Content-Type': 'text/plain' });
                 response.end();
             });
     });
@@ -123,7 +123,7 @@ function tripServiceRequest(request, response) {
             })
             .catch((e) => {
                 console.log(e);
-                response.writeHead(e.code, 'OK', { 'Content-Type': 'text/plain' });
+                response.writeHead(e.code, e.message, { 'Content-Type': 'text/plain' });
                 response.end();
             });
     });

@@ -40,7 +40,7 @@ describe('server endpoints', () => {
             const response = await supertest(server)
                 .post('/locationService')
                 .send('location=WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW');
-            expect(response.status).toBe(404);
+            expect(response.status).toBe(413);
         });
 
         test('returns 200 on /tripService', async () => {
@@ -60,7 +60,7 @@ describe('server endpoints', () => {
             expect(response.headers['content-type']).toEqual(expect.stringContaining('text'));
         });
 
-        test('returns 204 on /tripService with incomplete object', async () => {
+        test('returns 204 on /tripService with invalid object', async () => {
             let today = new Date();
             
             const response = await supertest(server)
