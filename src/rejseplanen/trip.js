@@ -37,7 +37,7 @@ async function tripAPICall(parsedData) {
     );
 
     const data = await response.text();
-    
+
     const options = {
         ignoreAttributes: false,
         attributeNamePrefix: '@_',
@@ -49,7 +49,7 @@ async function tripAPICall(parsedData) {
     let splitText = data.split('\n');
     splitText.splice(0, 2);
     let result = parser.parse(splitText.join('\n'));
- 
+
     if (result == '') {
         let e = new Error('No trips found');
         e.code = 204;

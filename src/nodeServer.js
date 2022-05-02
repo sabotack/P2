@@ -1,4 +1,4 @@
-import { server } from "./app.js";
+import { server } from './app.js';
 
 const hostname = 'localhost';
 const port = 3000;

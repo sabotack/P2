@@ -25,8 +25,6 @@ function processUserRequest(request, response) {
     let requestMethod = request.method.toLowerCase();
     let filePath = publicResources + request.url;
 
-
-
     switch (requestMethod) {
         case 'get':
             if (request.url.startsWith('/googleConsent')) {
@@ -84,7 +82,7 @@ function locationServiceRequest(request, response) {
     request.on('end', () => {
         let parsedData = new URLSearchParams(locationCallPOST);
         parsedData = Object.fromEntries(parsedData);
-        
+
         locationAPICall(parsedData.location)
             .then((data) => {
                 response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });

@@ -14,16 +14,15 @@ async function saveEventsOnServer(request, response) {
     //awaits the request data to avoid missing data in the upcomming validation
     await request.on('data', (data) => {
         testString += data;
-    }); 
+    });
 
-    request.on('end', async () => {     
+    request.on('end', async () => {
         try {
             jsonString = JSON.parse(testString);
             eventsToPost = jsonString;
             //returns true or false and is used to control wheter the server accepts or rejects the events
             isEventsValid = await validateEventsObj(eventsToPost);
-        }
-        catch(e) {
+        } catch (e) {
             console.log(e);
             isEventsValid = false;
         }
