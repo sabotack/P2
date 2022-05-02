@@ -73,6 +73,23 @@ describe('server endpoints', () => {
             expect(response.headers['content-type']).toEqual(expect.stringContaining('text'));
         });
 
+        test('returns 400 on /tripService with incomplete object', async () => {
+            let today = new Date();
+            
+            const response = await supertest(server)
+                .post('/tripService')
+                .send('originCoordName=Sigrid Undsets Vej 196B' +
+                '&originCoordX=9990189'+
+                '&originCoordY=57017220'+
+                '&destCoordX=9912378'+
+                '&destCoordY=57053150'+
+                '&destCoordName=Vestre Kanal Gade'+
+                '&date='+
+                '&time=12:00');
+            expect(response.status).toBe(400);
+            expect(response.headers['content-type']).toEqual(expect.stringContaining('text'));
+        });
+
         test('returns 404 on /notfound', async () => {
             const response = await supertest(server)
                 .post('/notfound');
@@ -86,7 +103,6 @@ describe('server endpoints', () => {
         expect(response.status).toBe(405);
     });
 });
-
 
 describe('app.js', () => {
     test('returns correct mimetype', () => {

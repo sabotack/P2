@@ -29,7 +29,11 @@
     },
     "devDependencies": {
         "jest": "^28.0.3",
+        "jest-environment-jsdom": "^28.0.2",
         "prettier": "2.6.2",
         "supertest": "^6.2.3"
+    },
+    "jest": {
+        "testEnvironment": "node"
     }
 }
