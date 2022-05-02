@@ -81,7 +81,7 @@ modalButtons[1].addEventListener('click', () => {
     events[0] = new Event(title, location, description, dateTimeStart, dateTimeEnd, 6);
 
     preEventModal.style.display = 'none';
-    addSelectedTrip(preEventLocation, addToBtn, selectedTripObject);
+    addSelectedTrip(addToBtn, selectedTripObject);
     setSelectedTripObject('');
     selectedTrip.classList.remove('trip-selected');
     modalButtons[1].classList.add('disabled');
@@ -112,7 +112,7 @@ modalButtons[3].addEventListener('click', () => {
     events[2] = new Event(title, location, description, dateTimeStart, dateTimeEnd, 6);
 
     postEventModal.style.display = 'none';
-    addSelectedTrip(postEventLocation, addFromBtn, selectedTripObject);
+    addSelectedTrip(addFromBtn, selectedTripObject);
     setSelectedTripObject('');
     selectedTrip.classList.remove('trip-selected');
     modalButtons[3].classList.add('disabled');
