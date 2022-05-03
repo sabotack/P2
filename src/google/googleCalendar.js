@@ -9,17 +9,24 @@ let eventsToPost;
 async function saveEventsOnServer(request, response) {
     let jsonString;
     let isEventsValid;
+    let testString;
 
     //awaits the request data to avoid missing data in the upcomming validation
     await request.on('data', (data) => {
-        jsonString = JSON.parse(data);
-        eventsToPost = jsonString;
+        testString += data;
     });
 
-    //returns true or false and is used to control wheter the server accepts or rejects the events
-    isEventsValid = await validateEventsObj(eventsToPost);
+    request.on('end', async () => {
+        try {
+            jsonString = JSON.parse(testString);
+            eventsToPost = jsonString;
+            //returns true or false and is used to control wheter the server accepts or rejects the events
+            isEventsValid = await validateEventsObj(eventsToPost);
+        } catch (e) {
+            console.log(e);
+            isEventsValid = false;
+        }
 
-    request.on('end', () => {
         //if the events are valid the response is OK and the events are stored
         if (isEventsValid) {
             response.writeHead(200, 'OK', { 'Content-Type': 'text/plain' });

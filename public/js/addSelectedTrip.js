@@ -3,7 +3,7 @@ import { eventLocation, addToBtn, eventStartDate, eventStartTime, eventEndDate, 
 
 export { addSelectedTrip };
 
-function addSelectedTrip(locationInput, button, selectedTripObject) {
+function addSelectedTrip(button, selectedTripObject) {
     if (button.parentElement.children[1]) {
         button.parentElement.children[1].remove();
     }

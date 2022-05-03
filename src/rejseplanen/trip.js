@@ -6,7 +6,9 @@ export { tripAPICall };
 async function tripAPICall(parsedData) {
     for (let property in parsedData) {
         if (parsedData[property].length === 0) {
-            throw 'Received incomplete data from client';
+            let e = new Error('Received incomplete data from client');
+            e.code = 400;
+            throw e;
         }
     }
 
@@ -47,6 +49,12 @@ async function tripAPICall(parsedData) {
     let splitText = data.split('\n');
     splitText.splice(0, 2);
     let result = parser.parse(splitText.join('\n'));
+
+    if (result == '') {
+        let e = new Error('No trips found');
+        e.code = 204;
+        throw e;
+    }
 
     for (let i = 0; i < result.length && i < numOfTrips; i++) {
         resultObject.push(result[i]);
