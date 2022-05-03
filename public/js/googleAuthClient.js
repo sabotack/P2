@@ -1,5 +1,5 @@
 import { validateEventsObj } from './eventValidation.js';
-export { submitForm };
+export { submitForm, saveAndValidateEventsOnServer, postEventsServer, getAuthorizationURL };
 
 //function that handles submission of form. Recieves array of event(s) as imput
 async function submitForm(events) {
