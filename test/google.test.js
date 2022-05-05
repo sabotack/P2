@@ -1,10 +1,19 @@
 import { server, getContentType } from '../src/app.js';
 import { validateEventsObj } from '../src/validation.js';
 import { validateEventsObj as validationClientSide } from '../public/js/eventValidation.js';
-import { saveAndValidateEventsOnServer } from '../public/js/googleAuthClient.js';
+import {
+    getAuthorizationURL,
+    postEventsServer,
+    saveAndValidateEventsOnServer,
+    handleGoogleAuth
+} from '../public/js/googleAuthClient.js';
+import { postEvents } from '../src/google/googleCalendar.js';
+import { handleGoogleAuthResponse } from '../src/google/googleAuthServer.js';
 import supertest from 'supertest';
+import { jest, expect, test, describe } from '@jest/globals';
 
 const request = supertest(server);
+
 //validation events
 
 let eventsInPast = [
@@ -141,7 +150,6 @@ let eventsNumber = '';
 
 test('returns mimetype', () => {
     expect(getContentType('/index.html')).toBe('text/html');
-    //server.close();
 });
 
 test('Validation on server side', async () => {
@@ -151,8 +159,6 @@ test('Validation on server side', async () => {
     expect(await validateEventsObj(eventsValid)).toBe(true);
     expect(await validateEventsObj(eventsEmptyTitle)).toBe(false);
     expect(await validateEventsObj(eventsNull)).toBe(true);
-
-    //server.close();
 });
 
 test('Validation on client side', async () => {
@@ -162,7 +168,6 @@ test('Validation on client side', async () => {
     expect(await validationClientSide(eventsEmptyTitle)).toHaveProperty('isValid', false);
     expect(await validationClientSide(eventsNumber)).toHaveProperty('isValid', false);
     expect(await validationClientSide(eventsNull)).toHaveProperty('isValid', true);
-    //server.close();
 });
 
 test('write autorization redirect URL on server', async () => {
@@ -172,13 +177,62 @@ test('write autorization redirect URL on server', async () => {
 });
 
 test('saveEventsOnServer', async () => {
-    const resValid = await request.post('/saveEventsOnServer').send(eventsValid);
-    const resInvalid = await request.post('/saveEventsOnServer').send(eventsInPast);
-    expect(resInvalid.status).toBe(200);
+    let resError = await request.post('/saveEventsOnServer').send(eventsInPast);
+
+    JSON.parse = jest.fn().mockImplementationOnce(() => {
+        return eventsValid;
+    });
+    let resValid = await request.post('/saveEventsOnServer').send(eventsValid);
+    expect(resError.status).toBe(200);
     expect(resValid.status).toBe(200);
 });
 
-/* test('save events on server from client side', async () => {
-    let ans = await saveAndValidateEventsOnServer(eventsValid);
-    expect(ans).toBe(true);
-}); */
+test('Get AuthorizationURL client side fetch', async () => {
+    global.fetch = jest.fn(() =>
+        Promise.resolve({
+            url: 'authorizationURL'
+        })
+    );
+    let response = await getAuthorizationURL();
+    expect(response).toEqual({ url: 'authorizationURL' });
+
+    global.fetch = jest.fn(() => Promise.reject());
+
+    response = await getAuthorizationURL();
+    expect(response).toEqual(false);
+});
+
+test('Post events to server from client', async () => {
+    const mockFetch = Promise.resolve({ json: () => Promise.resolve({ body: true }) });
+    global.fetch = jest.fn(() => mockFetch);
+
+    let response = await postEventsServer();
+    expect(response).toHaveProperty('body', true);
+});
+
+test('Save and validate events on server from client side', async () => {
+    const mockFetch = Promise.resolve({ json: () => Promise.resolve({ body: true }) });
+    global.fetch = jest.fn(() => mockFetch);
+
+    let response = await saveAndValidateEventsOnServer();
+    expect(response).toHaveProperty('body', true);
+});
+
+test('post events to google calendar', async () => {
+    let calendar = { events: { insert: '' } };
+    calendar.events.insert = jest.fn().mockImplementationOnce(() => {
+        true;
+    });
+    expect(postEvents(eventsNull)).resolves;
+});
+
+// test('handle google auth response on server', async () => {
+//     let url = {parse: (x, y) => {x, y}, query:""};
+
+//     url = jest.fn().mockImplementationOnce(() => {
+//         code: "RedirectURL";
+//     });
+
+//     expect(handleGoogleAuthResponse()).resolves;
+
+// });
