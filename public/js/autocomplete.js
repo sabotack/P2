@@ -45,8 +45,8 @@ function autocomplete(input) {
         list.setAttribute('id', input.id + 'autocomplete-list');
         list.setAttribute('class', 'autocomplete-items');
         input.parentNode.appendChild(list);
-        locationServiceCallAPI(input.value).then(
-            (response) => {
+        locationServiceCallAPI(input.value)
+            .then((response) => {
                 response.forEach((element) => {
                     let option = document.createElement('div');
                     option.innerHTML += element[':@']['@_name'];
@@ -121,9 +121,8 @@ function autocomplete(input) {
 
                     list.appendChild(option);
                 });
-            }
-        )
-        .catch(error => console.log(error));
+            })
+            .catch((error) => console.log(error));
     });
 }
 
