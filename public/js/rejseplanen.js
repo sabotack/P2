@@ -1,67 +1,44 @@
-export { locationServiceCallAPI, tripServiceCallAPI, detailServiceCallAPI };
+export { locationServiceCallAPI, tripServiceCallAPI };
 
 function locationServiceCallAPI(inputField) {
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-
-        xhr.open('POST', '/locationService', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-        xhr.send('location=' + inputField);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4) {
-                let result = JSON.parse(xhr.responseText);
-                this.status == 200 ? resolve(result) : reject('Error');
-            }
-        };
-    });
+    return fetch('http://localhost:3000/locationService', {
+        //returns promise, and then proceeds to fetch server.
+        method: 'POST',
+        headers: { 'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+        body: ('location=' + inputField) //body contains stringified events in order to send accross network
+    })
+    .then((response) => {
+        //when response is recieved, convert it to json.
+        return response.json();
+    })
 }
 
 function tripServiceCallAPI(tripData) {
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-
-        xhr.open('POST', '/tripService', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-        xhr.send(
-            'originCoordName=' +
-                tripData.originCoordName +
-                '&originCoordX=' +
-                tripData.originCoordX +
-                '&originCoordY=' +
-                tripData.originCoordY +
-                '&destCoordX=' +
-                tripData.destCoordX +
-                '&destCoordY=' +
-                tripData.destCoordY +
-                '&destCoordName=' +
-                tripData.destCoordName +
-                '&date=' +
-                tripData.date +
-                '&time=' +
-                tripData.time +
-                '&searchForArrival=' +
-                tripData.searchForArrival
-        );
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4) {
-                let result = JSON.parse(xhr.responseText);
-                this.status == 200 ? resolve(result) : reject('Error');
-            }
-        };
-    });
-}
-function detailServiceCallAPI(input) {
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-
-        xhr.open('POST', '/detailService', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-        xhr.send('details=' + input);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4) {
-                let result = JSON.parse(xhr.responseText);
-                this.status == 200 ? resolve(result) : reject('Error');
-            }
-        };
-    });
+    return fetch('http://localhost:3000/tripService', {
+        //returns promise, and then proceeds to fetch server.
+        method: 'POST',
+        headers: { 'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+        body: ('originCoordName=' +
+        tripData.originCoordName +
+        '&originCoordX=' +
+        tripData.originCoordX +
+        '&originCoordY=' +
+        tripData.originCoordY +
+        '&destCoordX=' +
+        tripData.destCoordX +
+        '&destCoordY=' +
+        tripData.destCoordY +
+        '&destCoordName=' +
+        tripData.destCoordName +
+        '&date=' +
+        tripData.date +
+        '&time=' +
+        tripData.time +
+        '&searchForArrival=' +
+        tripData.searchForArrival) //body contains stringified events in order to send accross network
+    })
+    .then((response) => {
+        //when response is recieved, convert it to json.
+        return response.json();
+    })
 }

@@ -1,5 +1,3 @@
-import { detailServiceCallAPI } from './rejseplanen.js';
-
 export { createDetailsBox };
 
 function createDetailsBox(trip, transportDetailPicked) {
@@ -37,19 +35,4 @@ function createDetailsBox(trip, transportDetailPicked) {
     }
 
     details.style.display = 'block';
-}
-
-function collectDetailURLs(input) {
-    let detailURLsObject = [];
-
-    for (let j = 0; j < input.length; j++) {
-        let legLength = input[j]['Leg'].length;
-
-        if (legLength >= 4) {
-            let url = input[j]['Leg']['3'][':@']['@_ref'];
-            detailURLsObject.push(url);
-        }
-    }
-
-    return detailURLsObject;
 }
