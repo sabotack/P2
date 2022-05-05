@@ -121,11 +121,9 @@ function autocomplete(input) {
 
                     list.appendChild(option);
                 });
-            },
-            (err) => {
-                console.log(err);
             }
-        );
+        )
+        .catch(error => console.log(error));
     });
 }
 

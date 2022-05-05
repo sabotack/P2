@@ -8,9 +8,17 @@ function locationServiceCallAPI(inputField) {
         body: ('location=' + inputField) //body contains stringified events in order to send accross network
     })
     .then((response) => {
+        if(!response.ok) {
+            const e = new Error(response.statusText);
+            e.code = response.status;
+            throw e;
+        }
         //when response is recieved, convert it to json.
         return response.json();
     })
+    .catch((error) => { 
+        return Promise.reject(error);
+    });
 }
 
 function tripServiceCallAPI(tripData) {
@@ -38,7 +46,16 @@ function tripServiceCallAPI(tripData) {
         tripData.searchForArrival) //body contains stringified events in order to send accross network
     })
     .then((response) => {
+        if(!response.ok) {
+            const e = new Error(response.statusText);
+            e.code = response.status;
+            throw e;
+        }
+
         //when response is recieved, convert it to json.
         return response.json();
     })
+    .catch((error) => {
+        return Promise.reject(error);
+    });
 }
