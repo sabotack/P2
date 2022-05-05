@@ -1,5 +1,5 @@
 import { validateEventsObj } from './eventValidation.js';
-export { submitForm, saveAndValidateEventsOnServer, postEventsServer, getAuthorizationURL };
+export { submitForm, saveAndValidateEventsOnServer, postEventsServer, getAuthorizationURL, handleGoogleAuth };
 
 //function that handles submission of form. Recieves array of event(s) as imput
 async function submitForm(events) {
@@ -51,15 +51,10 @@ async function postEventsServer(events) {
         method: 'POST',
         headers: { 'Content-type': 'application/json; charset=UTF-8' },
         body: JSON.stringify(events) //body contains stringified events in order to send accross network
-    })
-        .then((response) => {
-            //when response is recieved, convert it to json.
-            return response.json();
-        })
-        .then((jsonRes) => {
-            //when json response is recieved, return it
-            return jsonRes;
-        });
+    }).then((response) => {
+        //when response is recieved, convert it to json.
+        return response.json();
+    });
 }
 
 //function gets authorizationURL from server.
