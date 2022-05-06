@@ -48,9 +48,9 @@ function autocomplete(input) {
         locationServiceCallAPI(input.value)
             .then((response) => {
                 response.forEach((element) => {
-                    let option = document.createElement('div');
-                    option.innerHTML += element[':@']['@_name'];
-                    option.innerHTML +=
+                    let suggestion = document.createElement('div');
+                    suggestion.innerHTML += element[':@']['@_name'];
+                    suggestion.innerHTML +=
                         "<input type='hidden' value='" +
                         element[':@']['@_name'] +
                         "' data-x='" +
@@ -61,7 +61,7 @@ function autocomplete(input) {
                         input.id +
                         "'>";
 
-                    option.addEventListener('click', (e) => {
+                    suggestion.addEventListener('click', (e) => {
                         let targetInput = e.target.querySelector('input');
                         input.value = targetInput.value;
                         inputID = targetInput.getAttribute('data-input');
@@ -119,7 +119,7 @@ function autocomplete(input) {
                         deleteList();
                     });
 
-                    list.appendChild(option);
+                    list.appendChild(suggestion);
                 });
             })
             .catch((error) => console.log(error));
