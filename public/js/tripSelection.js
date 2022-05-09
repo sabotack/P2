@@ -23,23 +23,10 @@ function createTripSelection(tripData, tripBox) {
 }
 
 function createNewTrip(tripElement, tripBox) {
-    let tripTimeStart = tripElement['0']['Leg']['0'][':@']['@_time'];
-    let tripTimeEnd = tripElement[tripElement.length - 1]['Leg']['1'][':@']['@_time'];
-
     //Create html elements for the trip box
     let trip = document.createElement('div');
     trip.setAttribute('class', 'trip');
-    trip.addEventListener('click', (event) => {
-        tripBox.childNodes.forEach((element) => {
-            element.classList.remove('trip-selected');
-        });
-        trip.classList.add('trip-selected');
-        let addBtn = tripBox.parentElement.children[2].children[1];
-        addBtn.classList.remove('disabled');
-        selectedTripObject = tripElement;
-        selectedTrip = trip;
-    });
-
+    
     let tripTop = document.createElement('div');
     tripTop.setAttribute('class', 'trip-top');
 
@@ -66,7 +53,26 @@ function createNewTrip(tripElement, tripBox) {
 
     let detailsButton = document.createElement('div');
     detailsButton.setAttribute('class', 'details-button');
-    detailsButton.append('Details');
+    detailsButton.textContent = 'Details';
+
+    let tripTimeStart = tripElement['0']['Leg']['0'][':@']['@_time'];
+    let tripTimeEnd = tripElement[tripElement.length - 1]['Leg']['1'][':@']['@_time'];
+    let iconSpacings = calcIconSpacings(tripElement);
+
+    tripSpecifiedInfo.textContent = getTripDurationString(tripElement, tripTimeStart, tripTimeEnd);
+    tripStartTime.textContent = tripTimeStart;
+    tripEndTime.textContent = tripTimeEnd;
+
+    trip.addEventListener('click', () => {
+        tripBox.childNodes.forEach((element) => {
+            element.classList.remove('trip-selected');
+        });
+        trip.classList.add('trip-selected');
+        let addBtn = tripBox.parentElement.children[2].children[1];
+        addBtn.classList.remove('disabled');
+        selectedTripObject = tripElement;
+        selectedTrip = trip;
+    });
 
     detailsButton.addEventListener(
         'click',
@@ -86,6 +92,10 @@ function createNewTrip(tripElement, tripBox) {
         { once: true }
     );
 
+    getIconElements(tripElement, iconSpacings).forEach((element) => {
+        tripBar.appendChild(element);
+    });
+
     //Insert the right elements under the right parent-nodes
     tripBox.appendChild(trip);
     trip.appendChild(tripTop);
@@ -93,26 +103,17 @@ function createNewTrip(tripElement, tripBox) {
     tripStart.appendChild(tripStartTime);
     tripTop.appendChild(tripBar);
     tripBar.appendChild(bar);
-
-    let iconSpacings = calcIconSpacings(tripElement, bar.offsetWidth, tripTimeStart, tripTimeEnd);
-
-    getIconElements(tripElement, iconSpacings).forEach((element) => {
-        tripBar.appendChild(element);
-    });
-
     tripTop.appendChild(tripEnd);
     tripEnd.appendChild(tripEndTime);
     trip.appendChild(tripInfo);
     tripInfo.appendChild(tripSpecifiedInfo);
     trip.appendChild(tripAction);
     tripAction.appendChild(detailsButton);
+}
 
-    let dateStart = tripElement['0']['Leg']['0'][':@']['@_date'];
-    let dateEnd = tripElement[tripElement.length - 1]['Leg']['1'][':@']['@_date'];
-
-    dateStart = convertToDate(dateStart);
-    dateEnd = convertToDate(dateEnd);
-
+function getTripDurationString(tripElement, tripTimeStart, tripTimeEnd) {
+    let dateStart = convertToDate(tripElement['0']['Leg']['0'][':@']['@_date']);
+    let dateEnd = convertToDate(tripElement[tripElement.length - 1]['Leg']['1'][':@']['@_date']);
     let dateStartObj = new Date(dateStart + ' ' + tripTimeStart);
     let dateEndObj = new Date(dateEnd + ' ' + tripTimeEnd);
 
@@ -121,13 +122,11 @@ function createNewTrip(tripElement, tripBox) {
     let timeDiffHours = Math.floor(timeDiff / 1000 / 60 / 60);
     let timeDiffMinutes = Math.floor(timeDiff / 1000 / 60) - timeDiffHours * 60;
 
-    tripStartTime.textContent = tripTimeStart;
-    tripEndTime.textContent = tripTimeEnd;
+    
     if (timeDiffHours > 0) {
-        tripSpecifiedInfo.textContent =
-            timeDiffHours + ' h ' + timeDiffMinutes + ' min, ' + countTripChanges(tripElement) + ' changes';
+        return (timeDiffHours + ' h ' + timeDiffMinutes + ' min, ' + countTripChanges(tripElement) + ' changes');
     } else {
-        tripSpecifiedInfo.textContent = timeDiffMinutes + ' min, ' + countTripChanges(tripElement) + ' changes';
+        return (timeDiffMinutes + ' min, ' + countTripChanges(tripElement) + ' changes');
     }
 }
 

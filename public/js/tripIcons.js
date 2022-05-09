@@ -6,9 +6,7 @@ function getIconElements(tripElement, iconSpacings) {
     let i = 0;
     tripElement.forEach((element) => {
         // If the trip origin includes the destination name or vice versa, then ignore that trip element.
-        if (
-            i != 0 &&
-            (element['Leg']['0'][':@']['@_name']
+        if ((element['Leg']['0'][':@']['@_name']
                 .toLowerCase()
                 .includes(element['Leg']['1'][':@']['@_name'].toLowerCase()) ||
                 element['Leg']['1'][':@']['@_name']
@@ -21,14 +19,6 @@ function getIconElements(tripElement, iconSpacings) {
 
         let tripIconContainer = document.createElement('div');
         tripIconContainer.setAttribute('class', 'trip-icon');
-
-        // Icon overlap handling
-        /* if(i != 0 && iconSpacings[i] - iconSpacings[i-1] < 35) {
-            tripIconContainer.style.setProperty('--icon-space', (iconSpacings[i-1] + 35) + 'px'); i++;
-        }
-        else {
-            tripIconContainer.style.setProperty('--icon-space', iconSpacings[i] + 'px'); i++;
-        } */
         tripIconContainer.style.setProperty('left', iconSpacings[i] + '%');
         i++;
 
@@ -40,19 +30,11 @@ function getIconElements(tripElement, iconSpacings) {
             case 'WALK':
                 tripIcon.setAttribute('class', 'fa-solid fa-person-walking');
                 break;
-            case 'BUS':
-            case 'EXB':
-            case 'TOG':
-            case 'NB':
-            case 'TB':
+            case 'BUS': case 'EXB': case 'TOG': case 'NB': case 'TB':
                 tripIcon.setAttribute('class', 'fa-solid fa-bus-simple');
                 tripName.textContent = element[':@']['@_line'];
                 break;
-            case 'IC':
-            case 'LYN':
-            case 'REG':
-            case 'S':
-            case 'M':
+            case 'IC': case 'LYN': case 'REG': case 'S': case 'M': case 'LET':
                 tripIcon.setAttribute('class', 'fa-solid fa-train');
                 tripName.textContent = element[':@']['@_name'].replace(/\s/g, '');
                 break;
@@ -70,17 +52,10 @@ function getIconElements(tripElement, iconSpacings) {
         iconElement.push(tripIconContainer);
     });
 
-    // Icon overlap adjustements
-    /* for(let i = 0; i < iconElement.length; i++) {
-        if(i != 0 && iconElement[i].offsetLeft - iconElement[i-1].offsetLeft < 35) {
-            iconElement[i].style.setProperty('left', 'calc(' + iconElement[i-1].offsetLeft + ' + 35px)');
-        }
-    } */
-
     return iconElement;
 }
 
-function calcIconSpacings(tripElement, barWidth) {
+function calcIconSpacings(tripElement) {
     const tripTimes = getTripMinutes(tripElement);
 
     let tripTimesSum = tripTimes.reduce((a, b) => a + b, 0);
