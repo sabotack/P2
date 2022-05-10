@@ -91,7 +91,8 @@ function locationServiceRequest(request, response) {
             })
             .catch((e) => {
                 console.log(e);
-                response.writeHead(e.code, e.message, { 'Content-Type': 'text/plain' });
+                const statusCode = e.code !== undefined && e.code > 0 ? e.code : 500;
+                response.writeHead(statusCode, e.message, { 'Content-Type': 'text/plain' });
                 response.end();
             });
     });
@@ -121,7 +122,8 @@ function tripServiceRequest(request, response) {
             })
             .catch((e) => {
                 console.log(e);
-                response.writeHead(e.code, e.message, { 'Content-Type': 'text/plain' });
+                const statusCode = e.code !== undefined && e.code > 0 ? e.code : 500;
+                response.writeHead(statusCode, e.message, { 'Content-Type': 'text/plain' });
                 response.end();
             });
     });

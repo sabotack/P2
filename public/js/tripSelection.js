@@ -26,7 +26,7 @@ function createNewTrip(tripElement, tripBox) {
     //Create html elements for the trip box
     let trip = document.createElement('div');
     trip.setAttribute('class', 'trip');
-    
+
     let tripTop = document.createElement('div');
     tripTop.setAttribute('class', 'trip-top');
 
@@ -122,11 +122,10 @@ function getTripDurationString(tripElement, tripTimeStart, tripTimeEnd) {
     let timeDiffHours = Math.floor(timeDiff / 1000 / 60 / 60);
     let timeDiffMinutes = Math.floor(timeDiff / 1000 / 60) - timeDiffHours * 60;
 
-    
     if (timeDiffHours > 0) {
-        return (timeDiffHours + ' h ' + timeDiffMinutes + ' min, ' + countTripChanges(tripElement) + ' changes');
+        return timeDiffHours + ' h ' + timeDiffMinutes + ' min, ' + countTripChanges(tripElement) + ' changes';
     } else {
-        return (timeDiffMinutes + ' min, ' + countTripChanges(tripElement) + ' changes');
+        return timeDiffMinutes + ' min, ' + countTripChanges(tripElement) + ' changes';
     }
 }
 

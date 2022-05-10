@@ -6,12 +6,13 @@ function getIconElements(tripElement, iconSpacings) {
     let i = 0;
     tripElement.forEach((element) => {
         // If the trip origin includes the destination name or vice versa, then ignore that trip element.
-        if ((element['Leg']['0'][':@']['@_name']
+        if (
+            element['Leg']['0'][':@']['@_name']
                 .toLowerCase()
                 .includes(element['Leg']['1'][':@']['@_name'].toLowerCase()) ||
-                element['Leg']['1'][':@']['@_name']
-                    .toLowerCase()
-                    .includes(element['Leg']['0'][':@']['@_name'].toLowerCase()))
+            element['Leg']['1'][':@']['@_name']
+                .toLowerCase()
+                .includes(element['Leg']['0'][':@']['@_name'].toLowerCase())
         ) {
             i++;
             return;
@@ -30,11 +31,20 @@ function getIconElements(tripElement, iconSpacings) {
             case 'WALK':
                 tripIcon.setAttribute('class', 'fa-solid fa-person-walking');
                 break;
-            case 'BUS': case 'EXB': case 'TOG': case 'NB': case 'TB':
+            case 'BUS':
+            case 'EXB':
+            case 'TOG':
+            case 'NB':
+            case 'TB':
                 tripIcon.setAttribute('class', 'fa-solid fa-bus-simple');
                 tripName.textContent = element[':@']['@_line'];
                 break;
-            case 'IC': case 'LYN': case 'REG': case 'S': case 'M': case 'LET':
+            case 'IC':
+            case 'LYN':
+            case 'REG':
+            case 'S':
+            case 'M':
+            case 'LET':
                 tripIcon.setAttribute('class', 'fa-solid fa-train');
                 tripName.textContent = element[':@']['@_name'].replace(/\s/g, '');
                 break;
