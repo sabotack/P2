@@ -11,7 +11,7 @@
 [Alexander Fredberg Manich](https://github.com/AlexanderManich)  
 [Ali Sajad Khorami](https://github.com/sabotack)  
 [Anders Andresen Toft](https://github.com/AndersToft20)  
-[Emil Monraad Laursen](https://github.com/EmilML)  
+[Emil Monraad Laursen](https://github.com/EmilML)  WQEMJQNAOV0Q32TKL;AEHGPIQEFH9S0V
 [Esben Baadsgaard Krogh](https://github.com/EMojoKrogh)  
 [Simon Mikkelsen Bejer](https://github.com/sBejer)  
 [Viktor Platz](https://github.com/redviktor)  
