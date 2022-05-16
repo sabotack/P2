@@ -14,7 +14,17 @@ let selectedTrip = '';
 function createTripSelection(tripData, tripBox) {
     deleteList(tripBox);
 
+    let loading = document.createElement('div');
+    loading.classList.add('fa-4x', 'loading');
+
+    let loadingIcon = document.createElement('i');
+    loadingIcon.classList.add('fa-solid', 'fa-cog', 'fa-spin');
+
+    tripBox.appendChild(loading);
+    loading.appendChild(loadingIcon);
+
     tripServiceCallAPI(tripData).then((response) => {
+        loading.remove();
         response.forEach((element) => {
             console.log(element.Trip);
             createNewTrip(element.Trip, tripBox);
