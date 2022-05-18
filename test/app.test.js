@@ -50,7 +50,7 @@ describe('server endpoints', () => {
                         '&destCoordX=9912378' +
                         '&destCoordY=57053150' +
                         '&destCoordName=Vestre Kanal Gade' +
-                        '&date=05.05.2022' +
+                        '&date=01.07.2022' +
                         '&time=12:00'
                 );
             expect(response.status).toBe(200);
@@ -112,22 +112,3 @@ describe('app.js', () => {
         expect(getContentType('/sfesjgl')).toBe('application/octet-stream');
     });
 });
-
-/* jest.mock('http', () => ({
-    createServer: jest.fn(() => ({ listen: jest.fn() })),
-}));
-  
-describe('Server', () => {
-
-    it('should create server on port 3000', () => {
-        const server = new server().startServer();
-        expect(http.createServer).toBeCalled();
-    });
-});
-
-jest.mock('http', () =>{
-
-    const server = http.createServer(function (request, response) {
-S      });
-
-}) */

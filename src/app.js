@@ -3,8 +3,9 @@ import fs from 'fs';
 import path from 'path';
 import { locationAPICall } from './rejseplanen/location.js';
 import { tripAPICall } from './rejseplanen/trip.js';
-import { handleGoogleAuthResponse, writeAuthorizationURL } from './google/googleAuthServer.js';
+import { handleGoogleAuthResponse, writeAuthorizationURL, handleFormLoad } from './google/googleAuthServer.js';
 import { saveEventsOnServer } from './google/googleCalendar.js';
+export { readFile };
 
 //import https from 'https';
 
@@ -30,6 +31,10 @@ function processUserRequest(request, response) {
             if (request.url.startsWith('/googleConsent')) {
                 //special case of google redirect where response is included in url
                 handleGoogleAuthResponse(request, response); //handles google reponse in url
+                break;
+            }
+            if (request.url.startsWith('/form')) {
+                handleFormLoad(request, response);
                 break;
             }
             switch (request.url) {
@@ -91,7 +96,8 @@ function locationServiceRequest(request, response) {
             })
             .catch((e) => {
                 console.log(e);
-                response.writeHead(e.code, e.message, { 'Content-Type': 'text/plain' });
+                const statusCode = e.code !== undefined && e.code > 0 ? e.code : 500;
+                response.writeHead(statusCode, e.message, { 'Content-Type': 'text/plain' });
                 response.end();
             });
     });
@@ -121,7 +127,8 @@ function tripServiceRequest(request, response) {
             })
             .catch((e) => {
                 console.log(e);
-                response.writeHead(e.code, e.message, { 'Content-Type': 'text/plain' });
+                const statusCode = e.code !== undefined && e.code > 0 ? e.code : 500;
+                response.writeHead(statusCode, e.message, { 'Content-Type': 'text/plain' });
                 response.end();
             });
     });

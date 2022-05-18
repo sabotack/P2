@@ -13,7 +13,7 @@ async function saveEventsOnServer(request, response) {
 
     //awaits the request data to avoid missing data in the upcomming validation
     await request.on('data', (data) => {
-        testString += data;
+        testString = data;
     });
 
     request.on('end', async () => {

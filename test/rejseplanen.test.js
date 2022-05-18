@@ -239,15 +239,15 @@ describe('locationServiceCallAPI', () => {
     });
 
     test('returns an error on reject', async () => {
-        let returnedError;
-
         // Promise is resolved here, as the initial fetch from server will succeed
-        const mFetch = Promise.resolve({ ok: false, statusText: 'Mocked error from server', status: 401 });
+        const mFetch = Promise.resolve({ ok: false, statusText: 'Mocked error from server', status: 400 });
         global.fetch = jest.fn(() => mFetch);
-        let response = await locationServiceCallAPI().catch((err) => (returnedError = err));
+        let response = await locationServiceCallAPI().catch((err) => {
+            return err;
+        });
 
-        expect(returnedError.code).toBe(401);
-        expect(returnedError.message).toBe('Mocked error from server');
+        expect(response.code).toBe(400);
+        expect(response.message).toBe('Mocked error from server');
     });
 });
 
@@ -256,18 +256,19 @@ describe('tripServiceCallAPI', () => {
         const mFetch = Promise.resolve({ ok: true, json: () => Promise.resolve(clientTripResult) });
         global.fetch = jest.fn(() => mFetch);
         let response = await tripServiceCallAPI('');
+
         expect(response).toEqual(clientTripResult);
     });
 
     test('returns an error on reject', async () => {
-        let returnedError;
-
         // Promise is resolved here, as the initial fetch from server will succeed
-        const mFetch = Promise.resolve({ ok: false, statusText: 'Mocked error from server', status: 401 });
+        const mFetch = Promise.resolve({ ok: false, statusText: 'Mocked error from server', status: 400 });
         global.fetch = jest.fn(() => mFetch);
-        let response = await tripServiceCallAPI('').catch((err) => (returnedError = err));
+        let response = await tripServiceCallAPI('').catch((err) => {
+            return err;
+        });
 
-        expect(returnedError.code).toBe(401);
-        expect(returnedError.message).toBe('Mocked error from server');
+        expect(response.code).toBe(400);
+        expect(response.message).toBe('Mocked error from server');
     });
 });

@@ -227,3 +227,11 @@ function Event(title, location, description, dateTimeStart, dateTimeEnd, color) 
         timeZone: 'Europe/Copenhagen'
     };
 }
+
+window.onload = function () {
+    let queryStr = window.location.search;
+    let parsedData = new URLSearchParams(queryStr);
+    let val = parsedData.get('EventsPosted');
+    if (val != null)
+        alert(val === 'Error' ? 'Events were not posted to calendar!' : 'Events were posted to your Google Calendar');
+};
