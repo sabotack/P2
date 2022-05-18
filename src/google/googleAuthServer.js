@@ -1,5 +1,6 @@
-export { handleGoogleAuthResponse, writeAuthorizationURL, oauth2Client };
+export { handleGoogleAuthResponse, writeAuthorizationURL, oauth2Client, handleFormLoad };
 import { postEvents, eventsToPost } from './googleCalendar.js';
+import { readFile } from '../app.js';
 import { google } from 'googleapis';
 const GOOGLE_CLIENT_ID = `564813831875-k9pb4mc6qh31agppeaos7ort3ng16gni.apps.googleusercontent.com`;
 const GOOGLE_CLIENT_SECRET = `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`;
@@ -26,13 +27,13 @@ async function handleGoogleAuthResponse(request, response) {
     let googleRes = url.parse(request.url, true).query; //google response is imbedded in url. url.Parse returns url-object containing "-query" entry.
     if (googleRes.error) {
         //if url-response is an error (user did not concent.)
-        response.writeHead(301, { Location: 'http://localhost:3000/404.html' }); //Redirect to errorpage
+        response.writeHead(301, { Location: 'http://localhost:3000/form?' + 'EventsPosted=Error' }); //Redirect to errorpage
         response.end();
     } else {
         //if user did concent
         oauth2Client.getToken(googleRes.code).then(({ tokens }) => {
             oauth2Client.setCredentials(tokens); //tokens is added to credentials in oauth2Client
-            response.writeHead(301, { Location: 'http://localhost:3000/form.html' }); //Redirects to the form.html page after the authorization process has happened
+            response.writeHead(301, { Location: 'http://localhost:3000/form?' + 'EventsPosted=Success' }); //Redirects to the form.html page after the authorization process has happened
             response.end();
             postEvents(eventsToPost); //posts events to google calendar.
         });
@@ -45,4 +46,9 @@ function writeAuthorizationURL(request, response) {
     response.writeHead(200, { 'Content-Type': 'application/json' });
     response.write(JSON.stringify(obj)); //stringifies object to send it accross web
     response.end();
+}
+
+function handleFormLoad(request, response) {
+    let filePath = './public/form.html';
+    readFile(filePath, request, response);
 }
